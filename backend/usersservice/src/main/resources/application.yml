@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    hibernate:
+      #TODO: swap with validate when deploying
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: 'true'
+        #Set to true for local testing
+        show_sql: true
+    open-in-view: 'false'
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+zodiaczen:
+  mail:
+    from: "zodiaczen@gmail.com"
