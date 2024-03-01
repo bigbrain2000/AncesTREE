@@ -1,6 +1,6 @@
 package com.zodiaczen.model;
 
-import com.zodiaczen.model.enums.RolType;
+import com.zodiaczen.model.enums.RoleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -10,12 +10,28 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
+/**
+ * Database model for a user.
+ * </br>
+ * <p>
+ * Components:
+ * <ul>
+ *     <li>id- the table primary key</li>
+ *     <li>username- the user name which must be unique</li>
+ *     <li>password- the user password</li>
+ *     <li>role- the user role, values mapped by {@link RoleType}</li>
+ *     <li>email- the user email which must be unique</li>
+ *     <li>address- the user address</li>
+ *     <li>phoneNumber- the user phone number</li>
+ *     <li>locked- property set default to {@code TRUE} if a user did not confirmed his email</li>
+ *     <li>enabled- property set default to {@code FALSE} if a user did not confirmed his email</li>
+ * </ul>
+ */
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "email", columnNames = "email"),
-                @UniqueConstraint(name = "username", columnNames = "username")
-        })
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(name = "email", columnNames = "email"),
+        @UniqueConstraint(name = "username", columnNames = "username")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,7 +40,6 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Setter
 public class UserEntity extends DateAudit {
 
-    //todo: add class documentation
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "user_sequence")
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
@@ -39,7 +54,7 @@ public class UserEntity extends DateAudit {
     private String password;
 
     @Enumerated(STRING)
-    private RolType role;
+    private RoleType role;
 
     @Email
     @Column(name = "email", nullable = false)

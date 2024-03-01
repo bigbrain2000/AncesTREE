@@ -11,6 +11,19 @@ import java.time.OffsetDateTime;
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static com.zodiaczen.utils.DateUtils.DATE_TIME_PATTERN;
 
+/**
+ * Database model for a confirmation token.
+ * </br>
+ * <p>
+ * Components:
+ * <ul>
+ *     <li>id- the table primary key</li>
+ *     <li>token- a unique token generated for each {@link UserEntity} for confirming his email</li>
+ *     <li>tokenCreatedAt- the timestamp when the {code token} was created</li>
+ *     <li>tokenExpiresAt- the timestamp when the {code token} expires</li>
+ *     <li>tokenConfirmedAt- the timestamp when the {code token} was confirmed</li>
+ * </ul>
+ */
 @Entity
 @Table(name = "confirmation_token")
 @NoArgsConstructor

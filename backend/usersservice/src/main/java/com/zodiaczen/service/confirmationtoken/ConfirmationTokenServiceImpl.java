@@ -1,6 +1,5 @@
 package com.zodiaczen.service.confirmationtoken;
 
-
 import com.zodiaczen.exceptions.EntityAlreadyExistsException;
 import com.zodiaczen.model.ConfirmationTokenEntity;
 import com.zodiaczen.model.UserEntity;

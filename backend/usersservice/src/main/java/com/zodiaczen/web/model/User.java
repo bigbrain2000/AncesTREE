@@ -1,10 +1,14 @@
 package com.zodiaczen.web.model;
 
-import com.zodiaczen.model.enums.RolType;
+import com.zodiaczen.model.UserEntity;
+import com.zodiaczen.model.enums.RoleType;
 import lombok.Builder;
 
 import java.io.Serializable;
 
+/**
+ * Web model for a {@link UserEntity}.
+ */
 @Builder
 public record User(
 
@@ -14,7 +18,7 @@ public record User(
 
         String password,
 
-        RolType rol,
+        RoleType rol,
 
         String email,
 

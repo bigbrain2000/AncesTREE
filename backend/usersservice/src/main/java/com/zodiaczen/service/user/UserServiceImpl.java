@@ -5,11 +5,13 @@ import com.zodiaczen.exceptions.EntityAlreadyExistsException;
 import com.zodiaczen.exceptions.InvalidEmailException;
 import com.zodiaczen.model.ConfirmationTokenEntity;
 import com.zodiaczen.model.UserEntity;
-import com.zodiaczen.model.enums.RolType;
+import com.zodiaczen.model.enums.RoleType;
 import com.zodiaczen.repository.UserRepository;
 import com.zodiaczen.security.PasswordEncoder;
 import com.zodiaczen.service.confirmationtoken.ConfirmationTokenService;
+import com.zodiaczen.service.converter.NullSafeConverter;
 import com.zodiaczen.service.email.EmailService;
+import com.zodiaczen.web.model.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,14 +34,36 @@ public class UserServiceImpl implements UserService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
 
+    private final NullSafeConverter converter;
+
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            ConfirmationTokenService confirmationTokenService,
-                           EmailService emailService) {
+                           EmailService emailService,
+                           NullSafeConverter converter) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.confirmationTokenService = confirmationTokenService;
         this.emailService = emailService;
+        this.converter = converter;
+    }
+
+    /**
+     * Check if the {@link UserEntity} email already exists.
+     *
+     * @param email the email of {@link UserEntity}
+     * @return true if the email already exist, otherwise false
+     */
+    @Override
+    public boolean isUserEmailAlreadyRegistered(@NotBlank String email) {
+        boolean isUserFound = userRepository.findByEmail(email).isPresent();
+
+        if (!isUserFound) {
+            log.debug("User {} was not found by email", email);
+        }
+
+        log.debug("User {} was found by email", email);
+        return isUserFound;
     }
 
     /**
@@ -73,12 +97,12 @@ public class UserServiceImpl implements UserService {
      * @throws EntityAlreadyExistsException if a user with the same email already exists
      */
     @Override
-    public String saveUserAndSendConfirmationToken(@NotNull UserEntity newUser) throws InvalidEmailException, EntityAlreadyExistsException {
-        String activationTokenForANewUser = signUpUser(newUser);
+    public String saveUserAndSendConfirmationToken(@NotNull User newUser) throws InvalidEmailException, EntityAlreadyExistsException {
+        UserEntity userEntity = converter.convert(newUser, UserEntity.class);
 
+        String activationTokenForANewUser = signUpUser(userEntity);
         String link = "http://localhost:5000/confirm?token=" + activationTokenForANewUser; //url for validating user account
-
-        sendRegistrationEmail(newUser, link);
+        sendRegistrationEmail(userEntity, link);
 
         return activationTokenForANewUser;
     }
@@ -117,7 +141,7 @@ public class UserServiceImpl implements UserService {
         UserEntity newUser = UserEntity.builder()
                 .username(user.getUsername())
                 .password(encodedPassword)
-                .role(RolType.USER)
+                .role(RoleType.USER)
                 .email(user.getEmail())
                 .address(user.getAddress())
                 .phoneNumber(user.getPhoneNumber())

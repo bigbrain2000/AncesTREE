@@ -3,6 +3,7 @@ package com.zodiaczen.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Version;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Base mode for changes dates.
+ * Base mode for {@link UserEntity} audit timestamps.
  */
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
@@ -22,7 +23,6 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 public abstract class DateAudit implements Serializable {
-    //todo: add class documentation
 
     @CreationTimestamp
     @Column(name = "creation_date", updatable = false)
@@ -31,4 +31,8 @@ public abstract class DateAudit implements Serializable {
     @UpdateTimestamp
     @Column(name = "updated_date", updatable = false)
     private LocalDateTime updatedDate;
+
+    //field used for Optimistic Locking
+    @Version
+    private Integer version;
 }
