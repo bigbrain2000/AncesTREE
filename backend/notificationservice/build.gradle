@@ -1,0 +1,85 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.zodiaczen'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    serviceTest {
+        java.srcDir 'scr/service-test/java'
+        resources.srcDir 'scr/service-test/resources'
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+
+    integrationTest {
+        java.srcDir 'scr/integration-test/java'
+        resources.srcDir 'scr/integration-test/resources'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
+    // Lombok
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    // Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+
+    //TODO: uncomment when starting testing the models
+    // Testcontainers
+//    testImplementation 'org.testcontainers:testcontainers:1.19.6'
+//    testImplementation 'org.testcontainers:junit-jupiter:1.19.6'
+
+    // Integration testing
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.rest-assured:rest-assured-common:5.4.0'
+    testImplementation 'io.rest-assured:json-path:5.4.0'
+    testImplementation 'io.rest-assured:xml-path:5.4.0'
+    integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
+    integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
+    integrationTestImplementation 'commons-configuration:commons-configuration:1.10'
+    integrationTestImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    integrationTestImplementation 'net.jodah:failsafe:2.4.4'
+
+    integrationTestRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    integrationTestRuntimeOnly 'org.projectlombok:lombok'
+    integrationTestAnnotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //Service tests
+    serviceTestAnnotationProcessor 'org.projectlombok:lombok'
+    serviceTestCompileOnly 'org.projectlombok:lombok'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
