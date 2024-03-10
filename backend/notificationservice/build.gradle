@@ -35,7 +35,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 
@@ -47,16 +46,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
-
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.mockito:mockito-inline:5.2.0'
-
-    //TODO: uncomment when starting testing the models
-    // Testcontainers
-//    testImplementation 'org.testcontainers:testcontainers:1.19.6'
-//    testImplementation 'org.testcontainers:junit-jupiter:1.19.6'
 
     // Integration testing
     testImplementation 'io.rest-assured:rest-assured:5.4.0'

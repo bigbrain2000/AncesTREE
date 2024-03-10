@@ -34,3 +34,6 @@ zodiaczen:
     from: zodiaczen@gmail.com
   jwtSecret: ${JWT_SECRET}
   jwtExpirationMs: ${JWT_EXPIRATION}
+
+server:
+  port: 8081

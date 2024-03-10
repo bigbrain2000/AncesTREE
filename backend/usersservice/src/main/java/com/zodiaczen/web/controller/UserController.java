@@ -3,9 +3,11 @@ package com.zodiaczen.web.controller;
 import com.zodiaczen.service.user.UserService;
 import com.zodiaczen.web.model.User;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,5 +40,21 @@ public class UserController {
                                            @RequestBody @NotNull @Valid User user) {
         final User updateUser = userService.update(id, user);
         return new ResponseEntity<>(updateUser, OK);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody @NotNull @Valid User user) {
+        return new ResponseEntity<>(userService.register(user), OK);
+    }
+
+    @PostMapping("/confirmEmail")
+    public ResponseEntity<Void> confirmEmailValidation(@RequestBody @NotBlank String token) {
+        userService.confirmToken(token);
+        return new ResponseEntity<>(OK);
+    }
+
+    @PostMapping("/userDetails")
+    public ResponseEntity<UserDetails> getUserDetails(@RequestBody @NotBlank String username) {
+        return new ResponseEntity<>(userService.loadUserByUsername(username), OK);
     }
 }

@@ -58,11 +58,12 @@ public interface UserService extends UserDetailsService {
      * is generated for validating email within the next 30 minutes from registering.
      *
      * @param newUser the user who register in the app
+     * @return token the generated confirmation token for user email validation
      * @throws InvalidEmailException        if a user email is invalid
      * @throws EntityAlreadyExistsException if a user with the same email already exists
      * @throws InvalidPhoneNumberException  if the introduced phone number is not valid
      */
-    void register(@NotNull User newUser) throws EntityAlreadyExistsException;
+    String register(@NotNull User newUser) throws EntityAlreadyExistsException;
 
 
     /**

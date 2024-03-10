@@ -176,12 +176,13 @@ public class UserServiceImpl implements UserService {
      * is generated for validating email within the next 30 minutes from registering.
      *
      * @param newUser the user who register in the app
+     * @return token the generated confirmation token for user email validation
      * @throws InvalidEmailException        if a user email is invalid
      * @throws EntityAlreadyExistsException if a user with the same email already exists
      * @throws InvalidPhoneNumberException  if the introduced phone number is not valid
      */
     @Override
-    public void register(@NotNull User newUser) throws InvalidEmailException, EntityAlreadyExistsException {
+    public String register(@NotNull User newUser) throws InvalidEmailException, EntityAlreadyExistsException {
         final UserEntity userEntity = converter.convert(newUser, UserEntity.class);
         validateAndCheckIfUserEmailExists(userEntity);
         validatePhoneNumber(userEntity.getPhoneNumber());
@@ -192,6 +193,8 @@ public class UserServiceImpl implements UserService {
         String link = "http://localhost:8080/v1/auth/confirm?token=" + token; //url for validating user acc
 
         sendRegistrationEmail(savedUser, link);
+
+        return token;
     }
 
     /**
