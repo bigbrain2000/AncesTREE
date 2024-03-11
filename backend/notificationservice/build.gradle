@@ -35,6 +35,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
@@ -53,20 +54,14 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:5.2.0'
 
     // Integration testing
-    testImplementation 'io.rest-assured:rest-assured:5.4.0'
-    testImplementation 'io.rest-assured:rest-assured-common:5.4.0'
-    testImplementation 'io.rest-assured:json-path:5.4.0'
-    testImplementation 'io.rest-assured:xml-path:5.4.0'
+    integrationTestImplementation 'io.rest-assured:rest-assured:5.4.0'
+    integrationTestImplementation 'io.rest-assured:rest-assured-common:5.4.0'
+    integrationTestImplementation 'io.rest-assured:json-path:5.4.0'
     integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
-    integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
-    integrationTestImplementation 'commons-configuration:commons-configuration:1.10'
-    integrationTestImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    integrationTestImplementation 'net.jodah:failsafe:2.4.4'
-
     integrationTestRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    integrationTestRuntimeOnly 'org.projectlombok:lombok'
+    integrationTestCompileOnly 'org.projectlombok:lombok'
     integrationTestAnnotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 
     //Service tests
     serviceTestAnnotationProcessor 'org.projectlombok:lombok'
