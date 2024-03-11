@@ -1,8 +1,6 @@
 weatherbeaconboard:
-  jwtSecret: ${JWT_SECRET}
-  jwtExpirationMs: ${JWT_EXPIRATION}
   users:
-    base-url: http://localhost:8080
+    base-url: http://localhost:8081
     userDetails: /v1/userDetails
 
 server:

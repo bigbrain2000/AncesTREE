@@ -6,7 +6,8 @@ import lombok.Builder;
 public record AuthenticationUserRequest(
 
         String username,
+
         String password
-        
+
 ) {
 }

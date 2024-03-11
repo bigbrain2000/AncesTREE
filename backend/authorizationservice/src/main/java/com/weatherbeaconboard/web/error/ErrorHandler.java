@@ -1,6 +1,6 @@
 package com.weatherbeaconboard.web.error;
 
-import com.weatherbeaconboard.exceptions.EmailSendingException;
+import com.weatherbeaconboard.exceptions.UsersServiceExceptions;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,13 +14,14 @@ public class ErrorHandler {
 
     private static final String ERROR_MESSAGE = "Error resolving the request";
 
-    @ExceptionHandler(EmailSendingException.class)
-    public ResponseEntity<String> handleEmailSendingException() {
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
+        return new ResponseEntity<>(e.getLocalizedMessage(), BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UsersServiceExceptions.class)
+    public ResponseEntity<String> handleUsersServiceExceptions() {
         return new ResponseEntity<>(ERROR_MESSAGE, INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
-        return new ResponseEntity<>("The request contains invalid values", BAD_REQUEST);
-    }
 }

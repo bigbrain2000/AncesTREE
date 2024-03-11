@@ -1,14 +1,16 @@
 package com.weatherbeaconboard.web.controller;
 
-import com.weatherbeaconboard.service.EmailService;
-import jakarta.validation.constraints.NotBlank;
+import com.weatherbeaconboard.service.email.EmailService;
+import com.weatherbeaconboard.web.model.EmailRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -23,20 +25,12 @@ public class EmailController {
 
     private final EmailService emailService;
 
-    @PostMapping("/sendRegistrationEmail")
-    public ResponseEntity<Void> sendEmail(@RequestParam @NotBlank String to,
-                                          @RequestParam @NotBlank String subject,
-                                          @RequestParam @NotBlank String body) {
+    @PostMapping("/sendEmail")
+    public ResponseEntity<Void> sendEmail(@RequestBody @NotNull @Valid EmailRequest emailRequest) {
 
         log.info("Initiate sending registration email");
-        emailService.sendEmail(to, subject, body);
-        return new ResponseEntity<>(OK);
-    }
+        emailService.sendEmail(emailRequest);
 
-    @PostMapping("/validateEmail")
-    public ResponseEntity<Void> validateEmail(@RequestParam @NotBlank String email) {
-        log.info("Initiate validating the user email");
-        emailService.checkIfEmailIsValid(email);
         return new ResponseEntity<>(OK);
     }
 }

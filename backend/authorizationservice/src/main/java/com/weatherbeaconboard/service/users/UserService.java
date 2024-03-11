@@ -1,6 +1,9 @@
 package com.weatherbeaconboard.service.users;
 
+import com.weatherbeaconboard.web.model.UserDetailsResponse;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
+import reactor.core.publisher.Mono;
 
 public interface UserService {
 
@@ -10,5 +13,5 @@ public interface UserService {
      * @param username the username for which to retrieve the {@link UserDetails} object
      * @return an object of type {@link UserDetails}, that represents the user details
      */
-    UserDetails getUserDetails(String username);
+    Mono<UserDetailsResponse> getUserDetails(@NotBlank String username);
 }
