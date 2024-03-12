@@ -31,7 +31,13 @@ public record User(
 
         String address,
 
-        String phoneNumber
+        String phoneNumber,
+
+        Boolean locked,
+
+        Boolean enabled,
+
+        Integer version
 
 ) implements Serializable {
 

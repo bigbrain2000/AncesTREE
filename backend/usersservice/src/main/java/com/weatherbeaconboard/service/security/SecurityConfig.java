@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -34,7 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/login", "/v1/auth/refresh", "/v1/userDetails").permitAll() // Add the permitted endpoint here
+                        .requestMatchers("/v1/login", "/v1/auth/refresh", "/v1/userDetails").permitAll()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -57,15 +55,4 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
 
-    public String getLoggedUsername() {
-        //load the current security context
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        //if the user is not authenticated return null
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
-        }
-
-        return authentication.getName();
-    }
 }

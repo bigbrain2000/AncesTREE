@@ -12,7 +12,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-
     /**
      * This query that retrieves a {@link UserEntity} entity from the database where the email field is equal to the value of the "username" parameter.
      */

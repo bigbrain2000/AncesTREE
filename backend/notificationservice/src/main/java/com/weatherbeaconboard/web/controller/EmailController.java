@@ -1,6 +1,6 @@
 package com.weatherbeaconboard.web.controller;
 
-import com.weatherbeaconboard.service.email.EmailService;
+import com.weatherbeaconboard.controller.email.EmailService;
 import com.weatherbeaconboard.web.model.EmailRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

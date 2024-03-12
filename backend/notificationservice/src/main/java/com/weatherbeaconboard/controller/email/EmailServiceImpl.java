@@ -1,4 +1,4 @@
-package com.weatherbeaconboard.service.email;
+package com.weatherbeaconboard.controller.email;
 
 import com.weatherbeaconboard.config.EmailProperties;
 import com.weatherbeaconboard.exceptions.EmailSendingException;

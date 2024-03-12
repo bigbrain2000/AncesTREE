@@ -13,6 +13,7 @@ public class ConfirmationTokenToConfirmationTokenEntityConverter implements Conv
     @Override
     public ConfirmationTokenEntity convert(ConfirmationToken source) {
         return ConfirmationTokenEntity.builder()
+                .id(source.id())
                 .token(source.token())
                 .tokenCreatedAt(source.tokenCreatedAt())
                 .tokenExpiresAt(source.tokenExpiresAt())

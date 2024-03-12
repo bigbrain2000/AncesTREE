@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -26,15 +27,12 @@ import static java.lang.String.format;
 @Slf4j
 @Service
 @Validated
+@AllArgsConstructor
 public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
     private static final OffsetDateTime NOW = getDateTime();
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
-
-    public ConfirmationTokenServiceImpl(ConfirmationTokenRepository confirmationTokenRepository) {
-        this.confirmationTokenRepository = confirmationTokenRepository;
-    }
 
     /**
      * Get a saved {@link ConfirmationTokenEntity} from the database based on the token.
@@ -43,12 +41,19 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
      * @return the persisted searched token
      */
     public ConfirmationTokenEntity getToken(@NotBlank String token) {
-        assertTokenExists(token);
+        log.debug("Attempting to retrieve {} for {} ", ConfirmationTokenEntity.class.getSimpleName(), token);
 
-        ConfirmationTokenEntity foundConfirmationTokenEntity = confirmationTokenRepository.getByToken(token);
+        final ConfirmationTokenEntity confirmationToken = confirmationTokenRepository.getByToken(token);
+
+        if (confirmationToken == null) {
+            final String errorMessage = format("No confirmation token found for %s", token);
+
+            throw new EntityNotFoundException(errorMessage);
+        }
+
         log.debug("Successfully retrieved {} for token {} ", ConfirmationTokenEntity.class.getSimpleName(), token);
 
-        return foundConfirmationTokenEntity;
+        return confirmationToken;
     }
 
     /**
@@ -57,8 +62,9 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
      * @param token the searched token
      */
     public void setConfirmedAt(@NotBlank String token) {
-        log.debug("Token was successfully updated in the database");
+        log.debug("Attempting to update a confirmation by the token {}", token);
         confirmationTokenRepository.updateTokenConfirmationDate(token, getDateTime());
+        log.debug("Token was successfully updated in the database");
     }
 
     /**
@@ -67,7 +73,10 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
      * @param id the id of the {@link ConfirmationTokenEntity} to be deleted
      */
     public void deleteById(@NotNull Integer id) {
+        log.debug("Attempting to delete a confirmation by the id {}", id);
         confirmationTokenRepository.deleteById(id);
+        log.debug("Successfully deleted the confirmation token with id {}", id);
+
     }
 
     /**
@@ -79,12 +88,13 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
      *                                      with the same id
      */
     public String saveAndReturnAConfirmationToken(@NotNull @Valid UserEntity user) {
-        String token = UUID.randomUUID().toString();
+        log.debug("Attempting to save a confirmation token for email validation.");
+        final String token = UUID.randomUUID().toString();
 
-        OffsetDateTime defaultDateTime = OffsetDateTime.parse("2000-01-01T20:20:20.200Z",
+        final OffsetDateTime defaultDateTime = OffsetDateTime.parse("2000-01-01T20:20:20.200Z",
                 DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
 
-        final ConfirmationTokenEntity confirmationToken = ConfirmationTokenEntity.builder()
+        final ConfirmationTokenEntity confirmationTokenEntity = ConfirmationTokenEntity.builder()
                 .token(token)
                 .tokenCreatedAt(NOW)
                 .tokenExpiresAt(NOW.plusMinutes(30))
@@ -92,19 +102,9 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
                 .user(user)
                 .build();
 
-        ConfirmationTokenEntity savedConfirmationTokenEntity = confirmationTokenRepository.save(confirmationToken);
+        final ConfirmationTokenEntity savedConfirmationTokenEntity = confirmationTokenRepository.save(confirmationTokenEntity);
         log.debug("Successfully saved a new confirmation token {}", savedConfirmationTokenEntity);
 
         return token;
-    }
-
-    private void assertTokenExists(@NotBlank String token) {
-        log.debug("Attempting to retrieve {} for {} ", ConfirmationTokenEntity.class.getSimpleName(), token);
-
-        if (confirmationTokenRepository.getByToken(token) == null) {
-            String errorMessage = format("No confirmation token found for %s", token);
-
-            throw new EntityNotFoundException(errorMessage);
-        }
     }
 }

@@ -57,7 +57,6 @@ public interface UserService extends UserDetailsService {
      *
      * @param newUser the user who register in the app
      * @return token the generated confirmation token for user email validation
-     * @throws {@code InvalidEmailException}        if a user email is invalid
      * @throws EntityAlreadyExistsException if a user with the same email already exists
      * @throws InvalidPhoneNumberException  if the introduced phone number is not valid
      */

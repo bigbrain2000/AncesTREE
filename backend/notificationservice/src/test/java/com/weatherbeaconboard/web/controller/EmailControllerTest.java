@@ -1,7 +1,6 @@
 package com.weatherbeaconboard.web.controller;
 
-import com.weatherbeaconboard.service.email.EmailService;
-import com.weatherbeaconboard.web.controller.EmailController;
+import com.weatherbeaconboard.controller.email.EmailService;
 import com.weatherbeaconboard.web.model.EmailRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

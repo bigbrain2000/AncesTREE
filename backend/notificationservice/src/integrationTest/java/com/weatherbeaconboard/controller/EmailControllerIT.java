@@ -1,4 +1,4 @@
-package com.weatherbeaconboard.service;
+package com.weatherbeaconboard.controller;
 
 import com.weatherbeaconboard.web.model.EmailRequest;
 import io.restassured.RestAssured;

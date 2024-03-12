@@ -62,7 +62,6 @@ dependencies {
     integrationTestCompileOnly 'org.projectlombok:lombok'
     integrationTestAnnotationProcessor 'org.projectlombok:lombok'
 
-
     //Service tests
     serviceTestAnnotationProcessor 'org.projectlombok:lombok'
     serviceTestCompileOnly 'org.projectlombok:lombok'

@@ -1,7 +1,7 @@
-package com.weatherbeaconboard.service;
+package com.weatherbeaconboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.weatherbeaconboard.service.email.EmailService;
+import com.weatherbeaconboard.controller.email.EmailService;
 import com.weatherbeaconboard.web.controller.EmailController;
 import com.weatherbeaconboard.web.model.EmailRequest;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
-package com.weatherbeaconboard.service;
+package com.weatherbeaconboard.controller;
 
 import com.weatherbeaconboard.config.EmailProperties;
-import com.weatherbeaconboard.service.email.EmailServiceImpl;
+import com.weatherbeaconboard.controller.email.EmailServiceImpl;
 import com.weatherbeaconboard.web.model.EmailRequest;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Test;

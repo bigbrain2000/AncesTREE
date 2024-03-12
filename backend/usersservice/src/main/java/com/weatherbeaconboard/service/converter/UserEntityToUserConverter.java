@@ -13,6 +13,7 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
     @Override
     public User convert(UserEntity source) {
         return User.builder()
+                .id(source.getId())
                 .username(source.getUsername())
                 .password(source.getPassword())
                 .firstName(source.getFirstName())
@@ -22,6 +23,9 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
                 .email(source.getEmail())
                 .address(source.getAddress())
                 .phoneNumber(source.getPhoneNumber())
+                .enabled(source.getEnabled())
+                .locked(source.getLocked())
+                .version(source.getVersion())
                 .build();
     }
 }

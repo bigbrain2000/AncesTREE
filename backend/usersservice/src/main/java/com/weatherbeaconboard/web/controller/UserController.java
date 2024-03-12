@@ -13,8 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @AllArgsConstructor
@@ -48,7 +47,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @NotNull @Valid User user) {
-        return new ResponseEntity<>(userService.register(user), OK);
+        return new ResponseEntity<>(userService.register(user), CREATED);
     }
 
     @PostMapping("/confirmEmail")
@@ -65,20 +64,4 @@ public class UserController {
 
         return new ResponseEntity<>(userDetailsResponse, OK);
     }
-
-//    private PasswordEncoder passwordEncoder;
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<?> authenticateUser(@RequestBody @NotNull User userData) {
-//        UserDetails userDetails = userService.loadUserByUsername(userData.username());
-//
-//
-//            if (passwordEncoder.bCryptPasswordEncoder().matches(userData.password(), userDetails.getPassword())) {   //verify if the plain text password match the encoded password from DB
-//                return ResponseEntity.ok("Aaa");
-//            }
-//
-//        return ResponseEntity.ok("bb");
-//
-//        // throw new UsernameNotFoundException("Username: " + userData.getUsername() + " not found!");
-//    }
 }

@@ -27,6 +27,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final NullSafeConverter converter;
 
     @Override
@@ -121,9 +122,6 @@ public class UserServiceImpl implements UserService {
             final UserEntity savedUser = userRepository.save(foundUserEntity);
             return converter.convert(savedUser, User.class);
         } catch (ObjectOptimisticLockingFailureException | OptimisticLockException e) {
-            // Handle the situation where an optimistic lock exception is thrown.
-            // This could involve logging the error, and throwing a custom exception
-            // that your application logic can handle appropriately.
             throw new OptimisticLockingFailureException("Failed to update user due to concurrent update.", e);
         }
     }
@@ -157,19 +155,16 @@ public class UserServiceImpl implements UserService {
     public void confirmToken(@NotBlank String token) {
         final ConfirmationTokenEntity confirmationToken = confirmationTokenService.getToken(token);
 
-        // Check if the token has expired
         if (confirmationToken.getTokenExpiresAt().isBefore(OffsetDateTime.now())) {
             log.debug("The token has expired and cannot be used for confirmation.");
             throw new ConfirmationTokenExpiredException("Token expired");
         }
 
-        // Check if the token was already confirmed
         if (confirmationToken.getTokenConfirmedAt() != null) {
             log.debug("The token was already confirmed.");
             throw new ConfirmationTokenAlreadyConfirmedException("Token was already confirmed");
         }
 
-        // Confirm the token since it's valid and not expired
         confirmationTokenService.setConfirmedAt(token);
         log.debug("The token was confirmed by user.");
 
@@ -234,7 +229,7 @@ public class UserServiceImpl implements UserService {
      * @param user the user that will be stored in the database
      */
     private UserEntity save(@NotNull @Valid UserEntity user) {
-        final String encodedPassword = passwordEncoder.bCryptPasswordEncoder().encode(user.getPassword());
+        final String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         UserEntity newUser = UserEntity.builder()
                 .username(user.getUsername())
@@ -246,8 +241,9 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .address(user.getAddress())
                 .phoneNumber(user.getPhoneNumber())
-                .enabled(true)
-                .locked(false)
+                //account is not set as enabled in the moment of registering
+                .enabled(false)
+                .locked(true)
                 .build();
 
         return userRepository.save(newUser);

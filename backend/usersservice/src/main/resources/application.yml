@@ -23,3 +23,9 @@ weatherbeaconboard:
 
 server:
   port: 8081
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: http://localhost:8081/swagger-ui.html
