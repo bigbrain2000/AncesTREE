@@ -19,15 +19,15 @@ repositories {
 
 sourceSets {
     serviceTest {
-        java.srcDir 'scr/service-test/java'
-        resources.srcDir 'scr/service-test/resources'
+        java.srcDir 'src/service-test/java'
+        resources.srcDir 'src/service-test/resources'
         compileClasspath += sourceSets.test.compileClasspath
         runtimeClasspath += sourceSets.test.runtimeClasspath
     }
 
     integrationTest {
-        java.srcDir 'scr/integration-test/java'
-        resources.srcDir 'scr/integration-test/resources'
+        java.srcDir 'src/integration-test/java'
+        resources.srcDir 'src/integration-test/resources'
     }
 }
 
