@@ -1,36 +1,7 @@
-spring:
-  jpa:
-    hibernate:
-      #TODO: swap with validate when deploying
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: 'true'
-        #Set to true for local testing
-        show_sql: true
-    open-in-view: 'false'
-  mail:
-    username: ${MAIL_USERNAME}
-    port: '587'
-    properties:
-      mail:
-        stmp:
-          atuh: 'true'
-        smtp:
-          starttls:
-            enable: 'true'
-            required: 'true'
-    host: ${MAIL_URL}
-    password: ${MAIL_PASSWORD}
+weatherbeaconboard:
+  users:
+    base-url: http://localhost:8081
+    userDetails: /v1/userDetails
 
-  datasource:
-    driverClassName: org.postgresql.Driver
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-
-zodiaczen:
-  mail:
-    from: zodiaczen@gmail.com
-  jwtSecret: ${JWT_SECRET}
-  jwtExpirationMs: ${JWT_EXPIRATION}
+server:
+  port: 8080

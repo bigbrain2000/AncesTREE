@@ -9,19 +9,6 @@ spring:
         #Set to true for local testing
         show_sql: true
     open-in-view: 'false'
-  mail:
-    username: ${MAIL_USERNAME}
-    port: '587'
-    properties:
-      mail:
-        stmp:
-          atuh: 'true'
-        smtp:
-          starttls:
-            enable: 'true'
-            required: 'true'
-    host: ${MAIL_URL}
-    password: ${MAIL_PASSWORD}
 
   datasource:
     driverClassName: org.postgresql.Driver
@@ -29,8 +16,16 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
-zodiaczen:
-  mail:
-    from: zodiaczen@gmail.com
-  jwtSecret: ${JWT_SECRET}
-  jwtExpirationMs: ${JWT_EXPIRATION}
+weatherbeaconboard:
+  notification:
+    base-url: http://localhost:8082
+    sendEmail: /v1/sendEmail
+
+server:
+  port: 8081
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: http://localhost:8081/swagger-ui.html

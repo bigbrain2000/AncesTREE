@@ -13,6 +13,9 @@ spring:
     host: ${MAIL_URL}
     password: ${MAIL_PASSWORD}
 
-zodiaczen:
+weatherbeaconboard:
   mail:
-    from: zodiaczen@gmail.com
+    from: weatherbeaconboard@gmail.com
+
+server:
+  port: 8082
