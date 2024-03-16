@@ -1,11 +1,14 @@
 weatherbeaconboard:
   open-meteo:
     forecast:
-      base-url: https://api.open-meteo.com/
-      forecast-url: v1/forecast
+      base-url: https://api.open-meteo.com
+      forecast-url: /v1/forecast
     flood:
-      base-url: https://flood-api.open-meteo.com/
-      flood-url: v1/flood
+      base-url: https://flood-api.open-meteo.com
+      flood-url: /v1/flood
+    elevation:
+      base-url: https://api.open-meteo.com
+      elevation-url: /v1/elevation
 
 server:
   port: 8084

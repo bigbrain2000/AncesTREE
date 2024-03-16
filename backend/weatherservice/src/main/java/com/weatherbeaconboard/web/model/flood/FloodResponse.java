@@ -24,4 +24,5 @@ public record FloodResponse(
         Object dailyUnits
 
 ) implements Serializable {
+
 }

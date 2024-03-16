@@ -1,6 +1,8 @@
 package com.weatherbeaconboard.web.controller;
 
 import com.weatherbeaconboard.service.OpenMeteoServiceImpl;
+import com.weatherbeaconboard.web.model.elevation.ElevationRequest;
+import com.weatherbeaconboard.web.model.elevation.ElevationResponse;
 import com.weatherbeaconboard.web.model.flood.FloodRequest;
 import com.weatherbeaconboard.web.model.flood.FloodResponse;
 import com.weatherbeaconboard.web.model.forecast.ForecastWeatherRequest;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -111,6 +116,28 @@ public class WeatherController {
                 .build();
 
         return openMeteoService.getFloodStatistics(floodRequest)
+                .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/elevation")
+    public Mono<ResponseEntity<ElevationResponse>> getElevationStatistics(
+            @RequestParam("latitude") String[] latitude,
+            @RequestParam("longitude") String[] longitude) {
+
+        final List<Double> latitudeList = Arrays.stream(latitude)
+                .map(Double::parseDouble)
+                .toList();
+
+        final List<Double> longitudeList = Arrays.stream(longitude)
+                .map(Double::parseDouble)
+                .toList();
+
+        final ElevationRequest elevationRequest = ElevationRequest.builder()
+                .latitude(latitudeList)
+                .longitude(longitudeList)
+                .build();
+
+        return openMeteoService.getElevationStatistics(elevationRequest)
                 .map(ResponseEntity::ok);
     }
 }
