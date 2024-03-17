@@ -15,7 +15,6 @@ import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -37,12 +36,15 @@ public class AirQualityStatisticsAsyncClient {
     public Mono<AirQualityResponse> getAirQualityStatistics(@NotNull @Valid AirQualityRequest request) {
         log.debug("Calling OpenMeteo API to retrieve the air quality statistics");
 
+        final String hourlyParams = String.join(",", request.hourly());
+        final String currentParams = String.join(",", request.current());
+
         final Function<UriBuilder, URI> uriBuilderURIFunction = uriBuilder ->
                 uriBuilder.path(airQualityStatisticsClientProperties.getOpenMeteoAirQualityStatisticsUrl())
                         .queryParam("latitude", request.latitude())
                         .queryParam("longitude", request.longitude())
-                        .queryParamIfPresent("hourly", Optional.ofNullable(request.hourly()))
-                        .queryParamIfPresent("current", Optional.ofNullable(request.current()))
+                        .queryParamIfPresent("hourly", Optional.of(hourlyParams))
+                        .queryParamIfPresent("current", Optional.of(currentParams))
                         .queryParamIfPresent("domains", Optional.ofNullable(request.domains()))
                         .queryParam("timeformat", request.timeformat())
                         .queryParam("timezone", request.timezone())
@@ -56,18 +58,14 @@ public class AirQualityStatisticsAsyncClient {
                         .queryParamIfPresent("end_hour", Optional.ofNullable(request.endHour()))
                         .queryParam("cell_selection", request.cellSelection())
                         .build();
-        Mono<Object> objectMono = webClient.get()
+
+        return webClient.get()
                 .uri(uriBuilderURIFunction)
                 .retrieve()
-                .bodyToMono(Object.class);
-
-
-//        return objectMono
-//                .onErrorResume(error -> {
-//                    log.error("Error occurred while calling the OpenMeteo API for getting the  air quality statistics {}", error.getMessage());
-//                    return Mono.error(new OpenMeteoException("Error calling the OpenMeteo API for getting the  air quality statistics"));
-//                });
-
-        return null;
+                .bodyToMono(AirQualityResponse.class)
+                .onErrorResume(error -> {
+                    log.error("Error occurred while calling the OpenMeteo API for getting the  air quality statistics {}", error.getMessage());
+                    return Mono.error(new OpenMeteoException("Error calling the OpenMeteo API for getting the  air quality statistics"));
+                });
     }
 }
