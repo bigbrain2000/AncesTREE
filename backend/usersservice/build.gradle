@@ -57,6 +57,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
 
+    // Resilience4J
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
+    implementation 'io.github.resilience4j:resilience4j-reactor:2.1.0'
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -1,13 +1,10 @@
 package com.weatherbeaconboard.service;
 
-import com.weatherbeaconboard.web.model.UserDetailsResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -21,27 +18,19 @@ import static com.weatherbeaconboard.config.JwtProperties.JWT_EXPIRATION_MS;
 import static com.weatherbeaconboard.config.JwtProperties.JWT_SECRET;
 
 @Component
-@AllArgsConstructor
 public class JwtUtil {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(@NotNull @Valid UserDetailsResponse userDetails) {
-        return createToken(userDetails.username(), JWT_EXPIRATION_MS, false);
-    }
-
     public String generateToken(@NotNull UserDetails userDetails) {
-        return createToken(userDetails.getUsername(), JWT_EXPIRATION_MS, false);
+        return createToken(userDetails.getUsername(), JWT_EXPIRATION_MS);
     }
 
-    private String createToken(String username, long expirationTime, boolean isRefreshToken) {
+    private String createToken(String username, long expirationTime) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);
-        if (isRefreshToken) {
-            claims.put("isRefresh", true);
-        }
 
         return Jwts.builder()
                 .setClaims(claims)

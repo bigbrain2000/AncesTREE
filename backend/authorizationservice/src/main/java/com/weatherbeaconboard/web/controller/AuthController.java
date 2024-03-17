@@ -1,30 +1,18 @@
 package com.weatherbeaconboard.web.controller;
 
 import com.weatherbeaconboard.service.JwtUtil;
-import com.weatherbeaconboard.service.security.SecurityConfig;
 import com.weatherbeaconboard.service.users.UserService;
-import com.weatherbeaconboard.web.model.*;
-import jakarta.validation.constraints.NotNull;
+import com.weatherbeaconboard.web.model.AuthenticationUserResponse;
+import com.weatherbeaconboard.web.model.JWTResponse;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -36,7 +24,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/refresh/{username}")
-    public Mono<ResponseEntity<JWTResponse>> refreshToken(@PathVariable String username) {
+    public Mono<ResponseEntity<JWTResponse>> refreshToken(@PathVariable @NotBlank String username) {
         log.info("Attempting to refresh token for user {}", username);
 
         return userService.getUserDetails(username)
@@ -48,9 +36,8 @@ public class AuthController {
                 });
     }
 
-    @PostMapping("/login")
-    public Mono<ResponseEntity<AuthenticationUserResponse>> loginUser(@RequestBody @NotNull AuthenticationUserRequest request) {
-        final String username = request.username();
+    @PostMapping("/login/{username}")
+    public Mono<ResponseEntity<AuthenticationUserResponse>> loginUser(@PathVariable @NotBlank String username) {
         log.info("Attempting to refresh token for user {}", username);
 
         return userService.getUserDetails(username)

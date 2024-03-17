@@ -29,3 +29,35 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: http://localhost:8081/swagger-ui.html
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      notificationServiceSendRegistrationEmail:
+        registerHealthIndicator: true
+        slidingWindowSize: 100
+        minimumNumberOfCalls: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+  bulkhead:
+    instances:
+      notificationServiceSendRegistrationEmail:
+        maxConcurrentCalls: 20
+        maxWaitDuration: 0
+  ratelimiter:
+    instances:
+      notificationService:
+        limitForPeriod: 10
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0s
+        registerHealthIndicator: true
+  retry:
+    instances:
+      notificationService:
+        maxAttempts: 5
+        waitDuration: 100ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 1.5
