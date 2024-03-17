@@ -1,6 +1,8 @@
 package com.weatherbeaconboard.web.controller;
 
 import com.weatherbeaconboard.service.OpenMeteoServiceImpl;
+import com.weatherbeaconboard.web.model.airquality.AirQualityRequest;
+import com.weatherbeaconboard.web.model.airquality.AirQualityResponse;
 import com.weatherbeaconboard.web.model.elevation.ElevationRequest;
 import com.weatherbeaconboard.web.model.elevation.ElevationResponse;
 import com.weatherbeaconboard.web.model.flood.FloodRequest;
@@ -138,6 +140,44 @@ public class WeatherController {
                 .build();
 
         return openMeteoService.getElevationStatistics(elevationRequest)
+                .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/air-quality")
+    public Mono<ResponseEntity<AirQualityResponse>> getAirQualityStatistics(
+            @RequestParam("latitude") Double latitude,
+            @RequestParam("longitude") Double longitude,
+            @RequestParam(value = "hourly", required = false) String[] hourly,
+            @RequestParam(value = "current", required = false) String[] current,
+            @RequestParam(value = "domains", defaultValue = "auto") String domains,
+            @RequestParam(value = "timeformat", defaultValue = "iso8601") String timeformat,
+            @RequestParam(value = "timezone", defaultValue = "GMT") String timezone,
+            @RequestParam(value = "past_days", defaultValue = "0") Integer pastDays,
+            @RequestParam(value = "forecast_days", defaultValue = "5") Integer forecastDays,
+            @RequestParam(value = "start_date", required = false) String startDate,
+            @RequestParam(value = "end_date", required = false) String endDate,
+            @RequestParam(value = "start_hour", required = false) String startHour,
+            @RequestParam(value = "end_hour", required = false) String endHour,
+            @RequestParam(value = "cell_selection", defaultValue = "nearest") String cellSelection) {
+
+        final AirQualityRequest airQualityRequest = AirQualityRequest.builder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .hourly(hourly)
+                .current(current)
+                .domains(domains)
+                .timeformat(timeformat)
+                .timezone(timezone)
+                .pastDays(pastDays)
+                .forecastDays(forecastDays)
+                .startDate(startDate)
+                .endDate(endDate)
+                .startHour(startHour)
+                .endHour(endHour)
+                .cellSelection(cellSelection)
+                .build();
+
+        return openMeteoService.getAirQualityStatistics(airQualityRequest)
                 .map(ResponseEntity::ok);
     }
 }

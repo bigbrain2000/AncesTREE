@@ -5,3 +5,35 @@ weatherbeaconboard:
 
 server:
   port: 8080
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      userServiceGetUsersDetails:
+        registerHealthIndicator: true
+        slidingWindowSize: 100
+        minimumNumberOfCalls: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+  bulkhead:
+    instances:
+      userServiceGetUsersDetails:
+        maxConcurrentCalls: 20
+        maxWaitDuration: 0
+  ratelimiter:
+    instances:
+      usersService:
+        limitForPeriod: 10
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0s
+        registerHealthIndicator: true
+  retry:
+    instances:
+      usersService:
+        maxAttempts: 5
+        waitDuration: 100ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 1.5

@@ -9,6 +9,9 @@ weatherbeaconboard:
     elevation:
       base-url: https://api.open-meteo.com
       elevation-url: /v1/elevation
+    air-quality:
+      base-url: https://air-quality-api.open-meteo.com
+      air-quality-url: /v1/air-quality
 
 server:
   port: 8084

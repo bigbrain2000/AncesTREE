@@ -4,6 +4,7 @@ import com.weatherbeaconboard.client.NotificationServiceAsyncClient;
 import com.weatherbeaconboard.config.NotificationServiceClientProperties;
 import com.weatherbeaconboard.exceptions.NotificationServiceException;
 import com.weatherbeaconboard.web.model.EmailRequest;
+
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterEach;

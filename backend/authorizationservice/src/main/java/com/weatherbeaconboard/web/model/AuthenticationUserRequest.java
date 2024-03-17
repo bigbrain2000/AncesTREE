@@ -2,6 +2,8 @@ package com.weatherbeaconboard.web.model;
 
 import lombok.Builder;
 
+import java.io.Serializable;
+
 @Builder
 public record AuthenticationUserRequest(
 
@@ -9,5 +11,6 @@ public record AuthenticationUserRequest(
 
         String password
 
-) {
+) implements Serializable {
+
 }
