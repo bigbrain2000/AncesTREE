@@ -1,4 +1,6 @@
 package com.upt.weatherBeacon.ui.login;
 
-public class LoginViewModel {
+import com.upt.weatherBeacon.ui.base.BaseViewModel;
+
+public class LoginViewModel extends BaseViewModel {
 }

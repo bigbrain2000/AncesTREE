@@ -1,29 +1,40 @@
 package com.upt.weatherBeacon.ui.base;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.upt.weatherBeacon.ui.base.navigation.UiEvent;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
-public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
-    public BaseViewModel viewModel;
+public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
+    public VM viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(getViewModelClass());
-        viewModel.uiEventStream.observe(this, uiEvent -> processUiEvent(uiEvent));
+        viewModel =  new ViewModelProvider(this).get(getViewModelClass());
+        viewModel.uiEventStream.observe(this, this::processUiEvent);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(getContentView(), container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
         initUi();
         setObservers();
@@ -33,24 +44,17 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
 
     protected abstract void initUi();
 
-    private Class<BaseViewModel> getViewModelClass(){
-        Type genericSuperclass = getClass().getGenericSuperclass();
+    protected abstract int getContentView();
 
-        if (genericSuperclass instanceof ParameterizedType) {
-            Type[] actualTypeArguments = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+   private Class<VM> getViewModelClass(){
+       ParameterizedType superClassType = (ParameterizedType) getClass().getGenericSuperclass();
+       return (Class<VM>) superClassType.getActualTypeArguments()[0];
 
-            if (actualTypeArguments.length > 0 && actualTypeArguments[0] instanceof Class) {
-                return (Class<BaseViewModel>) actualTypeArguments[0];
-            }
-        }
-
-        // Handle the case where the generic type cannot be extracted
-        throw new IllegalStateException("Unable to extract generic type");
-    }
+   }
 
     protected void processUiEvent(UiEvent uiEvent){
         if (this.getActivity() instanceof BaseActivity) {
-            ((BaseActivity<T>) this.getActivity()).processUiEvent(uiEvent);
+            ((BaseActivity<?>) this.getActivity()).processUiEvent(uiEvent);
         }
     }
 }

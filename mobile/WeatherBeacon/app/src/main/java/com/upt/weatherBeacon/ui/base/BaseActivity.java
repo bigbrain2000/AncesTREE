@@ -27,6 +27,9 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
         this.setContentView(getContentView());
         viewModel = new ViewModelProvider(this).get(getViewModelClass());
 
+
+        viewModel.uiEventStream.observe(this, this::processUiEvent);
+
         setupUi();
         setupObservers();
     }

@@ -2,22 +2,26 @@ package com.upt.weatherBeacon;
 
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
-
+import com.upt.weatherBeacon.databinding.ActivityMainBinding;
 import com.upt.weatherBeacon.ui.base.BaseActivity;
+import com.upt.weatherBeacon.ui.base.BaseViewModel;
+import com.upt.weatherBeacon.ui.base.Navigation;
+import com.upt.weatherBeacon.ui.base.navigation.NavAttribs;
+import com.upt.weatherBeacon.ui.base.navigation.Screen;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends BaseActivity<MainViewModel> {
+public class MainActivity extends BaseActivity<BaseViewModel> {
 
-    private FrameLayout frame;
+    private ActivityMainBinding binding;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        frame = findViewById(R.id.frame);
+        setContentView(binding.getRoot());
+
 
     }
 
@@ -28,6 +32,7 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
     @Override
     public void setupUi(){
-//        viewModel.uiEventStream =  new Navigation(new NavAttribs(Screen.LoginScreen,null, false));
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        viewModel.uiEventStream.setValue(   new Navigation(new NavAttribs(Screen.LoginScreen,null, false)));
     }
 }

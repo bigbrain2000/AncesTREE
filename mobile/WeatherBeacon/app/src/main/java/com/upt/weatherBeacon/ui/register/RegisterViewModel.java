@@ -1,4 +1,6 @@
 package com.upt.weatherBeacon.ui.register;
 
-public class RegisterViewModel {
+import com.upt.weatherBeacon.ui.base.BaseViewModel;
+
+public class RegisterViewModel extends BaseViewModel {
 }
