@@ -11,5 +11,9 @@ public class JwtProperties {
             " Am abonament la bani Ei vin permanent..Sunt asigurat pe viata AM ABONAMENT";
 
     public static final long JWT_EXPIRATION_MS = 86400000;
+
+    private JwtProperties() {
+        throw new IllegalStateException("Reflection should not be used to access this class");
+    }
 }
 

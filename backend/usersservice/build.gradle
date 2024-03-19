@@ -57,11 +57,18 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
 
+    // Resilience4J
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
+    implementation 'io.github.resilience4j:resilience4j-reactor:2.1.0'
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.mockito:mockito-inline:5.2.0'
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.rest-assured:rest-assured-common:5.4.0'
+    testImplementation 'io.rest-assured:json-path:5.4.0'
+    testImplementation 'io.rest-assured:xml-path:5.4.0'
 
     //TODO: uncomment when starting testing the models
     // Testcontainers
@@ -69,25 +76,20 @@ dependencies {
 //    testImplementation 'org.testcontainers:junit-jupiter:1.19.6'
 
     // Integration testing
-    testImplementation 'io.rest-assured:rest-assured:5.4.0'
-    testImplementation 'io.rest-assured:rest-assured-common:5.4.0'
-    testImplementation 'io.rest-assured:json-path:5.4.0'
-    testImplementation 'io.rest-assured:xml-path:5.4.0'
-    integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
     integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
     integrationTestImplementation 'commons-configuration:commons-configuration:1.10'
     integrationTestImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     integrationTestImplementation 'net.jodah:failsafe:2.4.4'
-
     integrationTestRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     integrationTestRuntimeOnly 'org.projectlombok:lombok'
     integrationTestAnnotationProcessor 'org.projectlombok:lombok'
 
-
-
     // Service tests
     serviceTestAnnotationProcessor 'org.projectlombok:lombok'
     serviceTestCompileOnly 'org.projectlombok:lombok'
+    serviceTestImplementation 'com.squareup.okhttp3:mockwebserver'
+    serviceTestImplementation 'io.projectreactor:reactor-test'
+
 }
 
 tasks.named('test') {

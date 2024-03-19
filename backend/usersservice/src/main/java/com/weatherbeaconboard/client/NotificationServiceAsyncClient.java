@@ -3,16 +3,23 @@ package com.weatherbeaconboard.client;
 import com.weatherbeaconboard.config.NotificationServiceClientProperties;
 import com.weatherbeaconboard.exceptions.NotificationServiceException;
 import com.weatherbeaconboard.web.model.EmailRequest;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import static com.weatherbeaconboard.config.Constants.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
 @Component
+@Retry(name = NOTIFICATION_SERVICE)
+@RateLimiter(name = NOTIFICATION_SERVICE)
 public class NotificationServiceAsyncClient {
 
     private final WebClient webClient;
@@ -34,6 +41,8 @@ public class NotificationServiceAsyncClient {
      *
      * @return a {@link Mono<Void>} that completes when the email sending operation is done
      */
+    @CircuitBreaker(name = NOTIFICATION_SERVICE_SED_REGISTRATION_EMAIL)
+    @Bulkhead(name = NOTIFICATION_SERVICE_SED_REGISTRATION_EMAIL)
     public Mono<Void> sendRegistrationEmail(EmailRequest emailRequest) {
         log.debug("Sending user registration email");
 

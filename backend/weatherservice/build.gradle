@@ -1,0 +1,79 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.weatherbeaconboard'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceSets {
+    serviceTest {
+        java.srcDir 'src/service-test/java'
+        resources.srcDir 'src/service-test/resources'
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+
+    integrationTest {
+        java.srcDir 'src/integration-test/java'
+        resources.srcDir 'src/integration-test/resources'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+   // implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Custom JWT Library
+    //implementation 'com.weatherbeaconboard:JWTGuard:1.0.0'
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
+    // Lombok
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+
+    // Integration testing
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.rest-assured:rest-assured-common:5.4.0'
+    testImplementation 'io.rest-assured:json-path:5.4.0'
+    testImplementation 'io.rest-assured:xml-path:5.4.0'
+    integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
+    integrationTestImplementation 'org.junit.jupiter:junit-jupiter-api'
+    integrationTestImplementation 'commons-configuration:commons-configuration:1.10'
+    integrationTestImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    integrationTestImplementation 'net.jodah:failsafe:2.4.4'
+
+    integrationTestRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    integrationTestRuntimeOnly 'org.projectlombok:lombok'
+    integrationTestAnnotationProcessor 'org.projectlombok:lombok'
+
+    // Service tests
+    serviceTestAnnotationProcessor 'org.projectlombok:lombok'
+    serviceTestCompileOnly 'org.projectlombok:lombok'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
