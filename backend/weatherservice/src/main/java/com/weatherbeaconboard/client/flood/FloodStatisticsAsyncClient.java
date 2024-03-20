@@ -36,18 +36,23 @@ public class FloodStatisticsAsyncClient {
     public Mono<FloodResponse> getFloodStatistics(@NotNull @Valid FloodRequest request) {
         log.debug("Calling OpenMeteo API to retrieve the flood statistics");
 
-        final String dailyParams = String.join(",", request.dailyVariables());
+        String dailyParams;
+        if (request.dailyVariables() != null && request.dailyVariables().length > 0) {
+            dailyParams = String.join(",", request.dailyVariables());
+        } else {
+            dailyParams = null;
+        }
 
         final Function<UriBuilder, URI> uriBuilderURIFunction = uriBuilder -> uriBuilder.path(floodStatisticsClientProperties.getOpenMeteoFloodStatisticsUrl())
                 .queryParam("latitude", request.latitude())
                 .queryParam("longitude", request.longitude())
-                .queryParamIfPresent("daily", Optional.of(dailyParams))
+                .queryParamIfPresent("daily", Optional.ofNullable(dailyParams))
                 .queryParamIfPresent("timeformat", Optional.ofNullable(request.timeFormat()))
-                .queryParamIfPresent("past_days", Optional.of(request.pastDays()))
-                .queryParamIfPresent("forecast_days", Optional.of(request.forecastDays()))
+                .queryParamIfPresent("past_days", Optional.ofNullable(request.pastDays()))
+                .queryParamIfPresent("forecast_days", Optional.ofNullable(request.forecastDays()))
                 .queryParamIfPresent("start_date", Optional.ofNullable(request.startDate()))
                 .queryParamIfPresent("end_date", Optional.ofNullable(request.endDate()))
-                .queryParamIfPresent("ensemble", Optional.of(request.ensemble()))
+                .queryParamIfPresent("ensemble", Optional.ofNullable(request.ensemble()))
                 .queryParamIfPresent("cell_selection", Optional.ofNullable(request.cellSelection()))
                 .build();
 

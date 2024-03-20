@@ -3,6 +3,8 @@ package com.weatherbeaconboard.web.controller;
 import com.weatherbeaconboard.service.OpenMeteoServiceImpl;
 import com.weatherbeaconboard.web.model.airquality.AirQualityRequest;
 import com.weatherbeaconboard.web.model.airquality.AirQualityResponse;
+import com.weatherbeaconboard.web.model.climatechange.ClimateChangeRequest;
+import com.weatherbeaconboard.web.model.climatechange.ClimateChangeRespose;
 import com.weatherbeaconboard.web.model.elevation.ElevationRequest;
 import com.weatherbeaconboard.web.model.elevation.ElevationResponse;
 import com.weatherbeaconboard.web.model.flood.FloodRequest;
@@ -10,6 +12,7 @@ import com.weatherbeaconboard.web.model.flood.FloodResponse;
 import com.weatherbeaconboard.web.model.forecast.ForecastWeatherRequest;
 import com.weatherbeaconboard.web.model.forecast.ForecastWeatherResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -95,7 +98,7 @@ public class WeatherController {
     public Mono<ResponseEntity<FloodResponse>> getFloodStatistics(
             @RequestParam("latitude") Double latitude,
             @RequestParam("longitude") Double longitude,
-            @RequestParam(value = "daily", required = false) String[] dailyVariables,
+            @RequestParam(value = "daily") String[] dailyVariables,
             @RequestParam(value = "timeformat", required = false) String timeformat,
             @RequestParam(value = "past_days", required = false) Integer pastDays,
             @RequestParam(value = "forecast_days", required = false) Integer forecastDays,
@@ -123,20 +126,12 @@ public class WeatherController {
 
     @GetMapping("/elevation")
     public Mono<ResponseEntity<ElevationResponse>> getElevationStatistics(
-            @RequestParam("latitude") String[] latitude,
-            @RequestParam("longitude") String[] longitude) {
-
-        final List<Double> latitudeList = Arrays.stream(latitude)
-                .map(Double::parseDouble)
-                .toList();
-
-        final List<Double> longitudeList = Arrays.stream(longitude)
-                .map(Double::parseDouble)
-                .toList();
+            @RequestParam("latitude") List<Double> latitude,
+            @RequestParam("longitude") List<Double> longitude) {
 
         final ElevationRequest elevationRequest = ElevationRequest.builder()
-                .latitude(latitudeList)
-                .longitude(longitudeList)
+                .latitude(latitude)
+                .longitude(longitude)
                 .build();
 
         return openMeteoService.getElevationStatistics(elevationRequest)
@@ -178,6 +173,40 @@ public class WeatherController {
                 .build();
 
         return openMeteoService.getAirQualityStatistics(airQualityRequest)
+                .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/climate")
+    public Mono<ResponseEntity<ClimateChangeRespose>> getClimateStatistics(
+            @RequestParam("latitude") List<Double> latitude,
+            @RequestParam("longitude") List<Double> longitude,
+            @RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam("models") List<String> models,
+            @RequestParam("daily") List<String> daily,
+            @RequestParam(value = "temperature_unit", required = false) String temperatureUnit,
+            @RequestParam(value = "wind_speed_unit", required = false) String windSpeedUnit,
+            @RequestParam(value = "precipitation_unit", required = false) String precipitationUnit,
+            @RequestParam(value = "timeformat", required = false) String timeFormat,
+            @RequestParam(value = "disable_bias_correction", required = false) Boolean disableBiasCorrection,
+            @RequestParam(value = "cell_selection", required = false) String cellSelection) {
+
+        final ClimateChangeRequest climateChangeRequest = ClimateChangeRequest.builder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .startDate(startDate)
+                .endDate(endDate)
+                .models(models)
+                .daily(daily)
+                .temperatureUnit(temperatureUnit)
+                .windSpeedUnit(windSpeedUnit)
+                .precipitationUnit(precipitationUnit)
+                .timeFormat(timeFormat)
+                .disableBiasCorrection(disableBiasCorrection)
+                .cellSelection(cellSelection)
+                .build();
+
+        return openMeteoService.getClimateStatistics(climateChangeRequest)
                 .map(ResponseEntity::ok);
     }
 }

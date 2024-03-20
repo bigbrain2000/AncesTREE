@@ -36,15 +36,26 @@ public class AirQualityStatisticsAsyncClient {
     public Mono<AirQualityResponse> getAirQualityStatistics(@NotNull @Valid AirQualityRequest request) {
         log.debug("Calling OpenMeteo API to retrieve the air quality statistics");
 
-        final String hourlyParams = String.join(",", request.hourly());
-        final String currentParams = String.join(",", request.current());
+        String hourlyParams;
+        if (request.hourly() != null && request.hourly().length > 0) {
+            hourlyParams = String.join(",", request.hourly());
+        } else {
+            hourlyParams = null;
+        }
+
+        String currentParams;
+        if (request.current() != null && request.current().length > 0) {
+            currentParams = String.join(",", request.current());
+        } else {
+            currentParams = null;
+        }
 
         final Function<UriBuilder, URI> uriBuilderURIFunction = uriBuilder ->
                 uriBuilder.path(airQualityStatisticsClientProperties.getOpenMeteoAirQualityStatisticsUrl())
                         .queryParam("latitude", request.latitude())
                         .queryParam("longitude", request.longitude())
-                        .queryParamIfPresent("hourly", Optional.of(hourlyParams))
-                        .queryParamIfPresent("current", Optional.of(currentParams))
+                        .queryParamIfPresent("hourly", Optional.ofNullable(hourlyParams))
+                        .queryParamIfPresent("current", Optional.ofNullable(currentParams))
                         .queryParamIfPresent("domains", Optional.ofNullable(request.domains()))
                         .queryParam("timeformat", request.timeformat())
                         .queryParam("timezone", request.timezone())

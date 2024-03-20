@@ -19,11 +19,11 @@ public record FloodRequest(
 
         @JsonProperty("daily") String[] dailyVariables,
         @JsonProperty("timeformat") String timeFormat,
-        @JsonProperty("past_days") int pastDays,
-        @JsonProperty("forecast_days") int forecastDays,
+        @JsonProperty("past_days") Integer pastDays,
+        @JsonProperty("forecast_days") Integer forecastDays,
         @JsonProperty("start_date") String startDate,
         @JsonProperty("end_date") String endDate,
-        @JsonProperty("ensemble") boolean ensemble,
+        @JsonProperty("ensemble") Boolean ensemble,
         @JsonProperty("cell_Selection") String cellSelection
 
 ) implements Serializable {
@@ -34,10 +34,10 @@ public record FloodRequest(
         if (o == null || getClass() != o.getClass()) return false;
         FloodRequest that = (FloodRequest) o;
         return Double.compare(latitude, that.latitude) == 0 && Double.compare(longitude, that.longitude) == 0 &&
-                pastDays == that.pastDays && forecastDays == that.forecastDays && ensemble == that.ensemble &&
-                Arrays.equals(dailyVariables, that.dailyVariables) && Objects.equals(timeFormat, that.timeFormat) &&
-                Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) &&
-                Objects.equals(cellSelection, that.cellSelection);
+                Objects.equals(pastDays, that.pastDays) && Objects.equals(forecastDays, that.forecastDays) &&
+                ensemble == that.ensemble && Arrays.equals(dailyVariables, that.dailyVariables) &&
+                Objects.equals(timeFormat, that.timeFormat) && Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate) && Objects.equals(cellSelection, that.cellSelection);
     }
 
     @Override

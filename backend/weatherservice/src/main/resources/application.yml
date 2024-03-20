@@ -12,6 +12,9 @@ weatherbeaconboard:
     air-quality:
       base-url: https://air-quality-api.open-meteo.com
       air-quality-url: /v1/air-quality
+    climate:
+      base-url: https://climate-api.open-meteo.com
+      climate-url: /v1/climate
 
 server:
   port: 8084
