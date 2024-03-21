@@ -17,13 +17,6 @@ import com.upt.weatherBeacon.ui.base.navigation.UiEvent;
 }
   class GoToMain extends UiEvent{}
 
-  class ShowToast extends UiEvent{
-   public  String message;
-      ShowToast(String message){
-        this.message = message;
-    }
-}
-
-  class ShowLoading extends UiEvent{}
+class ShowLoading extends UiEvent{}
 
   class HideLoading extends UiEvent{}
