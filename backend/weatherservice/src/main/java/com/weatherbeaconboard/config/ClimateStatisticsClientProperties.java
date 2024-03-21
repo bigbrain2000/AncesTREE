@@ -8,18 +8,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Getter
 @Configuration
-public class ElevationStatisticsClientProperties {
+public class ClimateStatisticsClientProperties {
 
-    @Value("${weatherbeaconboard.open-meteo.elevation.base-url}")
-    private String elevationStatisticsBaseUrl;
+    @Value("${weatherbeaconboard.open-meteo.climate.base-url}")
+    private String climateStatisticsBaseUrl;
 
-    @Value("${weatherbeaconboard.open-meteo.elevation.elevation-url}")
-    private String openMeteoElevationStatisticsUrl;
+    @Value("${weatherbeaconboard.open-meteo.climate.climate-url}")
+    private String openMeteoClimateStatisticsUrl;
 
-    @Bean("elevationStatisticsWebClient")
+    @Bean("climateStatisticsWebClient")
     public WebClient openMeteoWebCLient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
-                .baseUrl(elevationStatisticsBaseUrl)
+                .baseUrl(climateStatisticsBaseUrl)
                 .build();
     }
 }

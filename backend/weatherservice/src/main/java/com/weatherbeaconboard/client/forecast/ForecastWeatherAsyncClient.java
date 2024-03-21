@@ -36,15 +36,26 @@ public class ForecastWeatherAsyncClient {
     public Mono<ForecastWeatherResponse> getForecastWeather(@NotNull @Valid ForecastWeatherRequest request) {
         log.debug("Calling OpenMeteo API to retrieve the forecast");
 
-        final String hourlyParams = String.join(",", request.hourly());
-        final String dailyParams = String.join(",", request.daily());
+        String hourlyParams;
+        if (request.hourly() != null && request.hourly().length > 0) {
+            hourlyParams = String.join(",", request.hourly());
+        } else {
+            hourlyParams = null;
+        }
+
+        String dailyParams;
+        if (request.daily() != null && request.daily().length > 0) {
+            dailyParams = String.join(",", request.daily());
+        } else {
+            dailyParams = null;
+        }
 
         final Function<UriBuilder, URI> uriBuilderURIFunction = uriBuilder -> uriBuilder.path(forecastWeatherClientProperties.getOpenMeteoForecastUrl())
                 .queryParam("latitude", request.latitude())
                 .queryParam("longitude", request.longitude())
                 .queryParamIfPresent("elevation", Optional.ofNullable(request.elevation()))
-                .queryParamIfPresent("hourly", Optional.of(hourlyParams))
-                .queryParamIfPresent("daily", Optional.of(dailyParams))
+                .queryParamIfPresent("hourly", Optional.ofNullable(hourlyParams))
+                .queryParamIfPresent("daily", Optional.ofNullable(dailyParams))
                 .queryParamIfPresent("current", Optional.ofNullable(request.current()))
                 .queryParamIfPresent("temperature_unit", Optional.ofNullable(request.temperatureUnit()))
                 .queryParamIfPresent("wind_speed_unit", Optional.ofNullable(request.windSpeedUnit()))

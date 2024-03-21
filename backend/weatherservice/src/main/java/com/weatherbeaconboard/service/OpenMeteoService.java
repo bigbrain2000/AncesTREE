@@ -2,6 +2,8 @@ package com.weatherbeaconboard.service;
 
 import com.weatherbeaconboard.web.model.airquality.AirQualityRequest;
 import com.weatherbeaconboard.web.model.airquality.AirQualityResponse;
+import com.weatherbeaconboard.web.model.climatechange.ClimateChangeRequest;
+import com.weatherbeaconboard.web.model.climatechange.ClimateChangeRespose;
 import com.weatherbeaconboard.web.model.elevation.ElevationRequest;
 import com.weatherbeaconboard.web.model.elevation.ElevationResponse;
 import com.weatherbeaconboard.web.model.flood.FloodRequest;
@@ -21,4 +23,6 @@ public interface OpenMeteoService {
     Mono<ElevationResponse> getElevationStatistics(@NotNull @Valid ElevationRequest elevationRequest);
 
     Mono<AirQualityResponse> getAirQualityStatistics(@NotNull @Valid AirQualityRequest airQualityRequest);
+
+    Mono<ClimateChangeRespose> getClimateStatistics(@NotNull @Valid ClimateChangeRequest climateChangeRequest);
 }
