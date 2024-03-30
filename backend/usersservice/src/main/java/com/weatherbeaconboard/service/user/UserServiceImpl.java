@@ -160,11 +160,6 @@ public class UserServiceImpl implements UserService {
             throw new ConfirmationTokenExpiredException("Token expired");
         }
 
-        if (confirmationToken.getTokenConfirmedAt() != null) {
-            log.debug("The token was already confirmed.");
-            throw new ConfirmationTokenAlreadyConfirmedException("Token was already confirmed");
-        }
-
         confirmationTokenService.setConfirmedAt(token);
         log.debug("The token was confirmed by user.");
 
@@ -237,7 +232,6 @@ public class UserServiceImpl implements UserService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .role(RoleType.USER)
-                .birthday(user.getBirthday())
                 .email(user.getEmail())
                 .address(user.getAddress())
                 .phoneNumber(user.getPhoneNumber())
@@ -259,7 +253,9 @@ public class UserServiceImpl implements UserService {
     private void validatePhoneNumber(@NotBlank String number) {
         final PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
         final Locale defaultLocale = Locale.getDefault();
-        final String countryCode = phoneNumberUtil.getRegionCodeForCountryCode(phoneNumberUtil.getCountryCodeForRegion(defaultLocale.getCountry()));
+        final String countryCode = phoneNumberUtil.getRegionCodeForCountryCode(
+                phoneNumberUtil.getCountryCodeForRegion(defaultLocale.getCountry())
+        );
 
         try {
             final Phonenumber.PhoneNumber phoneNumber = phoneNumberUtil.parse(number, countryCode);
@@ -301,7 +297,7 @@ public class UserServiceImpl implements UserService {
                 " <p>Thank you for signing up for our application! To complete your registration, we need to verify your email address.</p>\n" +
                 " <br>\n" +
                 " <p>Click the button below to validate your email.</p>\n" +
-                " <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a target=\"_blank\" href=\"" + link + "\">Act now</a> </p>\n" +
+                " <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a target=\"_blank\" href=\"" + link + "\">Activate now</a> </p>\n" +
                 " </p>\n" +
                 " <p style=\"font-size: 18px; margin-bottom: 20px; color: gray;\">Best wishes,</p>\n" +
                 " <p style=\"font-size: 18px; margin-bottom: 20px; color: gray;\">The WeatherBeacon Board Team.</p>\n" +

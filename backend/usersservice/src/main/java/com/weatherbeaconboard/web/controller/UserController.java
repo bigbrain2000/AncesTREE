@@ -50,8 +50,8 @@ public class UserController {
         return new ResponseEntity<>(userService.register(user), CREATED);
     }
 
-    @PostMapping("/confirmEmail")
-    public ResponseEntity<Void> confirmEmailValidation(@RequestBody @NotBlank String token) {
+    @PostMapping("/confirmEmail/{token}")
+    public ResponseEntity<Void> confirmEmailValidation(@PathVariable @NotNull String token) {
         userService.confirmToken(token);
         return new ResponseEntity<>(OK);
     }

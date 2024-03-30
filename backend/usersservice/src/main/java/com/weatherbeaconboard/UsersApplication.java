@@ -59,7 +59,6 @@ public class UsersApplication implements CommandLineRunner {
                     .lastName("Ciuci")
                     .role(RoleType.ADMIN)
                     .email(adminEmail)
-                    .birthday(now)
                     .address(adminCityAddress)
                     .phoneNumber(adminPhoneNumber)
                     .enabled(true)

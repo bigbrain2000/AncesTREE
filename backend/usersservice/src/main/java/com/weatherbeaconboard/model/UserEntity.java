@@ -1,6 +1,5 @@
 package com.weatherbeaconboard.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.weatherbeaconboard.model.enums.RoleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -8,9 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import java.time.OffsetDateTime;
-
-import static com.weatherbeaconboard.utils.DateUtils.DATE_TIME_PATTERN;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -67,10 +63,6 @@ public class UserEntity {
     @Enumerated(STRING)
     private RoleType role;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_PATTERN)
-    @Column(name = "day_of_birth", columnDefinition = "DATE", nullable = false)
-    private OffsetDateTime birthday;
-
     @Email
     @Column(name = "email", nullable = false)
     private String email;
@@ -104,7 +96,6 @@ public class UserEntity {
                 .append(username, user.username)
                 .append(password, user.password)
                 .append(role, user.role)
-                .append(birthday, user.birthday)
                 .append(email, user.email)
                 .append(address, user.address)
                 .append(phoneNumber, user.phoneNumber)

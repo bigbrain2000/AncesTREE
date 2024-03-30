@@ -21,8 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.OffsetDateTime;
-
 import static com.weatherbeaconboard.model.enums.RoleType.USER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -72,7 +70,6 @@ public class UserControllerTest {
         final String phoneNumber = "0777123456";
         final String email = "alex1@gmail.com";
         final String cityAddress = "Caracal1";
-        final OffsetDateTime now = OffsetDateTime.now();
 
         user = User.builder()
                 .id(1)
@@ -82,7 +79,6 @@ public class UserControllerTest {
                 .lastName(ciuci)
                 .role(USER)
                 .email(email)
-                .birthday(now)
                 .address(cityAddress)
                 .phoneNumber(phoneNumber)
                 .enabled(false)

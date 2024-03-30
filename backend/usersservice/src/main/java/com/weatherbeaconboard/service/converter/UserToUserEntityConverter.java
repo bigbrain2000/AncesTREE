@@ -19,7 +19,6 @@ public class UserToUserEntityConverter implements Converter<User, UserEntity> {
                 .firstName(source.firstName())
                 .lastName(source.lastName())
                 .role(source.role())
-                .birthday(source.birthday())
                 .email(source.email())
                 .address(source.address())
                 .phoneNumber(source.phoneNumber())

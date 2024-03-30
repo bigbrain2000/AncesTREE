@@ -4,10 +4,7 @@ import com.weatherbeaconboard.model.UserEntity;
 import com.weatherbeaconboard.web.model.User;
 import org.junit.jupiter.api.Test;
 
-import java.time.OffsetDateTime;
-
 import static com.weatherbeaconboard.model.enums.RoleType.USER;
-import static com.weatherbeaconboard.utils.DateUtils.getDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserToUserEntityConverterTest {
@@ -23,7 +20,6 @@ class UserToUserEntityConverterTest {
         final String phoneNumber = "1234567890";
         final String email = "alex@gmail.com";
         final String cityAddress = "Caracal";
-        final OffsetDateTime NOW = getDateTime();
 
         final UserEntity expectedUserEntity = UserEntity.builder()
                 .id(1)
@@ -33,7 +29,6 @@ class UserToUserEntityConverterTest {
                 .lastName(ciuci)
                 .role(USER)
                 .email(email)
-                .birthday(NOW)
                 .address(cityAddress)
                 .phoneNumber(phoneNumber)
                 .enabled(false)
@@ -49,7 +44,6 @@ class UserToUserEntityConverterTest {
                 .lastName(ciuci)
                 .role(USER)
                 .email(email)
-                .birthday(NOW)
                 .address(cityAddress)
                 .phoneNumber(phoneNumber)
                 .enabled(false)

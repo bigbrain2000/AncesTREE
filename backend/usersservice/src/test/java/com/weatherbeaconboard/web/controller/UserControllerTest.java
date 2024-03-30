@@ -56,7 +56,6 @@ class UserControllerTest {
                 .lastName(ciuci)
                 .role(USER)
                 .email(email)
-                .birthday(NOW)
                 .address(cityAddress)
                 .phoneNumber(phoneNumber)
                 .enabled(false)

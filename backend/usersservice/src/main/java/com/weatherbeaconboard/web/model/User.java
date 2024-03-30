@@ -5,7 +5,6 @@ import com.weatherbeaconboard.model.enums.RoleType;
 import lombok.Builder;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
 
 /**
  * Web model for a {@link UserEntity}.
@@ -24,8 +23,6 @@ public record User(
         String lastName,
 
         RoleType role,
-
-        OffsetDateTime birthday,
 
         String email,
 

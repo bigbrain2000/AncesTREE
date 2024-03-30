@@ -78,7 +78,6 @@ class UserServiceImplTest {
                 .lastName("Ciuci")
                 .role(RoleType.USER)
                 .email(email)
-                .birthday(NOW)
                 .address(cityAddress)
                 .phoneNumber(phoneNumber)
                 .enabled(true)
@@ -94,7 +93,6 @@ class UserServiceImplTest {
                 .lastName("Ciuci")
                 .role(RoleType.USER)
                 .email(email)
-                .birthday(NOW)
                 .address(cityAddress)
                 .phoneNumber(phoneNumber)
                 .build();

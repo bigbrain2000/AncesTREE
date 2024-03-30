@@ -91,14 +91,11 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         log.debug("Attempting to save a confirmation token for email validation.");
         final String token = UUID.randomUUID().toString();
 
-        final OffsetDateTime defaultDateTime = OffsetDateTime.parse("2000-01-01T20:20:20.200Z",
-                DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
-
         final ConfirmationTokenEntity confirmationTokenEntity = ConfirmationTokenEntity.builder()
                 .token(token)
                 .tokenCreatedAt(NOW)
                 .tokenExpiresAt(NOW.plusMinutes(30))
-                .tokenConfirmedAt(defaultDateTime) //if the user did not validate his email, then it will have a default value into the database
+                .tokenConfirmedAt(null) //if the user did not validate his email, then it will have a null value
                 .user(user)
                 .build();
 

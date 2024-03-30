@@ -19,7 +19,6 @@ public class UserEntityToUserConverter implements Converter<UserEntity, User> {
                 .firstName(source.getFirstName())
                 .lastName(source.getLastName())
                 .role(source.getRole())
-                .birthday(source.getBirthday())
                 .email(source.getEmail())
                 .address(source.getAddress())
                 .phoneNumber(source.getPhoneNumber())
