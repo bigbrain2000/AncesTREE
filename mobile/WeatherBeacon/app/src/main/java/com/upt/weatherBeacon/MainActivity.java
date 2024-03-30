@@ -33,6 +33,6 @@ public class MainActivity extends BaseActivity<BaseViewModel> {
     @Override
     public void setupUi(){
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        viewModel.uiEventStream.setValue(   new Navigation(new NavAttribs(Screen.LoginScreen,null, false)));
+        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen,null, false)));
     }
 }
