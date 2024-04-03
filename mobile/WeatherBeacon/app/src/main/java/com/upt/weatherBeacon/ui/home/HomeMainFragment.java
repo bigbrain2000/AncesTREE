@@ -42,7 +42,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modifiedSpace.getLayoutParams().height = 2*ScreenUtils.getScreenHeightInDp(context);
+                modifiedSpace.getLayoutParams().height = ScreenUtils.getScreenHeightInPixels(context)/2 + ScreenUtils.getScreenHeightInPixels(context)/8;
                 toggleMenu();
             }
         });

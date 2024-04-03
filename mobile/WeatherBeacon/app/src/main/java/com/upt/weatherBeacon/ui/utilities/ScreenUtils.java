@@ -14,5 +14,12 @@ public class ScreenUtils {
         int screenHeightInPixels = displayMetrics.heightPixels;
         return (int) (screenHeightInPixels / density);
     }
+
+    public static int getScreenHeightInPixels(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        return (int) displayMetrics.heightPixels;
+    }
 }
 
