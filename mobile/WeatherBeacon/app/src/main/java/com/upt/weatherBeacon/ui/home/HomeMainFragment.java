@@ -15,8 +15,6 @@ import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 import com.upt.weatherBeacon.ui.utilities.ScreenUtils;
 
-import java.util.Objects;
-
 public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
     private FragmentHomemainBinding binding;
@@ -36,7 +34,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         Button btnClimateChange = view.findViewById(R.id.btnClimateChange);
         Button btnManageAccount = view.findViewById(R.id.btnManageAccount);
         Space modifiedSpace = view.findViewById(R.id.modifiedSpace);
-        Context context = getContext().getApplicationContext();
+        Context context = requireContext().getApplicationContext();
 
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
