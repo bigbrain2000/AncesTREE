@@ -4,12 +4,14 @@ import android.window.SplashScreen;
 
 import androidx.fragment.app.Fragment;
 
+import com.upt.weatherBeacon.ui.home.HomeMainFragment;
 import com.upt.weatherBeacon.ui.login.LoginFragment;
 import com.upt.weatherBeacon.ui.register.RegisterFragment;
 
 public enum Screen {
     LoginScreen(LoginFragment.class),
-    RegisterScreen(RegisterFragment.class);
+    RegisterScreen(RegisterFragment.class),
+    HomeMainScreen(HomeMainFragment.class);
 
    public  final Class<? extends Fragment> fragmentClass;
 
