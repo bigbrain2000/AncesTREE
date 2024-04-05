@@ -12,6 +12,9 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.upt.weatherBeacon.R;
 import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
@@ -43,8 +46,12 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         View weatherForecastContent = getLayoutInflater().inflate(R.layout.weather_forecast_content, null);
         View elevationContent = getLayoutInflater().inflate(R.layout.elevation_content, null);
         View geocodingContent = getLayoutInflater().inflate(R.layout.geocoding_content, null);
+        View airContent = getLayoutInflater().inflate(R.layout.air_content, null);
+        View climateContent = getLayoutInflater().inflate(R.layout.climate_content, null);
 
         Button btnGeocodingSearch = geocodingContent.findViewById(R.id.btnGeocodingSearch);
+        GraphView graphT = (GraphView) climateContent.findViewById(R.id.graphT);
+        GraphView graphP = (GraphView) climateContent.findViewById(R.id.graphP);
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +61,8 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 parentDisplayLayout.removeView(weatherForecastContent);
                 parentDisplayLayout.removeView(elevationContent);
                 parentDisplayLayout.removeView(geocodingContent);
+                parentDisplayLayout.removeView(airContent);
+                parentDisplayLayout.removeView(climateContent);
             }
         });
 
@@ -103,16 +112,30 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         btnAirQuality.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Air Quality clicked", Toast.LENGTH_SHORT).show();//TODO functionality
+                parentDisplayLayout.addView(airContent);
                 menuLayout.setVisibility(View.GONE);
+                //TODO air functionality
+                //TODO air layout
             }
         });
 
         btnClimateChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Climate change clicked", Toast.LENGTH_SHORT).show();//TODO functionality
                 menuLayout.setVisibility(View.GONE);
+                parentDisplayLayout.addView(climateContent);
+
+                //TODO functionality climate
+
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                        new DataPoint(0, 1),
+                        new DataPoint(1, 5),
+                        new DataPoint(2, 3),
+                        new DataPoint(3, 2),
+                        new DataPoint(4, 6)
+                });
+                graphT.addSeries(series);
+                graphP.addSeries(series);
             }
         });
 
