@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
@@ -35,11 +36,15 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         Button btnClimateChange = view.findViewById(R.id.btnClimateChange);
         Button btnManageAccount = view.findViewById(R.id.btnManageAccount);
         Space modifiedSpace = view.findViewById(R.id.modifiedSpace);
+        ViewGroup parentDisplayLayout = view.findViewById(R.id.display_layout);
         Context context = requireContext().getApplicationContext();
 
-        ViewGroup parentDisplayLayout = view.findViewById(R.id.display_layout);
+
         View weatherForecastContent = getLayoutInflater().inflate(R.layout.weather_forecast_content, null);
         View elevationContent = getLayoutInflater().inflate(R.layout.elevation_content, null);
+        View geocodingContent = getLayoutInflater().inflate(R.layout.geocoding_content, null);
+
+        Button btnGeocodingSearch = geocodingContent.findViewById(R.id.btnGeocodingSearch);
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,16 +53,16 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 toggleMenu();
                 parentDisplayLayout.removeView(weatherForecastContent);
                 parentDisplayLayout.removeView(elevationContent);
+                parentDisplayLayout.removeView(geocodingContent);
             }
         });
 
         btnWeatherForecast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Weather Forecast clicked ", Toast.LENGTH_SHORT).show(); //TODO functionality
                 menuLayout.setVisibility(View.GONE);
                 parentDisplayLayout.addView(weatherForecastContent);
-
+                //TODO functionality for weather forecast
 
             }
         });
@@ -65,12 +70,10 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         btnElevation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Elevation clicked", Toast.LENGTH_SHORT).show();
                 menuLayout.setVisibility(View.GONE);
 
-                ViewGroup parentLayout = view.findViewById(R.id.display_layout);
-                parentLayout.addView(elevationContent);
-                TextView labelTextView = parentLayout.findViewById(R.id.textCenter);
+                parentDisplayLayout.addView(elevationContent);
+                TextView labelTextView = parentDisplayLayout.findViewById(R.id.textCenter);
 
                 labelTextView.setText("Altitude: 80"); //TODO functionality
 
@@ -80,8 +83,20 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         btnGeocoding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Geocoding clicked", Toast.LENGTH_SHORT).show();//TODO functionality
                 menuLayout.setVisibility(View.GONE);
+                parentDisplayLayout.addView(geocodingContent);
+            }
+        });
+
+        btnGeocodingSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText textField = parentDisplayLayout.findViewById(R.id.textSearchField);
+                String cityName = textField.getText().toString();
+
+                TextView detailsTextView = parentDisplayLayout.findViewById(R.id.resultTextField);
+                detailsTextView.setText("City: "+cityName+"\nLatitude: 12345\nLongitude: 54321\nElevation: 100\nTimezone: GMT+2\nPopulation: 1000"); //TODO functionality
+                textField.setText("");
             }
         });
 
