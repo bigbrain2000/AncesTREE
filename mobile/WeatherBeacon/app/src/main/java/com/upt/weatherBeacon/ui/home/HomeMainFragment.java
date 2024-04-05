@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Space;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.upt.weatherBeacon.R;
@@ -36,12 +37,17 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         Space modifiedSpace = view.findViewById(R.id.modifiedSpace);
         Context context = requireContext().getApplicationContext();
 
+        ViewGroup parentDisplayLayout = view.findViewById(R.id.display_layout);
+        View weatherForecastContent = getLayoutInflater().inflate(R.layout.weather_forecast_content, null);
+        View elevationContent = getLayoutInflater().inflate(R.layout.elevation_content, null);
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 modifiedSpace.getLayoutParams().height = ScreenUtils.getScreenHeightInPixels(context)/2 + ScreenUtils.getScreenHeightInPixels(context)/8;
                 toggleMenu();
+                parentDisplayLayout.removeView(weatherForecastContent);
+                parentDisplayLayout.removeView(elevationContent);
             }
         });
 
@@ -50,14 +56,24 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Weather Forecast clicked ", Toast.LENGTH_SHORT).show(); //TODO functionality
                 menuLayout.setVisibility(View.GONE);
+                parentDisplayLayout.addView(weatherForecastContent);
+
+
             }
         });
 
         btnElevation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Elevation clicked", Toast.LENGTH_SHORT).show();//TODO functionality
+                Toast.makeText(getContext(), "Elevation clicked", Toast.LENGTH_SHORT).show();
                 menuLayout.setVisibility(View.GONE);
+
+                ViewGroup parentLayout = view.findViewById(R.id.display_layout);
+                parentLayout.addView(elevationContent);
+                TextView labelTextView = parentLayout.findViewById(R.id.textCenter);
+
+                labelTextView.setText("Altitude: 80"); //TODO functionality
+
             }
         });
 
