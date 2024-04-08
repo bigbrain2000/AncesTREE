@@ -10,12 +10,12 @@ import java.util.List;
 @Builder
 public record ElevationRequest(
 
-        @NotNull
-        @JsonProperty("latitude") List<Double> latitude,
+@NotNull
+@JsonProperty("latitude") List<Double> latitude,
 
-        @NotNull
-        @JsonProperty("longitude") List<Double> longitude
+@NotNull
+@JsonProperty("longitude") List<Double> longitude
 
-) implements Serializable {
+        )implements Serializable{
 
-}
+        }

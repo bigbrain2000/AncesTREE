@@ -13,9 +13,9 @@ public enum Screen {
     RegisterScreen(RegisterFragment.class),
     HomeMainScreen(HomeMainFragment.class);
 
-   public  final Class<? extends Fragment> fragmentClass;
+    public final Class<? extends Fragment> fragmentClass;
 
-    Screen(Class<? extends  Fragment> fragment){
+    Screen(Class<? extends Fragment> fragment) {
         this.fragmentClass = fragment;
     }
 

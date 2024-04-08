@@ -55,11 +55,11 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
 
     private void getOnBackPressed() {
         int fragmentsNumber = this.getSupportFragmentManager().getBackStackEntryCount();
-        if(fragmentsNumber == 0){
+        if (fragmentsNumber == 0) {
             finish();
-        }else if(fragmentsNumber > 0){
+        } else if (fragmentsNumber > 0) {
             getSupportFragmentManager().popBackStackImmediate();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }

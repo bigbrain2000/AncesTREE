@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/logoRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -22,23 +22,76 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="19dp"
         android:text="Register"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintStart_toStartOf="@+id/logoRegister"
+        app:layout_constraintTop_toBottomOf="@+id/logoRegister" />
+
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress2"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+    <TextView
+        android:id="@+id/errorUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintEnd_toEndOf="@id/username" />
     <EditText
-        android:id="@+id/editTextTextEmailAddress3"
+        android:id="@+id/firstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:ems="10"
+        android:hint="Firstname"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+    <TextView
+        android:id="@+id/errorFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/firstName"
+        app:layout_constraintStart_toStartOf="@id/firstName"
+        app:layout_constraintEnd_toEndOf="@id/firstName" />
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:ems="10"
+        android:hint="Lastname"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstName" />
+    <TextView
+        android:id="@+id/errorLastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/lastName"
+        app:layout_constraintStart_toStartOf="@id/lastName"
+        app:layout_constraintEnd_toEndOf="@id/lastName" />
+
+    <EditText
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -46,41 +99,76 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
-
+        app:layout_constraintEnd_toEndOf="@+id/lastName"
+        app:layout_constraintTop_toBottomOf="@+id/lastName" />
+    <TextView
+        android:id="@+id/errorEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/email"
+        app:layout_constraintStart_toStartOf="@id/email"
+        app:layout_constraintEnd_toEndOf="@id/email" />
     <EditText
-        android:id="@+id/editTextTextPassword2"
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="19dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddress3"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress3" />
+        app:layout_constraintStart_toStartOf="@+id/email"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+    <TextView
+        android:id="@+id/errorPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/password"
+        app:layout_constraintStart_toStartOf="@id/password"
+        app:layout_constraintEnd_toEndOf="@id/password" />
 
     <EditText
-        android:id="@+id/editTextTextPassword3"
+        android:id="@+id/password2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:ems="10"
         android:hint="Confirm password"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
-    <EditText
-        android:id="@+id/editTextDate"
+    <TextView
+        android:id="@+id/errorConfirmPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:ems="10"
-        android:hint="Birth date"
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword3"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword3" />
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/password2"
+        app:layout_constraintStart_toStartOf="@id/password2"
+        app:layout_constraintEnd_toEndOf="@id/password2" />
+
+    <TextView
+        android:id="@+id/birthDate"
+        android:layout_width="211dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="20dp"
+        android:text="Birth date"
+        app:layout_constraintStart_toStartOf="@+id/password2"
+        app:layout_constraintTop_toBottomOf="@+id/password2" />
+    <TextView
+        android:id="@+id/errorBirthDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/birthDate"
+        app:layout_constraintStart_toStartOf="@id/birthDate"
+        app:layout_constraintEnd_toEndOf="@id/birthDate" />
+
 
     <Button
         android:id="@+id/backButton"
@@ -92,13 +180,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="89dp"
+        android:layout_marginBottom="16dp"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/birthDate" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,15 +15,15 @@ import java.io.Serializable;
 @Builder
 public record EmailRequest(
 
-        @NotBlank
+@NotBlank
         String to,
 
-        @NotBlank
+@NotBlank
         String subject,
 
-        @NotBlank
+@NotBlank
         String body
 
-) implements Serializable {
+                )implements Serializable{
 
-}
+                }

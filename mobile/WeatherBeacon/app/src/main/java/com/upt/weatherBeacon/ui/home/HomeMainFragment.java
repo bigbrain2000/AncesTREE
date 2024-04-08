@@ -56,7 +56,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modifiedSpace.getLayoutParams().height = ScreenUtils.getScreenHeightInPixels(context)/2 + ScreenUtils.getScreenHeightInPixels(context)/8;
+                modifiedSpace.getLayoutParams().height = ScreenUtils.getScreenHeightInPixels(context) / 2 + ScreenUtils.getScreenHeightInPixels(context) / 8;
                 toggleMenu();
                 parentDisplayLayout.removeView(weatherForecastContent);
                 parentDisplayLayout.removeView(elevationContent);
@@ -104,7 +104,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 String cityName = textField.getText().toString();
 
                 TextView detailsTextView = parentDisplayLayout.findViewById(R.id.resultTextField);
-                detailsTextView.setText("City: "+cityName+"\nLatitude: 12345\nLongitude: 54321\nElevation: 100\nTimezone: GMT+2\nPopulation: 1000"); //TODO functionality
+                detailsTextView.setText("City: " + cityName + "\nLatitude: 12345\nLongitude: 54321\nElevation: 100\nTimezone: GMT+2\nPopulation: 1000"); //TODO functionality
                 textField.setText("");
             }
         });
@@ -127,7 +127,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
                 //TODO functionality climate
 
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{
                         new DataPoint(0, 1),
                         new DataPoint(1, 5),
                         new DataPoint(2, 3),

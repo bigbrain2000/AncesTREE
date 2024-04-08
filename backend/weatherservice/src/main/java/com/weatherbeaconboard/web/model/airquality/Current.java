@@ -7,81 +7,81 @@ import java.io.Serializable;
 
 public record Current(
 
-	@JsonProperty("sulphur_dioxide")
+@JsonProperty("sulphur_dioxide")
 	Object sulphurDioxide,
 
-	@JsonProperty("european_aqi_pm2_5")
+@JsonProperty("european_aqi_pm2_5")
 	int europeanAqiPm25,
 
-	@JsonProperty("birch_pollen")
+@JsonProperty("birch_pollen")
 	Object birchPollen,
 
-	@JsonProperty("nitrogen_dioxide")
+@JsonProperty("nitrogen_dioxide")
 	Object nitrogenDioxide,
 
-	@JsonProperty("uv_index_clear_sky")
+@JsonProperty("uv_index_clear_sky")
 	Object uvIndexClearSky,
 
-	@JsonProperty("ammonia")
+@JsonProperty("ammonia")
 	Object ammonia,
 
-	@JsonProperty("ozone")
+@JsonProperty("ozone")
 	Object ozone,
 
-	@JsonProperty("european_aqi_nitrogen_dioxide")
+@JsonProperty("european_aqi_nitrogen_dioxide")
 	int europeanAqiNitrogenDioxide,
 
-	@JsonProperty("uv_index")
+@JsonProperty("uv_index")
 	Object uvIndex,
 
-	@JsonProperty("pm2_5")
+@JsonProperty("pm2_5")
 	Object pm25,
 
-	@JsonProperty("aerosol_optical_depth")
+@JsonProperty("aerosol_optical_depth")
 	Object aerosolOpticalDepth,
 
-	@JsonProperty("ragweed_pollen")
+@JsonProperty("ragweed_pollen")
 	Object ragweedPollen,
 
-	@JsonProperty("dust")
+@JsonProperty("dust")
 	Object dust,
 
-	@JsonProperty("mugwort_pollen")
+@JsonProperty("mugwort_pollen")
 	Object mugwortPollen,
 
-	@JsonProperty("alder_pollen")
+@JsonProperty("alder_pollen")
 	Object alderPollen,
 
-	@JsonProperty("european_aqi")
+@JsonProperty("european_aqi")
 	int europeanAqi,
 
-	@JsonProperty("pm10")
+@JsonProperty("pm10")
 	Object pm10,
 
-	@JsonProperty("olive_pollen")
+@JsonProperty("olive_pollen")
 	Object olivePollen,
 
-	@JsonProperty("european_aqi_ozone")
+@JsonProperty("european_aqi_ozone")
 	int europeanAqiOzone,
 
-	@JsonProperty("european_aqi_pm10")
+@JsonProperty("european_aqi_pm10")
 	int europeanAqiPm10,
 
-	@JsonProperty("grass_pollen")
+@JsonProperty("grass_pollen")
 	Object grassPollen,
 
-	@JsonProperty("european_aqi_sulphur_dioxide")
+@JsonProperty("european_aqi_sulphur_dioxide")
 	int europeanAqiSulphurDioxide,
 
-	@JsonProperty("interval")
+@JsonProperty("interval")
 	int interval,
 
-	@JsonProperty("time")
+@JsonProperty("time")
 	String time,
 
-	@JsonProperty("carbon_monoxide")
+@JsonProperty("carbon_monoxide")
 	Object carbonMonoxide
 
-) implements Serializable {
+            )implements Serializable{
 
-}
+            }

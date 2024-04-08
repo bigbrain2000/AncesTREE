@@ -20,6 +20,6 @@ public record EmailRequest(
 
         String body
 
-) implements Serializable {
+        )implements Serializable{
 
-}
+        }

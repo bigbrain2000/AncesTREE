@@ -8,10 +8,10 @@ import java.util.List;
 
 public record ElevationResponse(
 
-        @NotNull
-        @JsonProperty("elevation")
+@NotNull
+@JsonProperty("elevation")
         List<Double> elevation
 
-) implements Serializable {
+        )implements Serializable{
 
-}
+        }

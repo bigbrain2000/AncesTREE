@@ -36,6 +36,6 @@ public record User(
 
         Integer version
 
-) implements Serializable {
+        )implements Serializable{
 
-}
+        }

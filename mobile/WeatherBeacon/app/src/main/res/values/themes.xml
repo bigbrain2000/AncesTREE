@@ -5,5 +5,5 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.ZodiacZen" parent="Base.Theme.ZodiacZen" />
+    <style name="Theme.ZodiacZen" parent="Base.Theme.ZodiacZen"/>
 </resources>

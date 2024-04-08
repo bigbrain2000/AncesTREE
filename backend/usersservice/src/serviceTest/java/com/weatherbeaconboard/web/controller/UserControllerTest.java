@@ -112,8 +112,8 @@ public class UserControllerTest {
         when(userService.update(anyInt(), any(User.class))).thenReturn(updatedUser);
 
         mockMvc.perform(patch("/v1/users/{id}", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(updatedUser)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(updatedUser)))
                 .andExpect(status().isOk());
     }
 
@@ -123,8 +123,8 @@ public class UserControllerTest {
         when(userService.register(any(User.class))).thenReturn(token);
 
         mockMvc.perform(post("/v1/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(user)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(user)))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(token));
     }
@@ -134,8 +134,8 @@ public class UserControllerTest {
         String token = "validToken";
 
         mockMvc.perform(post("/v1/confirmEmail")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(token))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(token))
                 .andExpect(status().isOk());
 
         verify(userService).confirmToken(token);
@@ -148,7 +148,7 @@ public class UserControllerTest {
         when(converter.convert(userDetails, UserDetailsResponse.class)).thenReturn(userDetailsResponse);
 
         mockMvc.perform(get("/v1/userDetails")
-                        .param("username", "username"))
+                .param("username", "username"))
                 .andExpect(status().isOk());
     }
 }

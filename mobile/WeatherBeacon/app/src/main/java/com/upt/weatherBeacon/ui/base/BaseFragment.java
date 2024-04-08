@@ -17,9 +17,9 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
     public VM viewModel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel =  new ViewModelProvider(this).get(getViewModelClass());
+        viewModel = new ViewModelProvider(this).get(getViewModelClass());
         viewModel.uiEventStream.observe(this, this::processUiEvent);
     }
 
@@ -34,8 +34,8 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState){
-        super.onViewCreated(view,savedInstanceState);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initUi();
         setObservers();
     }
@@ -46,13 +46,13 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
 
     protected abstract int getContentView();
 
-   private Class<VM> getViewModelClass(){
-       ParameterizedType superClassType = (ParameterizedType) getClass().getGenericSuperclass();
-       return (Class<VM>) superClassType.getActualTypeArguments()[0];
+    private Class<VM> getViewModelClass() {
+        ParameterizedType superClassType = (ParameterizedType) getClass().getGenericSuperclass();
+        return (Class<VM>) superClassType.getActualTypeArguments()[0];
 
-   }
+    }
 
-    protected void processUiEvent(UiEvent uiEvent){
+    protected void processUiEvent(UiEvent uiEvent) {
         if (this.getActivity() instanceof BaseActivity) {
             ((BaseActivity<?>) this.getActivity()).processUiEvent(uiEvent);
         }

@@ -290,7 +290,8 @@ public class UserServiceImpl implements UserService {
      * @param link the link where the {@link UserEntity} can validate his registration
      * @return a String containing the email template
      */
-    private @NotNull String buildEmail(@NotBlank String name, @NotBlank String link) {
+    private @NotNull
+    String buildEmail(@NotBlank String name, @NotBlank String link) {
         return "<div style=\"width: 500px; margin: 0 auto; text-align: center; font-family: Arial, sans-serif; background-color: lightgray; padding: 40px; border-radius: 10px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);\">\n" +
                 " <h1 style=\"margin-top: 50px; font-size: 36px; color: #01304A;\">Email Verification</h1>\n" +
                 " <p>Dear " + name + ",</p>\n" +
