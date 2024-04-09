@@ -48,6 +48,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         View geocodingContent = getLayoutInflater().inflate(R.layout.geocoding_content, null);
         View airContent = getLayoutInflater().inflate(R.layout.air_content, null);
         View climateContent = getLayoutInflater().inflate(R.layout.climate_content, null);
+        View manageContent = getLayoutInflater().inflate(R.layout.manage_account, null);
 
         Button btnGeocodingSearch = geocodingContent.findViewById(R.id.btnGeocodingSearch);
         GraphView graphT = (GraphView) climateContent.findViewById(R.id.graphT);
@@ -63,6 +64,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 parentDisplayLayout.removeView(geocodingContent);
                 parentDisplayLayout.removeView(airContent);
                 parentDisplayLayout.removeView(climateContent);
+                parentDisplayLayout.removeView(manageContent);
             }
         });
 
@@ -115,7 +117,6 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 parentDisplayLayout.addView(airContent);
                 menuLayout.setVisibility(View.GONE);
                 //TODO air functionality
-                //TODO air layout
             }
         });
 
@@ -142,7 +143,8 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         btnManageAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Manage account clicked", Toast.LENGTH_SHORT).show();//TODO functionality
+                //TODO managefunctionality
+                parentDisplayLayout.addView(manageContent);
                 menuLayout.setVisibility(View.GONE);
             }
         });
