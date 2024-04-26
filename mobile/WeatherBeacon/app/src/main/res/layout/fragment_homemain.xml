@@ -26,56 +26,74 @@
 
     <LinearLayout
             android:id="@+id/menuLayout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#CCCCCC"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="#CCCCCC"
+        android:visibility="gone"
+        android:orientation="vertical"
 
-        <Button
-                android:id="@+id/btnWeatherForecast"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Weather Forecast"/>
+                android:layout_alignParentTop="true"
+                >
 
-        <Button
-                android:id="@+id/btnElevation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Elevation"/>
+                <Button
+                    android:id="@+id/btnWeatherForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Weather Forecast" />
 
-        <Button
-                android:id="@+id/btnGeocoding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Geocoding"/>
+                <Button
+                    android:id="@+id/btnElevation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Elevation"/>
 
-        <Button
-                android:id="@+id/btnAirQuality"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Air Quality"/>
+                <Button
+                    android:id="@+id/btnGeocoding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Geocoding"/>
 
-        <Button
-                android:id="@+id/btnClimateChange"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Climate Change"/>
+                <Button
+                    android:id="@+id/btnAirQuality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Air Quality" />
 
-        <Space
+                <Button
+                    android:id="@+id/btnClimateChange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Climate Change" />
+
+
+            </LinearLayout>
+            <Space
                 android:id="@+id/modifiedSpace"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="0dp"/>
 
-        <Button
+            <Button
                 android:id="@+id/btnManageAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Manage Account"/>
+                android:layout_alignParentBottom="true"
+                android:text="Manage Account"
+                android:layout_marginBottom="12dp"
+                />
+        </RelativeLayout>
 
     </LinearLayout>
 

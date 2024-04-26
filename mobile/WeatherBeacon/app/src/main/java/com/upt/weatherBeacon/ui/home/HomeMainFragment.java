@@ -57,7 +57,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modifiedSpace.getLayoutParams().height = ScreenUtils.getScreenHeightInPixels(context) / 2 + ScreenUtils.getScreenHeightInPixels(context) / 8;
+//                modifiedSpace.getLayoutParams().height = ScreenUtils.getScreenHeightInPixels(context) / 2 + ScreenUtils.getScreenHeightInPixels(context) / 8;
                 toggleMenu();
                 parentDisplayLayout.removeView(weatherForecastContent);
                 parentDisplayLayout.removeView(elevationContent);
