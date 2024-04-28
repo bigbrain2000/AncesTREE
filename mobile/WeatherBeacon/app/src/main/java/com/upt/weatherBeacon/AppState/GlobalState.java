@@ -7,6 +7,7 @@ public class GlobalState {
 
     private String accessToken="";
     private User usr;
+    private String city = "";
     private GlobalState(){
   }
 
@@ -33,5 +34,13 @@ public class GlobalState {
 
     public User getUsr() {
         return usr;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
