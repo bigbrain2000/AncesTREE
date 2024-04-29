@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.R;
 import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
@@ -24,6 +25,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
     private FragmentHomemainBinding binding;
     private LinearLayout menuLayout;
+    private GlobalState appState = GlobalState.getState();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +76,8 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 menuLayout.setVisibility(View.GONE);
                 parentDisplayLayout.addView(weatherForecastContent);
                 //TODO functionality for weather forecast
+                TextView cityName = view.findViewById(R.id.cityName);
+                cityName.setText(appState.getCity());
 
             }
         });
