@@ -8,6 +8,8 @@ public class GlobalState {
     private String accessToken="";
     private User usr;
     private String city = "";
+    private Double latitude = 0.0;
+    private Double longitude = 0.0;
     private GlobalState(){
   }
 
@@ -42,5 +44,21 @@ public class GlobalState {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude){
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
     }
 }

@@ -1,17 +1,19 @@
 package com.upt.weatherBeacon.ui.base.navigation;
 
-import android.window.SplashScreen;
+
 
 import androidx.fragment.app.Fragment;
 
 import com.upt.weatherBeacon.ui.home.HomeMainFragment;
 import com.upt.weatherBeacon.ui.login.LoginFragment;
 import com.upt.weatherBeacon.ui.register.RegisterFragment;
+import com.upt.weatherBeacon.ui.splash.SplashFragment;
 
 public enum Screen {
     LoginScreen(LoginFragment.class),
     RegisterScreen(RegisterFragment.class),
-    HomeMainScreen(HomeMainFragment.class);
+    HomeMainScreen(HomeMainFragment.class),
+    SplashScreen(SplashFragment.class);
 
     public final Class<? extends Fragment> fragmentClass;
 

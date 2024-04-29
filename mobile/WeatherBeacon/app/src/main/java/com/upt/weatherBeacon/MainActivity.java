@@ -80,29 +80,20 @@ public class MainActivity extends BaseActivity<BaseViewModel> {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
 
-//        // Check for location permission
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-//                PackageManager.PERMISSION_GRANTED &&
-//                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-//                        PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-//            return;
-//        }
-
-        // Register the location listener with the location manager to receive location updates
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        // Check for location permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
             return;
         }
-        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener,null);
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener, null);
+
+
+//        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener,null);
+        locationManager.requestLocationUpdates(LocationManager.FUSED_PROVIDER, 50, 5000, locationListener, null);
+
 
 
     }
@@ -115,7 +106,9 @@ public class MainActivity extends BaseActivity<BaseViewModel> {
     @Override
     public void setupUi() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
+//        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
+
+        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.SplashScreen, null, false)));
     }
 
     private class MyLocationListener implements LocationListener {
@@ -126,6 +119,8 @@ public class MainActivity extends BaseActivity<BaseViewModel> {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             System.out.println("COORDINATES: "+latitude+ " "+ longitude);
+            appState.setLatitude(latitude);
+            appState.setLongitude(longitude);
 
 
             // Initialize Geocoder
