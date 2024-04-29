@@ -9,7 +9,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,7 +16,8 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 import com.upt.weatherBeacon.AppState.GlobalState;
-import com.upt.weatherBeacon.data.remote.userRepository.OpenMeteoApi;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.WeatherForecasts;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.OpenMeteoApi;
 import com.upt.weatherBeacon.databinding.ActivityMainBinding;
 import com.upt.weatherBeacon.di.Config;
 import com.upt.weatherBeacon.ui.base.BaseActivity;
@@ -53,28 +53,6 @@ public class MainActivity extends BaseActivity<BaseViewModel> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-        OpenMeteoApi service = retrofit.create(OpenMeteoApi.class);
-        Call<Object> callAsync = service.getResponse("37.7749", "-122.4194", "temperature_2m", "temperature_2m", 1);
-//getResposne("52.52", "12.419");
-
-        callAsync.enqueue(new Callback<Object>() {
-            @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                Object resp = response.body();
-                System.out.println("Response: " + response.code());
-            }
-
-            @Override
-            public void onFailure(Call<Object> call, Throwable throwable) {
-                System.out.println(throwable);
-            }
-        });
 
         // Initialize LocationManager and LocationListener
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

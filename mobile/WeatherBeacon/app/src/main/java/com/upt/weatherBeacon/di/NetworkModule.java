@@ -1,5 +1,6 @@
 package com.upt.weatherBeacon.di;
 
+import com.upt.weatherBeacon.data.remote.WeatherRepository.OpenMeteoApi;
 import com.upt.weatherBeacon.data.remote.userRepository.UserAPI;
 
 import javax.inject.Named;
@@ -46,6 +47,10 @@ public class NetworkModule {
                 .client(new OkHttpClient.Builder().build())
                 .build();
     }
+    public static OpenMeteoApi provideOpenMeteoAPI(){
+        Retrofit retrofit = provideRetrofitWeather();
+        return retrofit.create(OpenMeteoApi.class);
+    }
 
 
     @Provides
@@ -53,4 +58,6 @@ public class NetworkModule {
     public static UserAPI provideUserApiService(Retrofit retrofit) {
         return retrofit.create(UserAPI.class);
     }
+
+
 }

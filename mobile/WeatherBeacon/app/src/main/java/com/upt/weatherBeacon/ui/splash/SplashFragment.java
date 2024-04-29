@@ -52,21 +52,30 @@ public class SplashFragment  extends BaseFragment<SplashViewModel> {
             // If the condition is already met, navigate immediately
             viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
         } else {
-            // Otherwise, start waiting for the condition
-            final Handler handler = new Handler(Looper.getMainLooper());
-            final Runnable runnable = new Runnable() {
+            Handler h1 = new Handler(Looper.getMainLooper());
+            h1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (appState.getLatitude() != 0.0) {
-                        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
+                    // Otherwise, start waiting for the condition
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    final Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            if (appState.getLatitude() != 0.0) {
+                                viewModel.getWeatherDataForCurrentLocation();
+                                viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
 
-                    } else {
-                        // Continue waiting
-                        handler.postDelayed(this, 500); // Check every 100 milliseconds
-                    }
+                            } else {
+                                // Continue waiting
+                                handler.postDelayed(this, 1000); // Check every 100 milliseconds
+                            }
+                        }
+                    };
+                    handler.post(runnable);
                 }
-            };
-            handler.post(runnable);
+
+            }, 1500);
         }
+
     }
 }
