@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    android:background="#d0bf78"
+    android:elevation="@dimen/cardview_compat_inset_shadow"
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="119dp"
-        android:layout_height="62dp"
-        app:srcCompat="@drawable/sunny_weather"
-        tools:layout_editor_absoluteX="263dp"
-        tools:layout_editor_absoluteY="51dp" />
-
+    >
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="70dp" />
-
-    <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date"
         tools:layout_editor_absoluteX="13dp"
-        tools:layout_editor_absoluteY="70dp" />
-
+        tools:layout_editor_absoluteY="70dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_gravity="center_vertical"/>
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        tools:layout_editor_absoluteX="49dp"
+        tools:layout_editor_absoluteY="70dp"
+        android:layout_marginHorizontal="12dp"
+
+        android:layout_gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/tempMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MaxTemp"
         tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="68dp" />
+        tools:layout_editor_absoluteY="68dp"
+        android:layout_marginHorizontal="12dp"
 
+        android:layout_gravity="center_vertical"/>
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tempMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MinTemp"
         tools:layout_editor_absoluteX="180dp"
-        tools:layout_editor_absoluteY="70dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        tools:layout_editor_absoluteY="70dp"
+        android:layout_marginHorizontal="12dp"
+
+        android:layout_gravity="center_vertical"/>
+    <ImageView
+        android:id="@+id/forecastIcon"
+        android:layout_width="119dp"
+        android:layout_height="62dp"
+        app:srcCompat="@drawable/sunny_weather"
+        tools:layout_editor_absoluteX="263dp"
+        tools:layout_editor_absoluteY="51dp"
+
+        android:layout_gravity="center_vertical"/>
+</LinearLayout>

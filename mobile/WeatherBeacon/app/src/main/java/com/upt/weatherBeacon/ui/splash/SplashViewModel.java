@@ -23,7 +23,7 @@ public class SplashViewModel extends BaseViewModel {
     public void getWeatherDataForCurrentLocation() {
         if (repository != null) {
             System.out.println("NU E NULL REPOSITORY");
-            repository.getData(appState.getLatitude(), appState.getLongitude());
+//            repository.getData(appState.getLatitude(), appState.getLongitude());
         } else {
             System.out.println("Repository is null!!!");
         }

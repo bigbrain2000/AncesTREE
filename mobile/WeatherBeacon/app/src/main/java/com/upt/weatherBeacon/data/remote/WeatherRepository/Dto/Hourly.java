@@ -13,7 +13,7 @@ public class Hourly {
     public double[] rain;
     @SerializedName("weather_code")
     public int[] weather_code;
-    @SerializedName("wind_speed_2m")
+    @SerializedName("wind_speed_10m")
     public double[] wind_speed;
     @SerializedName("wind_direction_10m")
     public int[] wind_direction;
