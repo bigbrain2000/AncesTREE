@@ -1,17 +1,20 @@
 package com.upt.weatherBeacon.ui.home;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Space;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 
@@ -24,7 +27,6 @@ import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
 import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
-import com.upt.weatherBeacon.ui.utilities.ScreenUtils;
 
 import java.util.List;
 
@@ -85,18 +87,34 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 //TODO functionality for weather forecast
                 TextView cityName = view.findViewById(R.id.cityName);
                 cityName.setText(appState.getCity());
+
+                Context ctx = getContext();
                 appState.getWeatherDataLiveData().observe(getViewLifecycleOwner(), new Observer<WeatherData>() {
                     @Override
                     public void onChanged(WeatherData weatherData) {
                         TextView text = view.findViewById(R.id.textWeatherDescription);
-                        text.setText("ORICE "+ weatherData.elevation);
+                        text.setText("ORICE " + weatherData.elevation);
+
+                        ListView listView = view.findViewById(R.id.listWeatherDetails);
+                        List<HourlyWeatherData> hourly = weatherData.hourly;
+                        ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(ctx, hourly);
+
+                        listView.setAdapter(hourlyAdapter);
+                        // Set OnClickListener to ListView items
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                // Get the clicked item
+                               HourlyWeatherData selectedItem = hourly.get(position);
+
+                                // Show modal dialog with additional data
+                                showAdditionalDataDialog(selectedItem);
+                            }
+                        });
 
                     }
                 });
-//                ListView listView = view.findViewById(R.id.listWeatherDetails);
 
-//                List<HourlyWeatherData> hourly =
-//                ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(this, )
 
             }
         });
@@ -196,5 +214,41 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
     @Override
     protected int getContentView() {
         return 0; // Return the appropriate layout resource id
+    }
+    private void showAdditionalDataDialog(HourlyWeatherData data) {
+
+        View hourlyDialog = LayoutInflater.from(getContext()).inflate(R.layout.modal_hourly,null);
+        ImageView weatherCode = hourlyDialog.findViewById(R.id.weatherCode);
+        weatherCode.setImageResource(data.weatherCode);
+        TextView imageDescription = hourlyDialog.findViewById(R.id.WeatherCodeDescription);
+        TextView temperature = hourlyDialog.findViewById(R.id.temperature);
+        TextView humidity = hourlyDialog.findViewById(R.id.humidity);
+        TextView windSpeed = hourlyDialog.findViewById(R.id.windSpeed);
+        TextView windDirection = hourlyDialog.findViewById(R.id.windDirection);
+
+        imageDescription.setText("ORICE");
+        temperature.setText(String.valueOf(data.temperature));
+        humidity.setText(String.valueOf(data.humidity));
+        windSpeed.setText(String.valueOf(data.windSpeed));
+        windDirection.setText(String.valueOf(data.windDirection));
+        // Create and configure AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(hourlyDialog);
+        builder.setTitle("Additional Data");
+
+        // Set additional data to dialog
+        builder.setMessage("Additional data: " );
+
+        // Add any other configuration you need for the dialog
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss dialog if needed
+                dialog.dismiss();
+            }
+        });
+
+        // Show the dialog
+        builder.show();
     }
 }

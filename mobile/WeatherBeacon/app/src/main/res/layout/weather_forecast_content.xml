@@ -29,11 +29,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sunny weather expected"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+        />
 
     <ListView
             android:id="@+id/listWeatherDetails"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+        android:layoutMode="opticalBounds"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="4dp"
+        />
 
 </LinearLayout>
