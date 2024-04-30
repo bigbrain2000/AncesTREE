@@ -1,5 +1,9 @@
 package com.upt.weatherBeacon.data.remote.WeatherRepository;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.upt.weatherBeacon.R;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.WeatherForecasts;
 import com.upt.weatherBeacon.model.CurrentWeather;
@@ -8,9 +12,9 @@ import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.WeatherDataCallback;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -33,29 +37,41 @@ public class WeatherRepository {
                 "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset" // daily
         );
         callAsync1.enqueue(new Callback<WeatherForecasts>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<WeatherForecasts> call, Response<WeatherForecasts> response) {
-                WeatherForecasts resp = response.body();
-                List<HourlyWeatherData> hourly = mapHourly(resp);
-                List<DailyWeatherData> daily = mapDaily(resp);
-                CurrentWeather current = new CurrentWeather();
-                current.humidity = hourly.get(0).humidity;
-                current.rain = hourly.get(0).rain;
-                current.temperature = hourly.get(0).temperature;
-                current.time = hourly.get(0).time;
-                current.wind_speed = hourly.get(0).windSpeed;
+                if (response.isSuccessful()) {
+                    WeatherForecasts resp = response.body();
+                    List<HourlyWeatherData> hourly = mapHourly(resp);
+                    List<DailyWeatherData> daily = mapDaily(resp);
+                    CurrentWeather current = new CurrentWeather();
+                    LocalTime currentTime = null;
+                    currentTime = LocalTime.now();
+                    // Extract the hour from the current time
+                    int currentHour = currentTime.getHour();
 
-                WeatherData data = new WeatherData();
-                data.current = current;
-                data.hourly = hourly;
-                data.daily = daily;
-                data.elevation = Double.parseDouble(resp.elevation);
+                    System.out.println("Response: "+ hourly.get(currentHour).weatherCode);
+                    current.humidity = hourly.get(currentHour).humidity;
+                    current.rain = hourly.get(currentHour).rain;
+                    current.temperature = hourly.get(currentHour).temperature;
+                    current.time = hourly.get(currentHour).time;
+                    current.wind_speed = hourly.get(currentHour).windSpeed;
+
+
+                    WeatherData data = new WeatherData();
+
+                    data.current = current;
+                    data.hourly = hourly;
+                    data.daily = daily;
+                    data.elevation = Double.parseDouble(resp.elevation);
+
 
 //                list de weatherData
-                callback.onWeatherDataReceived(data);
-
+                    callback.onWeatherDataReceived(data);
+                } else {
+                    callback.onFailure(new Exception("Failed to fetch data")); // Handle failure
+                }
             }
-
             @Override
             public void onFailure(Call<WeatherForecasts> call, Throwable throwable) {
                 System.out.println(throwable);
@@ -91,7 +107,7 @@ public class WeatherRepository {
             DailyWeatherData day = new DailyWeatherData();
             String[] time = response.daily.time.get(i).split("T");
             day.date = time[0];
-            day.time = time[1];
+            day.time = time[0];
             day.weatherCode = calculateWeatherCode(response.daily.weather_code[i]);
             day.max_temperature = response.daily.temperature_max[i];
             day.min_temperature = response.daily.temperature_min[i];

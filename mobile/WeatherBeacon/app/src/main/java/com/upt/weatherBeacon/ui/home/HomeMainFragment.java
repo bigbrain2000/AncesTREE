@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.lifecycle.Observer;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -18,8 +21,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.R;
 import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
+import com.upt.weatherBeacon.model.HourlyWeatherData;
+import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 import com.upt.weatherBeacon.ui.utilities.ScreenUtils;
+
+import java.util.List;
 
 public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
@@ -78,6 +85,18 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 //TODO functionality for weather forecast
                 TextView cityName = view.findViewById(R.id.cityName);
                 cityName.setText(appState.getCity());
+                appState.getWeatherDataLiveData().observe(getViewLifecycleOwner(), new Observer<WeatherData>() {
+                    @Override
+                    public void onChanged(WeatherData weatherData) {
+                        TextView text = view.findViewById(R.id.textWeatherDescription);
+                        text.setText("ORICE "+ weatherData.elevation);
+
+                    }
+                });
+//                ListView listView = view.findViewById(R.id.listWeatherDetails);
+
+//                List<HourlyWeatherData> hourly =
+//                ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(this, )
 
             }
         });
