@@ -2,11 +2,16 @@ package com.upt.weatherBeacon.ui.splash;
 
 import static com.upt.weatherBeacon.di.NetworkModule.provideOpenMeteoAPI;
 
+import android.annotation.SuppressLint;
+
 import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.WeatherRepository;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.WeatherDataCallback;
 import com.upt.weatherBeacon.ui.base.BaseViewModel;
+
+import java.time.LocalTime;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,6 +31,7 @@ public class SplashViewModel extends BaseViewModel {
         if (repository != null) {
             System.out.println("NU E NULL REPOSITORY");
             repository.getData(appState.getLatitude(), appState.getLongitude(), new WeatherDataCallback() {
+                @SuppressLint("NewApi")
                 @Override
                 public void onWeatherDataReceived(WeatherData weatherData) {
                     System.out.println("Response elevation :::"+ weatherData.elevation);
@@ -35,8 +41,13 @@ public class SplashViewModel extends BaseViewModel {
                     System.out.println("Response current weather code :::"+ weatherData.current.temperature);
 
                     System.out.println("Response current rain :::"+ weatherData.current.rain);
-                    appState.updateWeatherData(weatherData);
-
+                    LocalTime currentTime = null;
+                    currentTime = LocalTime.now();
+                    // Extract the hour from the current time
+                    int currentHour = currentTime.getHour();
+                    WeatherData hours24 = weatherData;
+                    hours24.hourly = weatherData.hourly.subList(0, currentHour+24);
+                    appState.updateWeatherData(hours24);
                 }
 
                 @Override

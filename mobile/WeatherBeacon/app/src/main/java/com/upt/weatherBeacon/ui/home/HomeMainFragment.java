@@ -1,5 +1,6 @@
 package com.upt.weatherBeacon.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Space;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
@@ -28,6 +31,7 @@ import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class HomeMainFragment extends BaseFragment<HomeViewModel> {
@@ -78,7 +82,6 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 parentDisplayLayout.removeView(manageContent);
             }
         });
-
         btnWeatherForecast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,28 +92,71 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 cityName.setText(appState.getCity());
 
                 Context ctx = getContext();
+
+//                textViewDaily
+
+                Switch switchButton2 = view.findViewById(R.id.switchButtonText);
+                switchButton2.setText("Hourly");
+                ListView listView = view.findViewById(R.id.listWeatherDetails);
+
+                switchButton2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            // Switch is ON, set text to "Daily"
+                            listView.setVisibility(View.GONE);
+                            switchButton2.setText("Daily");
+                        } else {
+                            // Switch is OFF, set text to "Hourly"
+                            listView.setVisibility(View.VISIBLE);
+                            switchButton2.setText("Hourly");
+                        }
+                    }
+                });
+
+
+                System.out.println("SWITCH TEXT show ::: " + switchButton2.getShowText());
+                System.out.println("SWITCH TEXT ::: " + switchButton2.getText());
+                System.out.println("SWITCH TEXT on ::: " + switchButton2.getTextOn());
+
+                if (switchButton2.getText() == "Hourly" || switchButton2.getText() == "") {
+                    listView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    listView.setVisibility(View.GONE);
+                }
                 appState.getWeatherDataLiveData().observe(getViewLifecycleOwner(), new Observer<WeatherData>() {
+                    @SuppressLint("NewApi")
                     @Override
                     public void onChanged(WeatherData weatherData) {
                         TextView text = view.findViewById(R.id.textWeatherDescription);
                         text.setText("ORICE " + weatherData.elevation);
 
-                        ListView listView = view.findViewById(R.id.listWeatherDetails);
-                        List<HourlyWeatherData> hourly = weatherData.hourly;
-                        ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(ctx, hourly);
 
-                        listView.setAdapter(hourlyAdapter);
-                        // Set OnClickListener to ListView items
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                // Get the clicked item
-                               HourlyWeatherData selectedItem = hourly.get(position);
 
-                                // Show modal dialog with additional data
-                                showAdditionalDataDialog(selectedItem);
-                            }
-                        });
+
+                            List<HourlyWeatherData> hourly = weatherData.hourly;
+                            ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(ctx, hourly);
+
+
+                            LocalTime currentTime = null;
+                            currentTime = LocalTime.now();
+                            // Extract the hour from the current time
+                            int currentHour = currentTime.getHour();
+                            listView.setAdapter(hourlyAdapter);
+                            listView.setSelection(currentHour);
+                            // Set OnClickListener to ListView items
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    // Get the clicked item
+                                    HourlyWeatherData selectedItem = hourly.get(position);
+
+                                    // Show modal dialog with additional data
+                                    showAdditionalDataDialog(selectedItem);
+                                }
+                            });
+
 
                     }
                 });
@@ -118,6 +164,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
             }
         });
+        btnWeatherForecast.performClick();
 
         btnElevation.setOnClickListener(new View.OnClickListener() {
             @Override

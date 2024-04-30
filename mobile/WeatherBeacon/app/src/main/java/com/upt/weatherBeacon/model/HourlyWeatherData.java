@@ -8,9 +8,8 @@ public class HourlyWeatherData {
     public double windDirection;
     public double rain;
     public double humidity;
-
-
     public int weatherCode;
+    public String weatherDescription;
     public double temperature;
 
 }

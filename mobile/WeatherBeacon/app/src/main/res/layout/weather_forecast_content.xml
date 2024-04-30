@@ -31,6 +31,16 @@
             android:text="Sunny weather expected"
             android:textAlignment="center"
         />
+    <Switch
+        android:id="@+id/switchButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="16dp"
+        android:elevation="15dp"
+        android:shadowColor="@color/material_dynamic_primary40"/>
+
+
 
     <ListView
             android:id="@+id/listWeatherDetails"
@@ -39,6 +49,16 @@
         android:layoutMode="opticalBounds"
         android:divider="@android:color/transparent"
         android:dividerHeight="4dp"
+        android:layout_marginHorizontal="12dp"
+        />
+    <ListView
+        android:id="@+id/listDailyWeatherDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutMode="opticalBounds"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="4dp"
+        android:layout_marginHorizontal="12dp"
         />
 
 </LinearLayout>

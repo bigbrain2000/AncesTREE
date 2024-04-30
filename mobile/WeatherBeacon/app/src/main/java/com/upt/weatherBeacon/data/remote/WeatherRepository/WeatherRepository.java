@@ -56,6 +56,7 @@ public class WeatherRepository {
                     current.temperature = hourly.get(currentHour).temperature;
                     current.time = hourly.get(currentHour).time;
                     current.wind_speed = hourly.get(currentHour).windSpeed;
+                    current.weatherDescription = hourly.get(currentHour).weatherDescription;
 
 
                     WeatherData data = new WeatherData();
@@ -96,6 +97,7 @@ public class WeatherRepository {
             hourly.get(i).rain = response.hourly.rain[i];
             hourly.get(i).windSpeed = response.hourly.wind_speed[i];
             hourly.get(i).windDirection = response.hourly.wind_direction[i];
+            hourly.get(i).weatherDescription = calculateDescription(response.hourly.weather_code[i]);
         }
         return hourly;
     }
@@ -113,6 +115,7 @@ public class WeatherRepository {
             day.min_temperature = response.daily.temperature_min[i];
             day.sunrise = response.daily.sunrise[i];
             day.sunset = response.daily.sunset[i];
+            day.weatherDescription = calculateDescription(response.daily.weather_code[i]);
         }
 
         return daily;
@@ -126,7 +129,17 @@ public class WeatherRepository {
         if (code == 3) return R.drawable.overcast;
         if (code == 61) return R.drawable.rainy;
         if (code == 62 || code == 63) return R.drawable.thunderstorm;
-        return R.drawable.sunny_weather;
+        return R.drawable.rainy;
+    }
+
+    private String calculateDescription(int code) {
+        if (code == 0) return "Sunny weather expected";
+        if (code == 1) return "Mostly clear";
+        if (code == 2) return "Cloudy";
+        if (code == 3) return "Overcast";
+        if (code == 61) return "Rainy";
+        if (code == 62 || code == 63) return "Thunder-Storm";
+        return "Rainy";
     }
 
 }
