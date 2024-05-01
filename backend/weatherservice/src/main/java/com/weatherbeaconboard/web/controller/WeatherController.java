@@ -11,14 +11,12 @@ import com.weatherbeaconboard.web.model.flood.FloodRequest;
 import com.weatherbeaconboard.web.model.flood.FloodResponse;
 import com.weatherbeaconboard.web.model.forecast.ForecastWeatherRequest;
 import com.weatherbeaconboard.web.model.forecast.ForecastWeatherResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
@@ -35,61 +33,7 @@ public class WeatherController {
     private final OpenMeteoServiceImpl openMeteoService;
 
     @GetMapping("/forecast")
-    public Mono<ResponseEntity<ForecastWeatherResponse>> getForecastWeather(
-            @RequestParam("latitude") Double latitude,
-            @RequestParam("longitude") Double longitude,
-            @RequestParam(value = "elevation", required = false) Double elevation,
-            @RequestParam(value = "hourly", required = false) String[] hourly,
-            @RequestParam(value = "daily", required = false) String[] daily,
-            @RequestParam(value = "current", required = false) String[] current,
-            @RequestParam(value = "temperature_unit", required = false) String temperatureUnit,
-            @RequestParam(value = "wind_speed_unit", required = false) String windSpeedUnit,
-            @RequestParam(value = "precipitation_unit", required = false) String precipitationUnit,
-            @RequestParam(value = "timeformat", required = false) String timeformat,
-            @RequestParam(value = "timezone", required = false) String timezone,
-            @RequestParam(value = "past_days", required = false) Integer pastDays,
-            @RequestParam(value = "forecast_days", required = false) Integer forecastDays,
-            @RequestParam(value = "forecast_hours", required = false) Integer forecastHours,
-            @RequestParam(value = "forecast_minutely_15", required = false) Integer forecastMinutely15,
-            @RequestParam(value = "past_hours", required = false) Integer pastHours,
-            @RequestParam(value = "past_minutely_15", required = false) Integer pastMinutely15,
-            @RequestParam(value = "start_date", required = false) String startDate,
-            @RequestParam(value = "end_date", required = false) String endDate,
-            @RequestParam(value = "start_hour", required = false) Integer startHour,
-            @RequestParam(value = "end_hour", required = false) Integer endHour,
-            @RequestParam(value = "start_minutely_15", required = false) String startMinutely15,
-            @RequestParam(value = "end_minutely_15", required = false) String endMinutely15,
-            @RequestParam(value = "models", required = false) String[] models,
-            @RequestParam(value = "cell_selection", required = false) String cellSelection) {
-
-        final ForecastWeatherRequest forecastWeatherRequest = ForecastWeatherRequest.builder()
-                .latitude(latitude)
-                .longitude(longitude)
-                .elevation(elevation)
-                .hourly(hourly)
-                .daily(daily)
-                .current(current)
-                .temperatureUnit(temperatureUnit)
-                .windSpeedUnit(windSpeedUnit)
-                .precipitationUnit(precipitationUnit)
-                .timeFormat(timeformat)
-                .timezone(timezone)
-                .pastDays(pastDays)
-                .forecastDays(forecastDays)
-                .forecastHours(forecastHours)
-                .forecastMinutely15(forecastMinutely15)
-                .pastHours(pastHours)
-                .pastMinutely15(pastMinutely15)
-                .startDate(startDate)
-                .endDate(endDate)
-                .startHour(startHour)
-                .endHour(endHour)
-                .startMinutely15(startMinutely15)
-                .endMinutely15(endMinutely15)
-                .models(models)
-                .cellSelection(cellSelection)
-                .build();
-
+    public Mono<ResponseEntity<ForecastWeatherResponse>> getForecastWeather(@Valid @ModelAttribute ForecastWeatherRequest forecastWeatherRequest) {
         return openMeteoService.getForecastWeather(forecastWeatherRequest)
                 .map(ResponseEntity::ok);
     }
@@ -125,15 +69,7 @@ public class WeatherController {
     }
 
     @GetMapping("/elevation")
-    public Mono<ResponseEntity<ElevationResponse>> getElevationStatistics(
-            @RequestParam("latitude") List<Double> latitude,
-            @RequestParam("longitude") List<Double> longitude) {
-
-        final ElevationRequest elevationRequest = ElevationRequest.builder()
-                .latitude(latitude)
-                .longitude(longitude)
-                .build();
-
+    public Mono<ResponseEntity<ElevationResponse>> getElevationStatistics(@Valid @ModelAttribute ElevationRequest elevationRequest) {
         return openMeteoService.getElevationStatistics(elevationRequest)
                 .map(ResponseEntity::ok);
     }

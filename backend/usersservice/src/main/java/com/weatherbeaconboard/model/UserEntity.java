@@ -19,12 +19,14 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
  *     <li>id- the table primary key</li>
  *     <li>username- the user name which must be unique</li>
  *     <li>password- the user password</li>
+ *     <li>firstName- the user first name</li>
+ *     <li>lastName- the user last name</li>
  *     <li>role- the user role, values mapped by {@link RoleType}</li>
  *     <li>email- the user email which must be unique</li>
  *     <li>address- the user address</li>
  *     <li>phoneNumber- the user phone number</li>
- *     <li>locked- property set default to {@code TRUE} if a user did not confirmed his email</li>
- *     <li>enabled- property set default to {@code FALSE} if a user did not confirmed his email</li>
+ *     <li>locked- property set default to {@code TRUE} if a user did not confirm his email</li>
+ *     <li>enabled- property set default to {@code FALSE} if a user did not confirm his email</li>
  *     <li>version- default is set to 0 and represents the number of the Optimistic locking</li>
  * </ul>
  */
