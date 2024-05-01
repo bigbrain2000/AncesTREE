@@ -8,21 +8,21 @@ import java.io.Serializable;
 @Builder
 public record FloodResponse(
 
-        @JsonProperty("latitude")
+@JsonProperty("latitude")
         double latitude,
 
-        @JsonProperty("longitude")
+@JsonProperty("longitude")
         double longitude,
 
-        @JsonProperty("generationtime_ms")
+@JsonProperty("generationtime_ms")
         double generationTimeMs,
 
-        @JsonProperty("daily")
+@JsonProperty("daily")
         Object daily,
 
-        @JsonProperty("daily_units")
+@JsonProperty("daily_units")
         Object dailyUnits
 
-) implements Serializable {
+                )implements Serializable{
 
-}
+                }

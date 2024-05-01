@@ -34,9 +34,9 @@ class EmailControllerServiceTest {
         doNothing().when(emailService).sendEmail(emailRequest);
 
         mockMvc.perform(post("/v1/sendEmail")
-                        .contentType(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(emailRequest)))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(emailRequest)))
                 .andExpect(status().isOk());
 
         verify(emailService).sendEmail(any(EmailRequest.class));

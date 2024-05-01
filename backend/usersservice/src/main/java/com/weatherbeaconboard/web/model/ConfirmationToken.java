@@ -20,15 +20,15 @@ public record ConfirmationToken(
 
         String token,
 
-        @JsonFormat(shape = STRING, pattern = DATE_TIME_PATTERN)
+@JsonFormat(shape = STRING, pattern = DATE_TIME_PATTERN)
         OffsetDateTime tokenCreatedAt,
 
-        @JsonFormat(shape = STRING, pattern = DATE_TIME_PATTERN)
+@JsonFormat(shape = STRING, pattern = DATE_TIME_PATTERN)
         OffsetDateTime tokenExpiresAt,
 
-        @JsonFormat(shape = STRING, pattern = DATE_TIME_PATTERN)
+@JsonFormat(shape = STRING, pattern = DATE_TIME_PATTERN)
         OffsetDateTime tokenConfirmedAt
 
-) implements Serializable {
+                )implements Serializable{
 
-}
+                }

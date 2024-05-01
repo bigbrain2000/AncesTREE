@@ -18,6 +18,7 @@ import com.upt.weatherBeacon.ui.base.navigation.Screen;
 public class LoginFragment extends BaseFragment<LoginViewModel> {
 
     private FragmentLoginBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
@@ -25,7 +26,9 @@ public class LoginFragment extends BaseFragment<LoginViewModel> {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.uiEventStream.setValue(new ShowToast("CEVA"));
+                viewModel.uiEventStream.setValue(new ShowToast("Login Clicked"));  //TODO
+                Navigation navigation = new Navigation(new NavAttribs(Screen.HomeMainScreen, null, true));
+                viewModel.uiEventStream.setValue(navigation);
             }
         });
 
@@ -48,13 +51,13 @@ public class LoginFragment extends BaseFragment<LoginViewModel> {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.RegisterScreen,null, false)));
+                viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.RegisterScreen, null, true)));
             }
         });
     }
 
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }

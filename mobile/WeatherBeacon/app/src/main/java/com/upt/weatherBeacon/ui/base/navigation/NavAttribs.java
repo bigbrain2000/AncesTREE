@@ -5,7 +5,7 @@ public class NavAttribs {
     public BundleProvider bundle = null;
     public Boolean addToBackStack = false;
 
-    public NavAttribs(Screen screen, BundleProvider bp, Boolean back){
+    public NavAttribs(Screen screen, BundleProvider bp, Boolean back) {
         this.screen = screen;
         this.bundle = bp;
         this.addToBackStack = back;

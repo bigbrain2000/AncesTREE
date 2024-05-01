@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:id="@+id/main_layout">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/display_layout"
+            android:orientation="vertical">
+
+
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/btnMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Menu"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            tools:ignore="MissingConstraints"/>
+
+    <LinearLayout
+            android:id="@+id/menuLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="#CCCCCC"
+        android:visibility="gone"
+        android:orientation="vertical"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                >
+
+                <Button
+                    android:id="@+id/btnWeatherForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Weather Forecast" />
+
+                <Button
+                    android:id="@+id/btnElevation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Elevation"/>
+
+                <Button
+                    android:id="@+id/btnGeocoding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Geocoding"/>
+
+                <Button
+                    android:id="@+id/btnAirQuality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Air Quality" />
+
+                <Button
+                    android:id="@+id/btnClimateChange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Climate Change" />
+
+
+            </LinearLayout>
+            <Space
+                android:id="@+id/modifiedSpace"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+            <Button
+                android:id="@+id/btnManageAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="Manage Account"
+                android:layout_marginBottom="12dp"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

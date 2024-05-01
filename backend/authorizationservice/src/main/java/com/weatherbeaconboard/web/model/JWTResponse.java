@@ -9,6 +9,6 @@ public record JWTResponse(
 
         String accessToken
 
-) implements Serializable {
+        )implements Serializable{
 
-}
+        }

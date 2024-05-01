@@ -13,6 +13,6 @@ public record AuthenticationUserResponse(
 
         String tokenType
 
-) implements Serializable {
+        )implements Serializable{
 
-}
+        }
