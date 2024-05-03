@@ -8,4 +8,6 @@ public class Config {
     public static String USER = "http://localhost:8082";
     //    public static String WEATHER = "http://localhost:8084";
     public static String WEATHER = "https://api.open-meteo.com/v1/";
+    public static String GEOCODING = "https://geocoding-api.open-meteo.com/v1/";
+
 }

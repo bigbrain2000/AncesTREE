@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Daily {
 
-
-    public List<String> time;
+    @SerializedName("time")
+    public String[] time;
     @SerializedName("weather_code")
     public int[] weather_code;
     @SerializedName("temperature_2m_max")

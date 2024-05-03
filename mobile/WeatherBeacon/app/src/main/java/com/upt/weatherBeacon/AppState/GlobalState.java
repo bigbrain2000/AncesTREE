@@ -3,6 +3,7 @@ package com.upt.weatherBeacon.AppState;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.model.User;
 import com.upt.weatherBeacon.model.WeatherData;
 
@@ -18,6 +19,9 @@ public class GlobalState {
     private Double longitude = 0.0;
 
     private MutableLiveData<WeatherData> weatherDataLiveData = new MutableLiveData<>();
+    private MutableLiveData<Geocoding> geocodingLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<String> errorGeocoding = new MutableLiveData<>();
     private GlobalState(){
   }
 
@@ -78,4 +82,7 @@ public class GlobalState {
     public void updateWeatherData(WeatherData newData) {
        weatherDataLiveData.postValue(newData);
     }
+
+    public LiveData<Geocoding> getGeocodingLiveData() {return this.geocodingLiveData;}
+    public void updateGeocodingData(Geocoding newData) { geocodingLiveData.postValue(newData);}
 }

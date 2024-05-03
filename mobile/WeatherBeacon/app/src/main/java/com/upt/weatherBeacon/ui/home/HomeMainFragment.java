@@ -26,13 +26,18 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.R;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.GeocodingData;
 import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
+import com.upt.weatherBeacon.model.DailyWeatherData;
 import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 
 public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
@@ -87,7 +92,6 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
             public void onClick(View v) {
                 menuLayout.setVisibility(View.GONE);
                 parentDisplayLayout.addView(weatherForecastContent);
-                //TODO functionality for weather forecast
                 TextView cityName = view.findViewById(R.id.cityName);
                 cityName.setText(appState.getCity());
 
@@ -98,6 +102,8 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 Switch switchButton2 = view.findViewById(R.id.switchButtonText);
                 switchButton2.setText("Hourly");
                 ListView listView = view.findViewById(R.id.listWeatherDetails);
+                ListView listViewDaily = view.findViewById(R.id.listDailyWeatherDetails);
+                listViewDaily.setVisibility(View.GONE);
 
                 switchButton2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -105,10 +111,13 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                         if (isChecked) {
                             // Switch is ON, set text to "Daily"
                             listView.setVisibility(View.GONE);
+                            listViewDaily.setVisibility(View.VISIBLE);
                             switchButton2.setText("Daily");
+
                         } else {
                             // Switch is OFF, set text to "Hourly"
                             listView.setVisibility(View.VISIBLE);
+                            listViewDaily.setVisibility(View.GONE);
                             switchButton2.setText("Hourly");
                         }
                     }
@@ -121,41 +130,55 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
                 if (switchButton2.getText() == "Hourly" || switchButton2.getText() == "") {
                     listView.setVisibility(View.VISIBLE);
+                    listViewDaily.setVisibility(View.GONE);
                 }
                 else{
                     listView.setVisibility(View.GONE);
+                    listViewDaily.setVisibility(View.VISIBLE);
                 }
                 appState.getWeatherDataLiveData().observe(getViewLifecycleOwner(), new Observer<WeatherData>() {
                     @SuppressLint("NewApi")
                     @Override
                     public void onChanged(WeatherData weatherData) {
                         TextView text = view.findViewById(R.id.textWeatherDescription);
-                        text.setText("ORICE " + weatherData.elevation);
+//                        text.setText("ORICE " + weatherData.elevation);
 
 
+                        List<HourlyWeatherData> hourly = weatherData.hourly;
+                        ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(ctx, hourly);
+                        List<DailyWeatherData> daily = weatherData.daily;
+                        System.out.println("DAILY ::: " + daily.size());
+                        System.out.println("DAILY HOURLY ::: " + daily.size());
+                        ForecastsDailyAdapter dailyAdapter = new ForecastsDailyAdapter(getContext(), daily);
 
+                        LocalTime currentTime = null;
+                        currentTime = LocalTime.now();
+                        // Extract the hour from the current time
+                        int currentHour = currentTime.getHour();
+                        listView.setAdapter(hourlyAdapter);
+                        listView.setSelection(currentHour);
+                        listViewDaily.setAdapter(dailyAdapter);
+                        // Set OnClickListener to ListView items
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                // Get the clicked item
+                                HourlyWeatherData selectedItem = hourly.get(position);
 
-                            List<HourlyWeatherData> hourly = weatherData.hourly;
-                            ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(ctx, hourly);
+                                // Show modal dialog with additional data
+                                showAdditionalDataDialog(selectedItem);
+                            }
+                        });
+                        listViewDaily.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                // Get the clicked item
+                                DailyWeatherData selectedItem = daily.get(position);
 
-
-                            LocalTime currentTime = null;
-                            currentTime = LocalTime.now();
-                            // Extract the hour from the current time
-                            int currentHour = currentTime.getHour();
-                            listView.setAdapter(hourlyAdapter);
-                            listView.setSelection(currentHour);
-                            // Set OnClickListener to ListView items
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    // Get the clicked item
-                                    HourlyWeatherData selectedItem = hourly.get(position);
-
-                                    // Show modal dialog with additional data
-                                    showAdditionalDataDialog(selectedItem);
-                                }
-                            });
+                                // Show modal dialog with additional data
+                                showAdditionalDailyDataDialog(selectedItem);
+                            }
+                        });
 
 
                     }
@@ -173,8 +196,16 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
                 parentDisplayLayout.addView(elevationContent);
                 TextView labelTextView = parentDisplayLayout.findViewById(R.id.textCenter);
+                appState.getWeatherDataLiveData().observe(getViewLifecycleOwner(), new Observer<WeatherData>() {
+                    @SuppressLint("NewApi")
+                    @Override
+                    public void onChanged(WeatherData weatherData) {
 
-                labelTextView.setText("Altitude: 80"); //TODO functionality
+                        labelTextView.setText(String.valueOf(weatherData.elevation) + " m");
+
+                    }
+                });
+
 
             }
         });
@@ -184,6 +215,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
             public void onClick(View v) {
                 menuLayout.setVisibility(View.GONE);
                 parentDisplayLayout.addView(geocodingContent);
+                btnGeocodingSearch.performClick();
             }
         });
 
@@ -192,10 +224,44 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
             public void onClick(View v) {
                 EditText textField = parentDisplayLayout.findViewById(R.id.textSearchField);
                 String cityName = textField.getText().toString();
+                if (!cityName.isEmpty()) {
+                    viewModel.getGeocodingData(cityName);
+                }
 
-                TextView detailsTextView = parentDisplayLayout.findViewById(R.id.resultTextField);
-                detailsTextView.setText("City: " + cityName + "\nLatitude: 12345\nLongitude: 54321\nElevation: 100\nTimezone: GMT+2\nPopulation: 1000"); //TODO functionality
-                textField.setText("");
+                TextView error = parentDisplayLayout.findViewById(R.id.geocodingError);
+                appState.errorGeocoding.observe(getViewLifecycleOwner(), new Observer<String>() {
+                    @Override
+                    public void onChanged(String s) {
+                        if (s.length() > 0) {
+                            error.setText(s);
+                        } else error.setText("");
+                    }
+                });
+                appState.getGeocodingLiveData().observe(getViewLifecycleOwner(), new Observer<Geocoding>() {
+                    @SuppressLint("NewApi")
+                    @Override
+                    public void onChanged(Geocoding geocoding) {
+
+                        ListView geocodingResults = view.findViewById(R.id.listGeocodingResult);
+                        GeocodingAdapter gecodingAdapter = new GeocodingAdapter(getContext(), Arrays.asList(geocoding.results));
+                        geocodingResults.setAdapter(gecodingAdapter);
+
+                        geocodingResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                // Get the clicked item
+//                                System.out.println("GEOCODING ITEM CLICK!");
+                                GeocodingData selectedItem = geocoding.results[position];
+//
+//                                // Show modal dialog with additional data
+                                showAdditionalGeocodingDialog(selectedItem);
+                            }
+                        });
+
+                    }
+
+                });
+//
             }
         });
 
@@ -262,6 +328,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
     protected int getContentView() {
         return 0; // Return the appropriate layout resource id
     }
+
     private void showAdditionalDataDialog(HourlyWeatherData data) {
 
         View hourlyDialog = LayoutInflater.from(getContext()).inflate(R.layout.modal_hourly,null);
@@ -284,7 +351,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         builder.setTitle("Additional Data");
 
         // Set additional data to dialog
-        builder.setMessage("Additional data: " );
+        builder.setMessage("Additional data: ");
 
         // Add any other configuration you need for the dialog
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -298,4 +365,132 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         // Show the dialog
         builder.show();
     }
+
+    private void showAdditionalDailyDataDialog(DailyWeatherData data) {
+
+        View dailyDialog = LayoutInflater.from(getContext()).inflate(R.layout.modal_daily, null);
+        ImageView weatherCode = dailyDialog.findViewById(R.id.weatherCode);
+        weatherCode.setImageResource(data.weatherCode);
+        TextView imageDescription = dailyDialog.findViewById(R.id.WeatherCodeDescriptio_daily);
+        TextView temperature = dailyDialog.findViewById(R.id.temperature_max);
+        TextView temperature_min = dailyDialog.findViewById(R.id.temperature_min);
+        TextView sunRise = dailyDialog.findViewById(R.id.sunrise);
+        TextView sunSet = dailyDialog.findViewById(R.id.sunset);
+
+
+        imageDescription.setText("ORICE");
+        temperature.setText(String.valueOf(data.max_temperature));
+        temperature_min.setText(String.valueOf(data.min_temperature));
+
+
+        String[] sunRiseSplit = data.sunrise.split("T");
+        String[] sunSetSplit = data.sunset.split("T");
+        String[] hoursSunrise = sunRiseSplit[1].split(":");
+        String[] hoursSunset = sunSetSplit[1].split(":");
+
+        int sunriseHour = Integer.parseInt(hoursSunrise[0]);
+        int sunsetHour = Integer.parseInt(hoursSunset[0]);
+
+        // Get the default timezone
+        TimeZone defaultTimeZone = TimeZone.getDefault();
+
+        // Get the offset in milliseconds
+        int offsetInMillis = defaultTimeZone.getRawOffset();
+
+        // Convert milliseconds to hours
+        int offsetInHours = offsetInMillis / (60 * 60 * 1000);
+
+        sunriseHour += offsetInHours;
+        sunsetHour += offsetInHours;
+
+        String sunsetTime = "" + sunsetHour + ":" + hoursSunset[1];
+        String sunRiseTime = "" + sunriseHour + ":" + hoursSunrise[1];
+
+        System.out.println("Timezone Offset: " + offsetInHours + " hours");
+
+        sunRise.setText(sunRiseTime);
+        sunSet.setText(sunsetTime);
+
+
+        // Create and configure AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dailyDialog);
+        builder.setTitle("Additional Data");
+
+        // Set additional data to dialog
+        builder.setMessage("Additional data: ");
+
+        // Add any other configuration you need for the dialog
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss dialog if needed
+                dialog.dismiss();
+            }
+        });
+
+        // Show the dialog
+        builder.show();
+    }
+
+    private void showAdditionalGeocodingDialog(GeocodingData data) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        // Set the dialog title, message, and buttons
+        builder.setTitle("Search for new city")
+                .setMessage("Do you want to search forecasts for " + data.name + " " + data.admin1 + " ?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Perform your action when the "OK" button is clicked
+                        // For example, you can close the dialog or perform any other action
+                        viewModel.getForecastsForNewCity(data.latitude, data.longitude, data.name);
+                        dialog.dismiss(); // Close the dialog
+                    }
+                }) // null listener to simply dismiss the dialog when "OK" is clicked
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Perform your action when the "Cancel" button is clicked
+                        // For example, you can close the dialog or perform any other action
+                        dialog.dismiss(); // Close the dialog
+                    }
+                });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showDialog() {
+        // Create an AlertDialog.Builder instance
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        // Set the dialog title, message, and buttons
+        // Set the dialog title, message, and buttons
+        builder.setTitle("Alert Dialog")
+                .setMessage("This is a simple alert dialog.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Perform your action when the "OK" button is clicked
+                        // For example, you can close the dialog or perform any other action
+                        dialog.dismiss(); // Close the dialog
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Perform your action when the "Cancel" button is clicked
+                        // For example, you can close the dialog or perform any other action
+                        dialog.dismiss(); // Close the dialog
+                    }
+                });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
 }
