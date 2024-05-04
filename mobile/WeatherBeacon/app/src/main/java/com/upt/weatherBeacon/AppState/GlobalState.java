@@ -3,6 +3,10 @@ package com.upt.weatherBeacon.AppState;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.AirQuality;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.HourlyAirQuality;
+import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.User;
 import com.upt.weatherBeacon.model.WeatherData;
 
@@ -11,18 +15,24 @@ import java.util.List;
 public class GlobalState {
     private static GlobalState state=null;
 
-    private String accessToken="";
+    private String accessToken = "";
     private User usr;
     private String city = "";
     private Double latitude = 0.0;
     private Double longitude = 0.0;
 
     private MutableLiveData<WeatherData> weatherDataLiveData = new MutableLiveData<>();
-    private GlobalState(){
-  }
+    private MutableLiveData<Geocoding> geocodingLiveData = new MutableLiveData<>();
 
-    public static synchronized GlobalState getState(){
-        if(state == null){
+    private MutableLiveData<List<HourlyAirData>> airQualityLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<String> errorGeocoding = new MutableLiveData<>();
+
+    private GlobalState() {
+    }
+
+    public static synchronized GlobalState getState() {
+        if (state == null) {
             state = new GlobalState();
         }
         return state;
@@ -76,6 +86,23 @@ public class GlobalState {
 
     // Method to update hourly weather data LiveData
     public void updateWeatherData(WeatherData newData) {
-       weatherDataLiveData.postValue(newData);
+        weatherDataLiveData.postValue(newData);
     }
+
+    public LiveData<Geocoding> getGeocodingLiveData() {
+        return this.geocodingLiveData;
+    }
+
+    public void updateGeocodingData(Geocoding newData) {
+        geocodingLiveData.postValue(newData);
+    }
+
+    public LiveData<List<HourlyAirData>> getAirQualityLiveData() {
+        return this.airQualityLiveData;
+    }
+
+    public void updateAirQualityLiveData(List<HourlyAirData> newData) {
+        airQualityLiveData.postValue(newData);
+    }
+
 }

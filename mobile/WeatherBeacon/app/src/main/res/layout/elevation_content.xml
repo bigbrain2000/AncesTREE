@@ -26,13 +26,14 @@
             app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-                android:id="@+id/textCenter"
-                android:text="Altitude:"
-                android:textSize="30dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_background"
-                android:padding="16dp"/>
+            android:id="@+id/textCenter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background"
+            android:padding="16dp"
+            android:text="Altitude:"
+            android:textColor="@color/black"
+            android:textSize="30dp" />
 
     </FrameLayout>
 

@@ -1,5 +1,9 @@
 package com.upt.weatherBeacon.di;
 
+import com.upt.weatherBeacon.data.remote.WeatherRepository.AirQualityApi;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.AirQuality;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.GeocodingData;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.GeocodingApi;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.OpenMeteoApi;
 import com.upt.weatherBeacon.data.remote.userRepository.UserAPI;
 
@@ -52,12 +56,43 @@ public class NetworkModule {
         return retrofit.create(OpenMeteoApi.class);
     }
 
+    @Provides
+    @Singleton
+    @Named("geocoding")
+    public static Retrofit provideRetrofitGeocoding() {
+        return new Retrofit.Builder()
+                .baseUrl(Config.GEOCODING)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient.Builder().build())
+                .build();
+    }
+    public static GeocodingApi provideGeocodingAPI(){
+        Retrofit retrofit = provideRetrofitGeocoding();
+        return retrofit.create(GeocodingApi.class);
+    }
+
+    @Provides
+    @Singleton
+    @Named("airQuality")
+    public static Retrofit provideRetrofitAirQuality() {
+        return new Retrofit.Builder()
+                .baseUrl(Config.AIRQUALITY)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient.Builder().build())
+                .build();
+    }
+    public static AirQualityApi provideAirQualityAPI(){
+        Retrofit retrofit = provideRetrofitAirQuality();
+        return retrofit.create(AirQualityApi.class);
+    }
+
 
     @Provides
     @Singleton
     public static UserAPI provideUserApiService(Retrofit retrofit) {
         return retrofit.create(UserAPI.class);
     }
+
 
 
 }
