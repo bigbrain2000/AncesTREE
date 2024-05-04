@@ -22,8 +22,12 @@ weatherbeaconboard:
     base-url: ${NOTIFICATIONS_URL}
     sendEmail: /v1/sendEmail
 
+#LOCALHOST
+#server:
+#  port: 8081
+
 server:
-  port: 8081
+  port: 5000
 
 resilience4j:
   circuitbreaker:
