@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Space;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 
 import com.jjoe64.graphview.GraphView;
@@ -28,8 +30,10 @@ import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.R;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.GeocodingData;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.HourlyAirQuality;
 import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
 import com.upt.weatherBeacon.model.DailyWeatherData;
+import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
@@ -266,11 +270,37 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         });
 
         btnAirQuality.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 parentDisplayLayout.addView(airContent);
                 menuLayout.setVisibility(View.GONE);
-                //TODO air functionality
+
+                appState.getAirQualityLiveData().observe(getViewLifecycleOwner(), new Observer<List<HourlyAirData>>() {
+                    @Override
+                    public void onChanged(List<HourlyAirData> hourlyAir) {
+                        ListView airList = view.findViewById(R.id.listAirDetails);
+                        AirQualityAdapter airAdapter = new AirQualityAdapter(getContext(), hourlyAir );
+                        airList.setAdapter(airAdapter);
+                        LocalTime currentTime = null;
+                        currentTime = LocalTime.now();
+
+                        // Extract the hour from the current time
+                        int currentHour = currentTime.getHour();
+                        airList.setSelection(currentHour);
+                        airList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                // Get the clicked item
+                                HourlyAirData selectedItem = hourlyAir.get(position);
+
+                                // Show modal dialog with additional data
+                                showAdditionalAirDataDialog(selectedItem);
+                            }
+                        });
+
+                    }
+                });
             }
         });
 
@@ -491,6 +521,52 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
+    }
+
+    private void showAdditionalAirDataDialog(HourlyAirData data) {
+
+        View airDialog = LayoutInflater.from(getContext()).inflate(R.layout.modal_air, null);
+        ImageView weatherCode = airDialog.findViewById(R.id.airCode);
+        weatherCode.setImageResource(data.airCode);
+        TextView airQualityDescription = airDialog.findViewById(R.id.airQualityDescription);
+        TextView pm10 = airDialog.findViewById(R.id.pm10);
+        TextView pm2_5 = airDialog.findViewById(R.id.pm2_5);
+        TextView dust = airDialog.findViewById(R.id.dust);
+        TextView co2 = airDialog.findViewById(R.id.co2);
+        TextView no2 = airDialog.findViewById(R.id.no2);
+        TextView so2 = airDialog.findViewById(R.id.so2);
+        TextView uvIndex = airDialog.findViewById(R.id.uvIndex);
+
+        airQualityDescription.setText(data.airDescription);
+        pm10.setText(String.valueOf(data.pm10)+ " μg/m³");
+        pm2_5.setText(String.valueOf(data.pm2_5)+ " μg/m³");
+        dust.setText(String.valueOf(data.dust));
+        co2.setText(String.valueOf(data.carbon_monoxide)+ " μg/m³");
+        no2.setText(String.valueOf(data.nitrogen_dioxide)+ " μg/m³");
+        so2.setText(String.valueOf(data.sulphur_dioxide)+ " μg/m³");
+        uvIndex.setText(String.valueOf(data.uv_index));
+
+
+
+        // Create and configure AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(airDialog);
+        builder.setTitle("Additional Data");
+
+        // Set additional data to dialog
+        builder.setMessage("Additional data: ");
+
+        // Add any other configuration you need for the dialog
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss dialog if needed
+                dialog.dismiss();
+            }
+        });
+
+        // Show the dialog
+        builder.show();
     }
 
 }

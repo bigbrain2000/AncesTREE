@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/airCode"
+        android:layout_width="79dp"
+        android:layout_height="67dp"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/air_bad"
+        tools:layout_editor_absoluteX="244dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_marginHorizontal="24dp"/>
+
+    <TextView
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="24dp"
+        android:id="@+id/timeAir"
+        android:layout_width="wrap_content"
+        android:maxWidth="80dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="47dp" />
+
+    <TextView
+        android:layout_marginTop="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:id="@+id/airCodeDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+    <ImageView
+        android:id="@+id/liveIconAir"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:rotation="-15"
+
+        app:srcCompat="@drawable/pngwing_com" />
+
+</RelativeLayout>

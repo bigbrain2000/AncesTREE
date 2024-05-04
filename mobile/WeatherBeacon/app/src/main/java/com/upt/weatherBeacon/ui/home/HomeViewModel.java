@@ -1,5 +1,6 @@
 package com.upt.weatherBeacon.ui.home;
 
+import static com.upt.weatherBeacon.di.NetworkModule.provideAirQualityAPI;
 import static com.upt.weatherBeacon.di.NetworkModule.provideGeocodingAPI;
 import static com.upt.weatherBeacon.di.NetworkModule.provideOpenMeteoAPI;
 
@@ -23,6 +24,7 @@ public class HomeViewModel extends BaseViewModel {
         this.repository = new WeatherRepository();
         this.repository.api = provideOpenMeteoAPI();
         this.repository.geoApi = provideGeocodingAPI();
+        this.repository.airApi = provideAirQualityAPI();
     }
     public void getGeocodingData(String cityName){
         if(repository!=null){

@@ -1,5 +1,7 @@
 package com.upt.weatherBeacon.di;
 
+import com.upt.weatherBeacon.data.remote.WeatherRepository.AirQualityApi;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.AirQuality;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.GeocodingData;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.GeocodingApi;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.OpenMeteoApi;
@@ -56,7 +58,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    @Named("weather")
+    @Named("geocoding")
     public static Retrofit provideRetrofitGeocoding() {
         return new Retrofit.Builder()
                 .baseUrl(Config.GEOCODING)
@@ -67,6 +69,21 @@ public class NetworkModule {
     public static GeocodingApi provideGeocodingAPI(){
         Retrofit retrofit = provideRetrofitGeocoding();
         return retrofit.create(GeocodingApi.class);
+    }
+
+    @Provides
+    @Singleton
+    @Named("airQuality")
+    public static Retrofit provideRetrofitAirQuality() {
+        return new Retrofit.Builder()
+                .baseUrl(Config.AIRQUALITY)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient.Builder().build())
+                .build();
+    }
+    public static AirQualityApi provideAirQualityAPI(){
+        Retrofit retrofit = provideRetrofitAirQuality();
+        return retrofit.create(AirQualityApi.class);
     }
 
 

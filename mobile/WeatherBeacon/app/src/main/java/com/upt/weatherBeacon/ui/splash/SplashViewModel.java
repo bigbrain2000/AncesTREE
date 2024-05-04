@@ -1,14 +1,19 @@
 package com.upt.weatherBeacon.ui.splash;
 
+import static com.upt.weatherBeacon.di.NetworkModule.provideAirQualityAPI;
 import static com.upt.weatherBeacon.di.NetworkModule.provideGeocodingAPI;
 import static com.upt.weatherBeacon.di.NetworkModule.provideOpenMeteoAPI;
 
 import android.annotation.SuppressLint;
 
 import com.upt.weatherBeacon.AppState.GlobalState;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.AirQuality;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.HourlyAirQuality;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.WeatherRepository;
+import com.upt.weatherBeacon.model.AirQaulityCallback;
 import com.upt.weatherBeacon.model.GeocodingDataCallback;
+import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.WeatherDataCallback;
 import com.upt.weatherBeacon.ui.base.BaseViewModel;
@@ -29,11 +34,25 @@ public class SplashViewModel extends BaseViewModel {
         this.repository = new WeatherRepository();
         this.repository.api = provideOpenMeteoAPI();
         this.repository.geoApi = provideGeocodingAPI();
+        this.repository.airApi = provideAirQualityAPI();
     }
 
     public void getWeatherDataForCurrentLocation() {
         if (repository != null) {
             System.out.println("NU E NULL REPOSITORY");
+
+            repository.getAirQualityData(appState.getLatitude(), appState.getLongitude(), new AirQaulityCallback() {
+                @Override
+                public void onAirDataReceived(List<HourlyAirData> data) {
+                    System.out.println("AIR QAULITY APP STATE ::: "+data);
+                    appState.updateAirQualityLiveData(data);
+                }
+
+                @Override
+                public void onFailure(Throwable throwable) {
+
+                }
+            });
 
             repository.getGeoCodingData(appState.getCity(), new GeocodingDataCallback() {
                 @Override
