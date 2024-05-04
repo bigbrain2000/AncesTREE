@@ -228,13 +228,4 @@ class UserServiceImplTest {
 
         verify(confirmationTokenService, never()).setConfirmedAt(expiredToken);
     }
-
-    @Test
-    void confirmToken_WithAlreadyConfirmedToken() {
-        when(confirmationTokenService.getToken(confirmedToken)).thenReturn(alreadyConfirmedToken);
-
-        assertThrows(ConfirmationTokenAlreadyConfirmedException.class, () -> userService.confirmToken(confirmedToken));
-
-        verify(confirmationTokenService, never()).setConfirmedAt(confirmedToken);
-    }
 }

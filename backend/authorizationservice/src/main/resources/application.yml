@@ -1,6 +1,8 @@
 weatherbeaconboard:
   users:
-    base-url: http://localhost:8081
+    #LOCALHOST
+    #base-url: http://localhost:8081
+    base-url: ${USERS_URL}
     userDetails: /v1/userDetails
 
 server:

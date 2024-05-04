@@ -9,26 +9,26 @@ import java.util.List;
 @Builder
 public record UserDetailsResponse(
 
-@NotNull
+        @NotNull
         List<AuthorityDetail> authorities,
 
-@NotNull
+        @NotNull
         String password,
 
-@NotNull
+        @NotNull
         String username,
 
-@NotNull
+        @NotNull
         boolean isAccountNonExpired,
 
-@NotNull
+        @NotNull
         boolean isAccountNonLocked,
 
-@NotNull
+        @NotNull
         boolean isCredentialsNonExpired,
 
-@NotNull
+        @NotNull
         boolean isEnabled
 
-                )implements Serializable{
-                }
+) implements Serializable {
+}

@@ -40,7 +40,6 @@ public class UsersApplication implements CommandLineRunner {
 
     /**
      * Method used for inserting a predefined user in the database for debugging purposes.
-     * TODO: remove before deploying.
      */
     @Transactional
     protected void insertPredefinedAdmin() {
