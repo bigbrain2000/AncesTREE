@@ -40,11 +40,13 @@ public class WeatherRepository {
 
     public void getData(Double latitude, Double longitude, WeatherDataCallback callback) {
 
+        System.out.println("GetData weather repository!");
+
 
         Call<WeatherForecasts> callAsync1 = api.getResponse(
                 latitude,
                 longitude,
-                "temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m", // current
+//                "temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m", // current
                 "temperature_2m,relative_humidity_2m,rain,weather_code,wind_speed_10m,wind_direction_10m", // hourly
                 "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset" // daily
         );
@@ -52,6 +54,7 @@ public class WeatherRepository {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<WeatherForecasts> call, Response<WeatherForecasts> response) {
+                System.out.println("GetData weather repository onResponse ::: "+response);
                 if (response.isSuccessful()) {
                     WeatherForecasts resp = response.body();
                     List<HourlyWeatherData> hourly = mapHourly(resp);
@@ -110,6 +113,7 @@ public class WeatherRepository {
         callAsync.enqueue(new Callback<Geocoding>() {
             @Override
             public void onResponse(Call<Geocoding> call, Response<Geocoding> response) {
+                System.out.println("GetData geocoding repository onResponse ::: "+response);
                 if(response.isSuccessful()) {
                     Geocoding data = response.body();
                     System.out.println("GEOCODING  RESPONSE ::: "+response);
@@ -148,6 +152,8 @@ public class WeatherRepository {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<AirQuality> call, Response<AirQuality> response) {
+                System.out.println("GetData airQuality repository onResponse ::: "+response);
+
                 System.out.println("AIR QUALITY ::: " + response);
                 if (response.isSuccessful() && response.body() != null) {
                     AirQuality airQuality = response.body();
@@ -286,7 +292,7 @@ public class WeatherRepository {
                 bad = 1;
                 badIndicator += " UV index";
             }
-            if (airQuality24h.dust[i] > 0) {
+            if (airQuality24h.dust[i] > 1) {
                 bad = 2;
                 badIndicator += " dust";
             }

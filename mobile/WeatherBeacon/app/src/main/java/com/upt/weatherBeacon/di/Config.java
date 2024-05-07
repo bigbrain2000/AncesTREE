@@ -7,8 +7,10 @@ public class Config {
     public static String AUTHORIZATION = "http://localhost:8081";
     public static String USER = "http://localhost:8082";
     //    public static String WEATHER = "http://localhost:8084";
-    public static String WEATHER = "https://api.open-meteo.com/v1/";
+
+//    public static String WEATHER = "http://weatherservice-env.eba-fphp3up2.eu-west-1.elasticbeanstalk.com/v1/";
+    public static String WEATHER = "http://weatherservice-env.eba-fphp3up2.eu-west-1.elasticbeanstalk.com/v1/";
     public static String GEOCODING = "https://geocoding-api.open-meteo.com/v1/";
-    public static String AIRQUALITY = "https://air-quality-api.open-meteo.com/v1/";
+    public static String AIRQUALITY = "http://weatherservice-env.eba-fphp3up2.eu-west-1.elasticbeanstalk.com/v1/";
 
 }
