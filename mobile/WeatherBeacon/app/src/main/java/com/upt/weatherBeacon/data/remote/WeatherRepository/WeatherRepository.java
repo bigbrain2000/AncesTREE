@@ -4,19 +4,24 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.gson.Gson;
 import com.upt.weatherBeacon.R;
+import com.upt.weatherBeacon.assets.ClimateChangeData;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.AirQuality;
+import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.ClimateChange;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.HourlyAirQuality;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.WeatherForecasts;
 import com.upt.weatherBeacon.model.AirQaulityCallback;
 import com.upt.weatherBeacon.model.CurrentWeather;
 import com.upt.weatherBeacon.model.DailyWeatherData;
+import com.upt.weatherBeacon.model.DayClimate;
 import com.upt.weatherBeacon.model.GeocodingDataCallback;
 import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.WeatherDataCallback;
+import com.upt.weatherBeacon.model.YearClimate;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -197,6 +202,67 @@ public class WeatherRepository {
                 callback.onFailure(new Exception("Failed to fetch data")); // Handle failure
             }
         });
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<YearClimate> getCLimateChangeData() {
+
+        Gson gson = new Gson();
+
+        ClimateChange data = gson.fromJson(ClimateChangeData.five_years, ClimateChange.class);
+
+        List<YearClimate> result  = mapToYearClimate(data);
+
+        return result;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<YearClimate>
+    mapToYearClimate(ClimateChange data) {
+        List<YearClimate> result = new ArrayList<>();
+        String[] dataYears = Arrays.stream(data.daily.time).map(it -> {
+            String[] parts = it.split("-");
+            return parts[0];
+        }).toArray(String[]::new);
+        String[] years = Arrays.stream(dataYears).distinct().toArray(String[]::new);
+        List<ClimateChange> climateYears = new ArrayList<>();
+        int start = 0;
+        int end = 0;
+
+        for (int i = 0; i < years.length; i++) {
+            int finalI = i;
+            String[] time = Arrays.stream(data.daily.time).filter(it -> it.contains(years[finalI])).toArray(String[]::new);
+            end = start + time.length;
+            double[] minTemp = Arrays.stream(data.daily.minTemp, start, end).toArray();
+            double[] maxTemp = Arrays.stream(data.daily.maxTemp, start, end).toArray();
+            double[] windSpeed = Arrays.stream(data.daily.maxWindSpeed, start, end).toArray();
+            double[] precipitation = Arrays.stream(data.daily.precipitation, start, end).toArray();
+
+            YearClimate year = new YearClimate();
+            DayClimate[] days = new DayClimate[time.length];
+            for (int j = 0; j < time.length; j++) {
+                DayClimate day = new DayClimate();
+                day.time = time[j];
+                day.maxTemp = maxTemp[j];
+                day.minTemp = minTemp[j];
+                day.precipitation = precipitation[j];
+                day.windSpeed = windSpeed[j];
+                days[j] = day;
+            }
+
+            year.days = days;
+//            OptionalDouble maxTemperature = Arrays.stream(maxTemp).max();
+////            if(maxTemperature.isPresent())
+            year.maxTemp = Arrays.stream(maxTemp).max().getAsDouble();
+            year.minTemp = Arrays.stream(minTemp).min().getAsDouble();
+            year.maxWindSpeed = Arrays.stream(windSpeed).max().getAsDouble();
+            year.totalPrecipitaiton = Arrays.stream(precipitation).sum();
+            result.add(year);
+            start = end;
+
+        }
+        return result;
 
     }
 

@@ -4,13 +4,23 @@ import static com.upt.weatherBeacon.di.NetworkModule.provideAirQualityAPI;
 import static com.upt.weatherBeacon.di.NetworkModule.provideGeocodingAPI;
 import static com.upt.weatherBeacon.di.NetworkModule.provideOpenMeteoAPI;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.WeatherRepository;
 import com.upt.weatherBeacon.model.GeocodingDataCallback;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.WeatherDataCallback;
+import com.upt.weatherBeacon.model.YearClimate;
 import com.upt.weatherBeacon.ui.base.BaseViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -56,6 +66,42 @@ public class HomeViewModel extends BaseViewModel {
 
             }
         });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<YearClimate> getClimateChangeData(){
+        return repository.getCLimateChangeData();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<List<LineGraphSeries<DataPoint>>> getSeries(List<YearClimate> years){
+        List<List<LineGraphSeries<DataPoint>>> series = new ArrayList<>();
+        for(int i =0; i < years.size(); i++){
+            YearClimate year = years.get(i);
+            DataPoint[] maxTempPoints = new DataPoint[year.days.length];
+            DataPoint[] minTempPoints = new DataPoint[year.days.length];
+            DataPoint[] windPoints = new DataPoint[year.days.length];
+            DataPoint[] precipitationPoints = new DataPoint[year.days.length];
+            for(int j = 0; j < year.days.length; j++){
+                maxTempPoints[j] = new DataPoint(j, year.days[j].maxTemp);
+                minTempPoints[j] = new DataPoint(j, year.days[j].minTemp);
+                windPoints[j] = new DataPoint(j, year.days[j].windSpeed);
+                precipitationPoints[j] = new DataPoint(j, year.days[j].precipitation);
+
+            }
+            List<LineGraphSeries<DataPoint>> yearGraphs = new ArrayList<>();
+
+            yearGraphs.add( new LineGraphSeries(maxTempPoints));
+            yearGraphs.add( new LineGraphSeries(minTempPoints));
+            yearGraphs.add( new LineGraphSeries(windPoints));
+            yearGraphs.add( new LineGraphSeries(precipitationPoints));
+
+            series.add(yearGraphs);
+
+        }
+
+
+
+        return series;
     }
 
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -75,8 +76,11 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         View manageContent = getLayoutInflater().inflate(R.layout.manage_account, null);
 
         Button btnGeocodingSearch = geocodingContent.findViewById(R.id.btnGeocodingSearch);
-        GraphView graphT = (GraphView) climateContent.findViewById(R.id.graphT);
-        GraphView graphP = (GraphView) climateContent.findViewById(R.id.graphP);
+        GraphView graphMaxTemp = (GraphView) climateContent.findViewById(R.id.graphMaxTemp);
+        GraphView graphMinTemp = (GraphView) climateContent.findViewById(R.id.graphMinTemp);
+        GraphView graphWind = (GraphView) climateContent.findViewById(R.id.graphWindSpeed);
+        GraphView graphPrecipitation = (GraphView) climateContent.findViewById(R.id.graphPrecipitation);
+
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,22 +309,120 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         });
 
         btnClimateChange.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 menuLayout.setVisibility(View.GONE);
                 parentDisplayLayout.addView(climateContent);
 
-                //TODO functionality climate
 
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{
-                        new DataPoint(0, 1),
-                        new DataPoint(1, 5),
-                        new DataPoint(2, 3),
-                        new DataPoint(3, 2),
-                        new DataPoint(4, 6)
-                });
-                graphT.addSeries(series);
-                graphP.addSeries(series);
+                graphMaxTemp.setTitle("Evolution of max. temperature through last 5 years");
+                graphMinTemp.setTitle("Evoulution of min. temperature through last 5 years");
+                graphWind.setTitle("Evolution of wind speed through last 5 years");
+                graphPrecipitation.setTitle("Evolution of precipitations through last 5 years");
+
+                graphMaxTemp.computeScroll();
+                graphMaxTemp.getViewport().setScalable(true);
+                graphMaxTemp.getViewport().setScrollable(true);
+              
+
+                graphMaxTemp.animate();
+                // Set initial visible range along the x-axis
+                graphMaxTemp.getViewport().setXAxisBoundsManual(true);
+                graphMaxTemp.getViewport().setMinX(0);
+                graphMaxTemp.getViewport().setMaxX(366);
+
+// Set initial visible range along the y-axis
+                graphMaxTemp.getViewport().setYAxisBoundsManual(true);
+                graphMaxTemp.getViewport().setMinY(-20);
+                graphMaxTemp.getViewport().setMaxY(50);
+
+                graphMinTemp.computeScroll();
+                graphMinTemp.getViewport().setScalable(true);
+                graphMinTemp.getViewport().setScrollable(true);
+
+
+                graphMinTemp.animate();
+                // Set initial visible range along the x-axis
+                graphMinTemp.getViewport().setXAxisBoundsManual(true);
+                graphMinTemp.getViewport().setMinX(0);
+                graphMinTemp.getViewport().setMaxX(366);
+
+// Set initial visible range along the y-axis
+                graphMinTemp.getViewport().setYAxisBoundsManual(true);
+                graphMinTemp.getViewport().setMinY(-35);
+                graphMinTemp.getViewport().setMaxY(50);
+
+
+                graphPrecipitation.computeScroll();
+                graphPrecipitation.getViewport().setScalable(true);
+                graphPrecipitation.getViewport().setScrollable(true);
+
+
+                graphPrecipitation.animate();
+                // Set initial visible range along the x-axis
+                graphPrecipitation.getViewport().setXAxisBoundsManual(true);
+                graphPrecipitation.getViewport().setMinX(0);
+                graphPrecipitation.getViewport().setMaxX(366);
+
+// Set initial visible range along the y-axis
+                graphPrecipitation.getViewport().setYAxisBoundsManual(true);
+                graphPrecipitation.getViewport().setMinY(0);
+                graphPrecipitation.getViewport().setMaxY(100);
+
+                graphWind.computeScroll();
+                graphWind.getViewport().setScalable(true);
+                graphWind.getViewport().setScrollable(true);
+
+
+                graphWind.animate();
+                // Set initial visible range along the x-axis
+                graphWind.getViewport().setXAxisBoundsManual(true);
+                graphWind.getViewport().setMinX(0);
+                graphWind.getViewport().setMaxX(366);
+
+// Set initial visible range along the y-axis
+                graphWind.getViewport().setYAxisBoundsManual(true);
+                graphWind.getViewport().setMinY(0);
+                graphWind.getViewport().setMaxY(75);
+                        
+                        
+                
+              
+
+
+                 List<List<LineGraphSeries<DataPoint>>> seriesVM = viewModel.getSeries(viewModel.getClimateChangeData());
+
+                 int[] colors = new int[]{getResources().getColor(R.color.year0), getResources().getColor(R.color.year1),getResources().getColor(R.color.year2), getResources().getColor(R.color.year3), getResources().getColor(R.color.year4),getResources().getColor(R.color.year5)};
+                 for(int i = 0; i < seriesVM.size(); i++){
+//                     for(int j =0 ; j < seriesVM.get(i).size(); i++){
+                     LineGraphSeries<DataPoint> seriesTMAX =seriesVM.get(i).get(0);
+                     LineGraphSeries<DataPoint> seriesTMIN =seriesVM.get(i).get(1);
+                     LineGraphSeries<DataPoint> seriesWind =seriesVM.get(i).get(2);
+                     LineGraphSeries<DataPoint> seriesPrecipitation =seriesVM.get(i).get(3);
+                     seriesTMAX.setAnimated(true);
+                     seriesTMAX.setColor(colors[i]);
+                     seriesTMIN.setAnimated(true);
+                     seriesTMIN.setColor(colors[i]);
+                     seriesWind.setAnimated(true);
+                     seriesWind.setColor(colors[i]);
+                     seriesPrecipitation.setAnimated(true);
+                     seriesPrecipitation.setColor(colors[i]);
+                     graphMaxTemp.addSeries(seriesTMAX);
+                     graphMinTemp.addSeries(seriesTMIN);
+                     graphWind.addSeries(seriesWind);
+                     graphPrecipitation.addSeries(seriesPrecipitation);
+//                     graphMaxTemp.addSeries(seriesVM.get(i).get(0));
+
+
+//                     }
+                 }
+
+
+//                GraphView graph = (GraphView) climateContent.findViewById(R.id.graphMinTemp);
+
+
+
             }
         });
 

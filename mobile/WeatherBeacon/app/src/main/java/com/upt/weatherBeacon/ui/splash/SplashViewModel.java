@@ -40,6 +40,7 @@ public class SplashViewModel extends BaseViewModel {
     public void getWeatherDataForCurrentLocation() {
         if (repository != null) {
             System.out.println("NU E NULL REPOSITORY");
+            repository.getCLimateChangeData();
 
             repository.getAirQualityData(appState.getLatitude(), appState.getLongitude(), new AirQaulityCallback() {
                 @Override

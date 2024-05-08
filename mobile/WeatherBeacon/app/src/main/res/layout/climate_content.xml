@@ -10,25 +10,64 @@
             android:id="@+id/fillerSpace"
             android:layout_width="match_parent"
             android:layout_height="80dp"/>
-
-    <com.jjoe64.graphview.GraphView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:paddingRight="10dp"
-            android:layout_height="300dip"
-            android:id="@+id/graphT"
-            android:layout_marginVertical="10dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:paddingRight="10dp"
+                android:layout_height="300dip"
+                android:id="@+id/graphMaxTemp"
+                android:layout_marginVertical="10dp"/>
 
-    <Space
-            android:id="@+id/fillerSpace2"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            <Space
+                android:id="@+id/fillerSpace2"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
 
-    <com.jjoe64.graphview.GraphView
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:layout_height="300dip"
-            android:id="@+id/graphP"
-            android:layout_marginVertical="10dp"/>
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_height="300dip"
+                android:id="@+id/graphMinTemp"
+                android:layout_marginVertical="10dp"/>
+
+            <Space
+                android:id="@+id/fillerSpace3"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_height="300dip"
+                android:id="@+id/graphWindSpeed"
+                android:layout_marginVertical="10dp"/>
+
+            <Space
+                android:id="@+id/fillerSpace4"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_height="300dip"
+                android:id="@+id/graphPrecipitation"
+                android:layout_marginVertical="10dp"/>
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
 
 </LinearLayout>

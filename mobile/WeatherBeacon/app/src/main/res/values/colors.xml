@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="year0">#FF0909</color>
+    <color name="year1">#627BFA</color>
+    <color name="year2">#DD620E</color>
+    <color name="year3">#68F311</color>
+    <color name="year4">#07F4C7</color>
+    <color name="year5">#673AB7</color>
 </resources>
