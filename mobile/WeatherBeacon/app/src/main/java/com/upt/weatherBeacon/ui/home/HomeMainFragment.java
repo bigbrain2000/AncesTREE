@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,12 +30,12 @@ import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.R;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.GeocodingData;
-import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.HourlyAirQuality;
 import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
 import com.upt.weatherBeacon.model.DailyWeatherData;
 import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
+import com.upt.weatherBeacon.model.YearClimate;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 
 import java.time.LocalTime;
@@ -385,17 +384,65 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 graphWind.getViewport().setYAxisBoundsManual(true);
                 graphWind.getViewport().setMinY(0);
                 graphWind.getViewport().setMaxY(75);
-                        
-                        
+
+
+
+                TextView max0 = view.findViewById(R.id.max0);
+                TextView max1 = view.findViewById(R.id.max1);
+                TextView max2 = view.findViewById(R.id.max2);
+                TextView max3 = view.findViewById(R.id.max3);
+                TextView max4 = view.findViewById(R.id.max4);
                 
-              
+                TextView min0 = view.findViewById(R.id.min0);
+                TextView min1 = view.findViewById(R.id.min1);
+                TextView min2 = view.findViewById(R.id.min2);
+                TextView min3 = view.findViewById(R.id.min3);
+                TextView min4 = view.findViewById(R.id.min4);
 
 
-                 List<List<LineGraphSeries<DataPoint>>> seriesVM = viewModel.getSeries(viewModel.getClimateChangeData());
+                TextView humidity0 = view.findViewById(R.id.humidity0);
+                TextView humidity1 = view.findViewById(R.id.humidity1);
+                TextView humidity2 = view.findViewById(R.id.humidity2);
+                TextView humidity3 = view.findViewById(R.id.humidity3);
+                TextView humidity4 = view.findViewById(R.id.humidity4);
+
+
+                TextView wind0 = view.findViewById(R.id.wind0);
+                TextView wind1 = view.findViewById(R.id.wind1);
+                TextView wind2 = view.findViewById(R.id.wind2);
+                TextView wind3 = view.findViewById(R.id.wind3);
+                TextView wind4 = view.findViewById(R.id.wind4);
+
+                List<YearClimate> years = viewModel.getClimateChangeData();
+
+                max0.setText(String.valueOf(years.get(0).maxTemp));
+                max1.setText(String.valueOf(years.get(1).maxTemp));
+                max2.setText(String.valueOf(years.get(2).maxTemp));
+                max3.setText(String.valueOf(years.get(3).maxTemp));
+                max4.setText(String.valueOf(years.get(4).maxTemp));
+
+                min0.setText(String.valueOf(years.get(0).minTemp));
+                min1.setText(String.valueOf(years.get(1).minTemp));
+                min2.setText(String.valueOf(years.get(2).minTemp));
+                min3.setText(String.valueOf(years.get(3).minTemp));
+                min4.setText(String.valueOf(years.get(4).minTemp));
+
+                humidity0.setText(String.valueOf(years.get(0).totalPrecipitaiton));
+                humidity1.setText(String.valueOf(years.get(1).totalPrecipitaiton));
+                humidity2.setText(String.valueOf(years.get(2).totalPrecipitaiton));
+                humidity3.setText(String.valueOf(years.get(3).totalPrecipitaiton));
+                humidity4.setText(String.valueOf(years.get(4).totalPrecipitaiton));
+
+                wind0.setText(String.valueOf(years.get(0).maxWindSpeed));
+                wind1.setText(String.valueOf(years.get(1).maxWindSpeed));
+                wind2.setText(String.valueOf(years.get(2).maxWindSpeed));
+                wind3.setText(String.valueOf(years.get(3).maxWindSpeed));
+                wind4.setText(String.valueOf(years.get(4).maxWindSpeed));
+
+                List<List<LineGraphSeries<DataPoint>>> seriesVM = viewModel.getSeries(years);
 
                  int[] colors = new int[]{getResources().getColor(R.color.year0), getResources().getColor(R.color.year1),getResources().getColor(R.color.year2), getResources().getColor(R.color.year3), getResources().getColor(R.color.year4),getResources().getColor(R.color.year5)};
                  for(int i = 0; i < seriesVM.size(); i++){
-//                     for(int j =0 ; j < seriesVM.get(i).size(); i++){
                      LineGraphSeries<DataPoint> seriesTMAX =seriesVM.get(i).get(0);
                      LineGraphSeries<DataPoint> seriesTMIN =seriesVM.get(i).get(1);
                      LineGraphSeries<DataPoint> seriesWind =seriesVM.get(i).get(2);
@@ -412,10 +459,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                      graphMinTemp.addSeries(seriesTMIN);
                      graphWind.addSeries(seriesWind);
                      graphPrecipitation.addSeries(seriesPrecipitation);
-//                     graphMaxTemp.addSeries(seriesVM.get(i).get(0));
-
-
-//                     }
+                     
                  }
 
 

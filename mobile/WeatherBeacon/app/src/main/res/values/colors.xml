@@ -8,4 +8,13 @@
     <color name="year3">#68F311</color>
     <color name="year4">#07F4C7</color>
     <color name="year5">#673AB7</color>
+    <selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <!-- Color when switch is checked -->
+        <item android:color="#1A6FDA2E" android:state_checked="true" />
+        <!-- Color when switch is unchecked -->
+        <item android:color="#D8A754" android:state_checked="false" />
+        <!-- Default color -->
+        <item android:color="#D8A754" />
+    </selector>
+
 </resources>
