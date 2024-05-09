@@ -365,10 +365,6 @@
                 android:textStyle="bold" />
 
 
-
-
-
-
             <TextView
                 android:id="@+id/wind0"
                 android:layout_width="wrap_content"
@@ -458,7 +454,7 @@
                         android:textStyle="bold" />
 
                     <Switch
-                        android:id="@+id/siwtchyear0"
+                        android:id="@+id/switchyear0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -482,7 +478,7 @@
                         android:textStyle="bold" />
 
                     <Switch
-                        android:id="@+id/siwtchyear1"
+                        android:id="@+id/switchyear1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -505,7 +501,7 @@
                         android:textStyle="bold" />
 
                     <Switch
-                        android:id="@+id/siwtchyear2"
+                        android:id="@+id/switchyear2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -536,7 +532,7 @@
                         android:textStyle="bold" />
 
                     <Switch
-                        android:id="@+id/siwtchyear3"
+                        android:id="@+id/switchyear3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -558,11 +554,9 @@
                         android:textStyle="bold" />
 
                     <Switch
-                        android:id="@+id/siwtchyear4"
+                        android:id="@+id/switchyear4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:thumbTint="sel"
-                        android:trackTint="#C87FDD6E"
                         />
 
                 </LinearLayout>

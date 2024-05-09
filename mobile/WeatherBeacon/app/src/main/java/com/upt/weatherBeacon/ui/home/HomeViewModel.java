@@ -17,6 +17,7 @@ import com.upt.weatherBeacon.model.GeocodingDataCallback;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.WeatherDataCallback;
 import com.upt.weatherBeacon.model.YearClimate;
+import com.upt.weatherBeacon.model.YearGraphSeries;
 import com.upt.weatherBeacon.ui.base.BaseViewModel;
 
 import java.util.ArrayList;
@@ -73,8 +74,9 @@ public class HomeViewModel extends BaseViewModel {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public List<List<LineGraphSeries<DataPoint>>> getSeries(List<YearClimate> years){
+    public List<YearGraphSeries> getSeries(List<YearClimate> years){
         List<List<LineGraphSeries<DataPoint>>> series = new ArrayList<>();
+        List<YearGraphSeries> yearGraphSeries = new ArrayList<>();
         for(int i =0; i < years.size(); i++){
             YearClimate year = years.get(i);
             DataPoint[] maxTempPoints = new DataPoint[year.days.length];
@@ -95,13 +97,19 @@ public class HomeViewModel extends BaseViewModel {
             yearGraphs.add( new LineGraphSeries(windPoints));
             yearGraphs.add( new LineGraphSeries(precipitationPoints));
 
+            YearGraphSeries yearS = new YearGraphSeries();
+            yearS.series = yearGraphs;
+            yearS.year = i+2019;
+            System.out.println("GRAPH view model year "+ i + " "+ yearS.year + " "+ yearS.series.get(0));
+            yearGraphSeries.add(yearS);
             series.add(yearGraphs);
 
         }
 
 
 
-        return series;
+//        return series;
+        return yearGraphSeries;
     }
 
 }

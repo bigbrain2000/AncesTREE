@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.HourlyWeatherData;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.YearClimate;
+import com.upt.weatherBeacon.model.YearGraphSeries;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 
 import java.time.LocalTime;
@@ -439,24 +441,276 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 wind3.setText(String.valueOf(years.get(3).maxWindSpeed));
                 wind4.setText(String.valueOf(years.get(4).maxWindSpeed));
 
-                List<List<LineGraphSeries<DataPoint>>> seriesVM = viewModel.getSeries(years);
+                List<YearGraphSeries> seriesVM = viewModel.getSeries(years);
+                appState.updateGraphSeriesLiveData(seriesVM);
+                appState.updateGraphSeriesLiveDataAll(viewModel.getSeries(years));
 
-                 int[] colors = new int[]{getResources().getColor(R.color.year0), getResources().getColor(R.color.year1),getResources().getColor(R.color.year2), getResources().getColor(R.color.year3), getResources().getColor(R.color.year4),getResources().getColor(R.color.year5)};
-                 for(int i = 0; i < seriesVM.size(); i++){
-                     LineGraphSeries<DataPoint> seriesTMAX =seriesVM.get(i).get(0);
-                     LineGraphSeries<DataPoint> seriesTMIN =seriesVM.get(i).get(1);
-                     LineGraphSeries<DataPoint> seriesWind =seriesVM.get(i).get(2);
-                     LineGraphSeries<DataPoint> seriesPrecipitation =seriesVM.get(i).get(3);
-                     seriesTMAX.setAnimated(true);
-                     seriesTMAX.setColor(colors[i]);
-                     seriesTMIN.setAnimated(true);
-                     seriesTMIN.setColor(colors[i]);
-                     seriesWind.setAnimated(true);
-                     seriesWind.setColor(colors[i]);
-                     seriesPrecipitation.setAnimated(true);
-                     seriesPrecipitation.setColor(colors[i]);
-                     graphMaxTemp.addSeries(seriesTMAX);
-                     graphMinTemp.addSeries(seriesTMIN);
+                Switch sw0 = view.findViewById(R.id.switchyear0);
+                Switch sw1 = view.findViewById(R.id.switchyear1);
+                Switch sw2 = view.findViewById(R.id.switchyear2);
+                Switch sw3 = view.findViewById(R.id.switchyear3);
+                Switch sw4 = view.findViewById(R.id.switchyear4);
+
+                // Create a ColorStateList for thumb color
+                ColorStateList thumbColorStateList0 = new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{-android.R.attr.state_checked}
+                        },
+                        new int[]{
+                                getResources().getColor(R.color.year0),
+                                getResources().getColor(R.color.year0)
+                        }
+                );
+                // Create a ColorStateList for thumb color
+                ColorStateList thumbColorStateList1 = new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{-android.R.attr.state_checked}
+                        },
+                        new int[]{
+                                getResources().getColor(R.color.year1),
+                                getResources().getColor(R.color.year1)
+                        }
+                );
+
+                // Create a ColorStateList for thumb color
+                ColorStateList thumbColorStateList2 = new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{-android.R.attr.state_checked}
+                        },
+                        new int[]{
+                                getResources().getColor(R.color.year2),
+                                getResources().getColor(R.color.year2)
+                        }
+                );
+
+                // Create a ColorStateList for thumb color
+                ColorStateList thumbColorStateList3 = new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{-android.R.attr.state_checked}
+                        },
+                        new int[]{
+                                getResources().getColor(R.color.year3),
+                                getResources().getColor(R.color.year3)
+                        }
+                );
+
+                // Create a ColorStateList for thumb color
+                ColorStateList thumbColorStateList4 = new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{-android.R.attr.state_checked}
+                        },
+                        new int[]{
+                                getResources().getColor(R.color.year4),
+                                getResources().getColor(R.color.year4)
+                        }
+                );
+                // Create a ColorStateList for thumb color
+                ColorStateList trackColorStateList = new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{-android.R.attr.state_checked}
+                        },
+                        new int[]{
+                                getResources().getColor(R.color.trackPressed),
+                                getResources().getColor(R.color.trackUnpressed),
+
+                        }
+                );
+
+                sw0.setThumbTintList(thumbColorStateList0);
+                sw0.setTrackTintList(trackColorStateList);
+                sw1.setThumbTintList(thumbColorStateList1);
+                sw1.setTrackTintList(trackColorStateList);
+                sw2.setThumbTintList(thumbColorStateList2);
+                sw2.setTrackTintList(trackColorStateList);
+                sw3.setThumbTintList(thumbColorStateList3);
+                sw3.setTrackTintList(trackColorStateList);
+                sw4.setThumbTintList(thumbColorStateList4);
+                sw4.setTrackTintList(trackColorStateList);
+
+                sw0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        List<YearGraphSeries> yearGraphSeries = appState.graphSeries.getValue();
+                        List<YearGraphSeries> yearGraphSeriesAll = appState.graphSeriesAll.getValue();
+                        if (sw0.isChecked()) {
+                            for (int i = 0; i < yearGraphSeries.size(); i++) {
+
+                                if (yearGraphSeries.get(i).year == 2019) {
+                                    yearGraphSeries.remove(i);
+                                    i--;
+                                    }
+                            }
+                        } else {
+                            for (int i = 0; i < yearGraphSeriesAll.size(); i++) {
+                                 if (yearGraphSeriesAll.get(i).year == 2019) {
+                                    yearGraphSeries.add(yearGraphSeriesAll.get(i));
+                                    }
+                            }
+                        }
+
+                        appState.updateGraphSeriesLiveData(yearGraphSeries);
+
+                    }
+                });
+
+                sw1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        List<YearGraphSeries> yearGraphSeries = appState.graphSeries.getValue();
+                        List<YearGraphSeries> yearGraphSeriesAll = appState.graphSeriesAll.getValue();
+                        if (sw1.isChecked()) {
+                            for (int i = 0; i < yearGraphSeries.size(); i++) {
+                                System.out.println("GRAPH AM AJUNS AICI LA STERGERE 2020 ::: "+yearGraphSeries.get(i).year);
+                                if (yearGraphSeries.get(i).year == 2020) {
+                                    yearGraphSeries.remove(i);
+                                    i--;
+                                      }
+                            }
+                        } else {
+                             for (int i = 0; i < yearGraphSeriesAll.size(); i++) {
+                                 System.out.println("GRAPH AM AJUNS AICI LA STERGERE 2020 ::: "+yearGraphSeriesAll.get(i).year);
+                                 if (yearGraphSeriesAll.get(i).year == 2020) {
+                                    yearGraphSeries.add(yearGraphSeriesAll.get(i));
+                                    }
+                            }
+                        }
+
+                        appState.updateGraphSeriesLiveData(yearGraphSeries);
+
+                    }
+                });
+
+                sw2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        List<YearGraphSeries> yearGraphSeries = appState.graphSeries.getValue();
+                        List<YearGraphSeries> yearGraphSeriesAll = appState.graphSeriesAll.getValue();
+                        if (sw2.isChecked()) {
+                            for (int i = 0; i < yearGraphSeries.size(); i++) {
+                                if (yearGraphSeries.get(i).year == 2021) {
+                                    yearGraphSeries.remove(i);
+                                    i--;
+                                   }
+                            }
+                        } else {
+                             for (int i = 0; i < yearGraphSeriesAll.size(); i++) {
+                                 if (yearGraphSeriesAll.get(i).year == 2021) {
+                                    yearGraphSeries.add(yearGraphSeriesAll.get(i));
+                                  }
+                            }
+                        }
+
+                        appState.updateGraphSeriesLiveData(yearGraphSeries);
+
+                    }
+                });
+
+                sw3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        List<YearGraphSeries> yearGraphSeries = appState.graphSeries.getValue();
+                        List<YearGraphSeries> yearGraphSeriesAll = appState.graphSeriesAll.getValue();
+                        if (sw3.isChecked()) {
+                            for (int i = 0; i < yearGraphSeries.size(); i++) {
+                                 if (yearGraphSeries.get(i).year == 2022) {
+                                    yearGraphSeries.remove(i);
+                                    i--;
+                                      }
+                            }
+                        } else {
+                            for (int i = 0; i < yearGraphSeriesAll.size(); i++) {
+                                if (yearGraphSeriesAll.get(i).year == 2022) {
+                                    yearGraphSeries.add(yearGraphSeriesAll.get(i));
+                                   }
+                            }
+                        }
+
+                        appState.updateGraphSeriesLiveData(yearGraphSeries);
+
+                    }
+                });
+
+                sw4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        List<YearGraphSeries> yearGraphSeries = appState.graphSeries.getValue();
+                        List<YearGraphSeries> yearGraphSeriesAll = appState.graphSeriesAll.getValue();
+                        if (sw4.isChecked()) {
+                            for (int i = 0; i < yearGraphSeries.size(); i++) {
+                                  if (yearGraphSeries.get(i).year == 2023) {
+                                    yearGraphSeries.remove(i);
+                                    i--;
+                                     }
+                            }
+                        } else {
+                            for (int i = 0; i < yearGraphSeriesAll.size(); i++) {
+                                if (yearGraphSeriesAll.get(i).year == 2023) {
+                                    yearGraphSeries.add(yearGraphSeriesAll.get(i));
+                                    }
+                            }
+                        }
+
+                        appState.updateGraphSeriesLiveData(yearGraphSeries);
+
+                    }
+                });
+
+                int[] colors = new int[]{getResources().getColor(R.color.year0), getResources().getColor(R.color.year1), getResources().getColor(R.color.year2), getResources().getColor(R.color.year3), getResources().getColor(R.color.year4), getResources().getColor(R.color.year5)};
+
+                appState.graphSeries.observe(getViewLifecycleOwner(), new Observer<List<YearGraphSeries>>() {
+                    @Override
+                    public void onChanged(List<YearGraphSeries> series) {
+                        graphMaxTemp.removeAllSeries();
+                        graphMinTemp.removeAllSeries();
+                        graphWind.removeAllSeries();
+                        graphPrecipitation.removeAllSeries();
+
+                        for (int i = 0; i < series.size(); i++) {
+                            LineGraphSeries<DataPoint> seriesTMAX = seriesVM.get(i).series.get(0);
+                            LineGraphSeries<DataPoint> seriesTMIN = seriesVM.get(i).series.get(1);
+                            LineGraphSeries<DataPoint> seriesWind = seriesVM.get(i).series.get(2);
+                            LineGraphSeries<DataPoint> seriesPrecipitation = seriesVM.get(i).series.get(3);
+
+                            int colorIndex = seriesVM.get(i).year - 2019;
+                            seriesTMAX.setAnimated(true);
+                            seriesTMAX.setColor(colors[colorIndex]);
+                            seriesTMIN.setAnimated(true);
+                            seriesTMIN.setColor(colors[colorIndex]);
+                            seriesWind.setAnimated(true);
+                            seriesWind.setColor(colors[colorIndex]);
+                            seriesPrecipitation.setAnimated(true);
+                            seriesPrecipitation.setColor(colors[colorIndex]);
+                            graphMaxTemp.addSeries(seriesTMAX);
+                            graphMinTemp.addSeries(seriesTMIN);
+                            graphWind.addSeries(seriesWind);
+                            graphPrecipitation.addSeries(seriesPrecipitation);
+                        }
+
+                    }
+                });
+
+
+                for (int i = 0; i < seriesVM.size(); i++) {
+                    LineGraphSeries<DataPoint> seriesTMAX = seriesVM.get(i).series.get(0);
+                    LineGraphSeries<DataPoint> seriesTMIN = seriesVM.get(i).series.get(1);
+                    LineGraphSeries<DataPoint> seriesWind = seriesVM.get(i).series.get(2);
+                    LineGraphSeries<DataPoint> seriesPrecipitation = seriesVM.get(i).series.get(3);
+                    seriesTMAX.setAnimated(true);
+                    seriesTMAX.setColor(colors[i]);
+                    seriesTMIN.setAnimated(true);
+                    seriesTMIN.setColor(colors[i]);
+                    seriesWind.setAnimated(true);
+                    seriesWind.setColor(colors[i]);
+                    seriesPrecipitation.setAnimated(true);
+                    seriesPrecipitation.setColor(colors[i]);
+                    graphMaxTemp.addSeries(seriesTMAX);
+                    graphMinTemp.addSeries(seriesTMIN);
                      graphWind.addSeries(seriesWind);
                      graphPrecipitation.addSeries(seriesPrecipitation);
                      
