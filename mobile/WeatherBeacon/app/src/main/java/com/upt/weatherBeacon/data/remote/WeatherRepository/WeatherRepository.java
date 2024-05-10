@@ -81,6 +81,7 @@ public class WeatherRepository {
                     current.time = hourly.get(currentHour).time;
                     current.wind_speed = hourly.get(currentHour).windSpeed;
                     current.weatherDescription = hourly.get(currentHour).weatherDescription;
+                    current.weatherCode = hourly.get(currentHour).weatherCode;
 
 
                     WeatherData data = new WeatherData();

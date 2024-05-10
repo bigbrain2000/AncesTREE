@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -42,6 +43,7 @@ import com.upt.weatherBeacon.ui.base.BaseFragment;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -104,6 +106,12 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 TextView cityName = view.findViewById(R.id.cityName);
                 cityName.setText(appState.getCity());
 
+                ImageView currentWeatherCode = view.findViewById(R.id.imageWeather);
+                TextView currentTemp = view.findViewById(R.id.curentTemp);
+                TextView currentWeatherDesc = view.findViewById(R.id.currentWeatherDescription);
+
+
+
                 Context ctx = getContext();
 
 //                textViewDaily
@@ -149,9 +157,12 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                     @SuppressLint("NewApi")
                     @Override
                     public void onChanged(WeatherData weatherData) {
-                        TextView text = view.findViewById(R.id.textWeatherDescription);
-//                        text.setText("ORICE " + weatherData.elevation);
 
+                        System.out.println("CURRENT WEATHER : " + weatherData.current.weatherCode );
+
+                        currentTemp.setText(weatherData.current.temperature+" °C");
+                        currentWeatherCode.setImageResource(weatherData.current.weatherCode);
+                        currentWeatherDesc.setText(weatherData.current.weatherDescription);
 
                         List<HourlyWeatherData> hourly = weatherData.hourly;
                         ForecastsHourlyAdapter hourlyAdapter = new ForecastsHourlyAdapter(ctx, hourly);
@@ -233,6 +244,12 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
             public void onClick(View v) {
                 EditText textField = parentDisplayLayout.findViewById(R.id.textSearchField);
                 String cityName = textField.getText().toString();
+
+                InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
                 if (!cityName.isEmpty()) {
                     viewModel.getGeocodingData(cityName);
                 }
@@ -293,6 +310,13 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                         // Extract the hour from the current time
                         int currentHour = currentTime.getHour();
                         airList.setSelection(currentHour);
+
+                        ImageView currentCode = view.findViewById(R.id.curentAirCode);
+                        TextView currentAirDesc = view.findViewById(R.id.curentAirDescription);
+
+                        currentCode.setImageResource(hourlyAir.get(currentHour).airCode);
+                        currentAirDesc.setText(hourlyAir.get(currentHour).airDescription);
+
                         airList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -761,7 +785,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
     private void showAdditionalDataDialog(HourlyWeatherData data) {
 
-        View hourlyDialog = LayoutInflater.from(getContext()).inflate(R.layout.modal_hourly,null);
+        View hourlyDialog = LayoutInflater.from(getContext()).inflate(R.layout.modal_hourly, null);
         ImageView weatherCode = hourlyDialog.findViewById(R.id.weatherCode);
         weatherCode.setImageResource(data.weatherCode);
         TextView imageDescription = hourlyDialog.findViewById(R.id.WeatherCodeDescription);
@@ -771,17 +795,47 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         TextView windDirection = hourlyDialog.findViewById(R.id.windDirection);
 
         imageDescription.setText("ORICE");
-        temperature.setText(String.valueOf(data.temperature));
-        humidity.setText(String.valueOf(data.humidity));
-        windSpeed.setText(String.valueOf(data.windSpeed));
-        windDirection.setText(String.valueOf(data.windDirection));
+        temperature.setText(String.valueOf(data.temperature) + " °C");
+        humidity.setText(String.valueOf(data.humidity) + " %");
+        windSpeed.setText(String.valueOf(data.windSpeed) + " km/h");
+
+        String windDirectionLabel = "N";
+        HashMap<String, Double> directions = new HashMap<String, Double>();
+        directions.put("N", Math.abs(data.windDirection));
+        directions.put("E", Math.abs(data.windDirection - 90));
+        directions.put("S", Math.abs(data.windDirection - 180));
+        directions.put("W", Math.abs(data.windDirection - 270));
+        directions.put("NE", Math.abs(data.windDirection - 45));
+        directions.put("SE", Math.abs(data.windDirection - 135));
+        directions.put("SW", Math.abs(data.windDirection - 225));
+        directions.put("NW", Math.abs(data.windDirection - 315));
+        directions.put("NNE", Math.abs(data.windDirection - 22.5));
+        directions.put("NEE", Math.abs(data.windDirection - 67.5));
+        directions.put("SEE", Math.abs(data.windDirection - 112.5));
+        directions.put("SSE", Math.abs(data.windDirection - 157.5));
+        directions.put("SSW", Math.abs(data.windDirection - 202.5));
+        directions.put("SWW", Math.abs(data.windDirection - 247.5));
+        directions.put("NWW", Math.abs(data.windDirection - 292.5));
+        directions.put("NNW", Math.abs(data.windDirection - 337.5));
+
+        String direction = "N";
+        Double dif = directions.get("N");
+
+        for (String i : directions.keySet()) {
+            if (dif < directions.get(i)) {
+                dif = directions.get(i);
+                direction = i;
+            }
+        }
+
+        windDirection.setText(String.valueOf(direction));
         // Create and configure AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(hourlyDialog);
         builder.setTitle("Additional Data");
 
         // Set additional data to dialog
-        builder.setMessage("Additional data: ");
+        builder.setMessage("Additional hourly data: ");
 
         // Add any other configuration you need for the dialog
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -809,8 +863,8 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
 
 
         imageDescription.setText("ORICE");
-        temperature.setText(String.valueOf(data.max_temperature));
-        temperature_min.setText(String.valueOf(data.min_temperature));
+        temperature.setText(String.valueOf(data.max_temperature) + " °C");
+        temperature_min.setText(String.valueOf(data.min_temperature + " °C"));
 
 
         String[] sunRiseSplit = data.sunrise.split("T");
@@ -848,7 +902,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         builder.setTitle("Additional Data");
 
         // Set additional data to dialog
-        builder.setMessage("Additional data: ");
+        builder.setMessage("Additional daily data: ");
 
         // Add any other configuration you need for the dialog
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -876,6 +930,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                         // Perform your action when the "OK" button is clicked
                         // For example, you can close the dialog or perform any other action
                         viewModel.getForecastsForNewCity(data.latitude, data.longitude, data.name);
+                        viewModel.getAirQualityForNewCity(data.latitude, data.longitude, data.name);
                         dialog.dismiss(); // Close the dialog
                     }
                 }) // null listener to simply dismiss the dialog when "OK" is clicked
@@ -954,7 +1009,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         builder.setTitle("Additional Data");
 
         // Set additional data to dialog
-        builder.setMessage("Additional data: ");
+        builder.setMessage("Additional air data: ");
 
         // Add any other configuration you need for the dialog
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

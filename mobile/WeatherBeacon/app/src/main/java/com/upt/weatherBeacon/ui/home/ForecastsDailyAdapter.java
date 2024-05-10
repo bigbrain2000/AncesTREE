@@ -68,8 +68,8 @@ public class ForecastsDailyAdapter extends ArrayAdapter<DailyWeatherData> {
 
         date.setText(currentItem.date);
         time.setVisibility(View.GONE);
-        temperature.setText(String.valueOf(currentItem.max_temperature));
-        temperatureMin.setText(String.valueOf(currentItem.min_temperature));
+        temperature.setText("Max. " +String.valueOf(currentItem.max_temperature)+ " °C");
+        temperatureMin.setText("Min. "+String.valueOf(currentItem.min_temperature)+" °C");
 
         icon.setImageResource(currentItem.weatherCode);
 
