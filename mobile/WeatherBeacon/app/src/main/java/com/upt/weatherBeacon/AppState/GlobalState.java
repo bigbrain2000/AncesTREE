@@ -35,8 +35,14 @@ public class GlobalState {
 
     public MutableLiveData<List<YearGraphSeries>> graphSeriesAll = new MutableLiveData<>();
 
+    public MutableLiveData<String> jwtToken = new MutableLiveData<>();
+
+
     private GlobalState() {
     }
+
+    public void setJwtToken(String token){ this.jwtToken.postValue(token); }
+    public LiveData<String> getJwtToken(){ return this.jwtToken; }
 
     public static synchronized GlobalState getState() {
         if (state == null) {

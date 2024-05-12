@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.R;
 import com.upt.weatherBeacon.databinding.FragmentLoginBinding;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
@@ -19,14 +21,23 @@ public class LoginFragment extends BaseFragment<LoginViewModel> {
 
     private FragmentLoginBinding binding;
 
+    private EditText username;
+    private EditText password;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         Button login = binding.login;
+        this.password = binding.editTextTextPassword;
+        this.username = binding.editTextTextEmailAddress;
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.uiEventStream.setValue(new ShowToast("Login Clicked"));  //TODO
+                viewModel.uiEventStream.setValue(new ShowToast("Login Clicked"));
+
+                viewModel.doLogin(username.getText().toString(), password.getText().toString());
+
+//                while(GlobalState.getState().jwtToken == ""){}
                 Navigation navigation = new Navigation(new NavAttribs(Screen.HomeMainScreen, null, true));
                 viewModel.uiEventStream.setValue(navigation);
             }

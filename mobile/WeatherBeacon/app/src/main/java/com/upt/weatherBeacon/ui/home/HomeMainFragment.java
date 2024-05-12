@@ -57,6 +57,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomemainBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        System.out.println("USER ::: jwt ::: " + appState.jwtToken.getValue());
 
         Button btnMenu = view.findViewById(R.id.btnMenu);
         menuLayout = view.findViewById(R.id.menuLayout);
@@ -69,6 +70,13 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         Space modifiedSpace = view.findViewById(R.id.modifiedSpace);
         ViewGroup parentDisplayLayout = view.findViewById(R.id.display_layout);
         Context context = requireContext().getApplicationContext();
+
+        appState.getJwtToken().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                    System.out.println("USER jwt observer::: "+s);
+            }
+        });
 
 
         View weatherForecastContent = getLayoutInflater().inflate(R.layout.weather_forecast_content, null);
@@ -311,11 +319,11 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                         int currentHour = currentTime.getHour();
                         airList.setSelection(currentHour);
 
-                        ImageView currentCode = view.findViewById(R.id.curentAirCode);
-                        TextView currentAirDesc = view.findViewById(R.id.curentAirDescription);
+//                        ImageView currentCode = view.findViewById(R.id.curentAirCode);
+//                        TextView currentAirDesc = view.findViewById(R.id.curentAirDescription);
 
-                        currentCode.setImageResource(hourlyAir.get(currentHour).airCode);
-                        currentAirDesc.setText(hourlyAir.get(currentHour).airDescription);
+//                        currentCode.setImageResource(hourlyAir.get(currentHour).airCode);
+//                        currentAirDesc.setText(hourlyAir.get(currentHour).airDescription);
 
                         airList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -754,6 +762,14 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 //TODO managefunctionality
                 parentDisplayLayout.addView(manageContent);
                 menuLayout.setVisibility(View.GONE);
+
+                Button changeButton = view.findViewById(R.id.changeButton);
+                changeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        System.out.println("USER::: jwt token change ::: "+ appState.getJwtToken().getValue());
+                    }
+                });
             }
         });
 
@@ -930,7 +946,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                         // Perform your action when the "OK" button is clicked
                         // For example, you can close the dialog or perform any other action
                         viewModel.getForecastsForNewCity(data.latitude, data.longitude, data.name);
-                        viewModel.getAirQualityForNewCity(data.latitude, data.longitude, data.name);
+//                        viewModel.getAirQualityForNewCity(data.latitude, data.longitude, data.name);
                         dialog.dismiss(); // Close the dialog
                     }
                 }) // null listener to simply dismiss the dialog when "OK" is clicked

@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.upt.weatherBeacon.MainActivity;
 import com.upt.weatherBeacon.databinding.FragmentRegisterBinding;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 import com.upt.weatherBeacon.ui.base.Navigation;
@@ -33,6 +32,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
     private EditText password;
 
     private EditText confirmPassword;
+    private EditText phoneNumber;
 
 
 
@@ -47,6 +47,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
         this.password = binding.password;
         this.confirmPassword = binding.password2;
         this.email = binding.email;
+        this.phoneNumber = binding.phoneNumber;
         return binding.getRoot();
     }
 
@@ -64,12 +65,15 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
             @Override
             public void onClick(View view) {
                 if(validateFields()){
-                   boolean res = viewModel.registerUser(username.getText().toString(),
+                    boolean res = viewModel.registerUser(username.getText().toString(),
                             firstName.getText().toString(),
                             lastName.getText().toString(),
                             email.getText().toString(),
                             password.getText().toString(),
-                            _birthDate);
+                            _birthDate,
+                            phoneNumber.getText().toString());
+
+                    System.out.println("USER ::: register result : "+ res);
                    if(res) {
                        Toast.makeText(getContext(), "User created!", Toast.LENGTH_SHORT).show();
                        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
@@ -143,12 +147,12 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
             ok++;
         }
 
-        if(birthDate.getText().equals("Birth date")){
-            birthDate.setError("ERROR");
-            binding.errorBirthDate.setVisibility(View.VISIBLE);
-            binding.errorBirthDate.setText("Required!");
-            ok++;
-        }
+//        if(birthDate.getText().equals("Birth date")){
+//            birthDate.setError("ERROR");
+//            binding.errorBirthDate.setVisibility(View.VISIBLE);
+//            binding.errorBirthDate.setText("Required!");
+//            ok++;
+//        }
         if(!viewModel.validateEmail(email.getText().toString())){
             email.setError("ERROR");
             binding.errorEmail.setVisibility(View.VISIBLE);

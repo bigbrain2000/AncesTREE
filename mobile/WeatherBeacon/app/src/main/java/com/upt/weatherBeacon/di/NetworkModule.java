@@ -1,5 +1,7 @@
 package com.upt.weatherBeacon.di;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.AirQualityApi;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.AirQuality;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.GeocodingData;
@@ -35,9 +37,12 @@ public class NetworkModule {
     @Singleton
     @Named("user")
     public static Retrofit provideRetrofitUser() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         return new Retrofit.Builder()
                 .baseUrl(Config.USER)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(new OkHttpClient.Builder().build())
                 .build();
     }
@@ -89,7 +94,8 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public static UserAPI provideUserApiService(Retrofit retrofit) {
+    public static UserAPI provideUserApiService() {
+        Retrofit retrofit = provideRetrofitUser();
         return retrofit.create(UserAPI.class);
     }
 

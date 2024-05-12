@@ -1,11 +1,14 @@
 package com.upt.weatherBeacon.ui.splash;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.RequiresApi;
 
 import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.databinding.FragmentSplashScreenBinding;
@@ -59,10 +62,12 @@ public class SplashFragment  extends BaseFragment<SplashViewModel> {
                     // Otherwise, start waiting for the condition
                     final Handler handler = new Handler(Looper.getMainLooper());
                     final Runnable runnable = new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void run() {
                             if (appState.getLatitude() != 0.0) {
                                 viewModel.getWeatherDataForCurrentLocation();
+                                viewModel.getUserData();
                                 viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
 
                             } else {
