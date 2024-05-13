@@ -75,7 +75,8 @@ public class SplashFragment  extends BaseFragment<SplashViewModel> {
 
                                 UserSessionManager sessionManager = new UserSessionManager(getContext());
                                 UserSession session = sessionManager.getUserSession();
-                                if (session != null && session.username.length() != 0) {
+                                System.out.println("SESSION ::: "+session.username);
+                                if (session != null && session.username != null && session.username.length() != 0) {
                                     Date currentDate = new Date();
                                     Date lastLogin = new Date(session.lastLoginTime);
                                     if (isDifferenceGreaterThan24Hours(currentDate, lastLogin) == false) {

@@ -17,6 +17,7 @@ import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.HourlyAirQuality;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.WeatherRepository;
 import com.upt.weatherBeacon.data.remote.userRepository.UserRepository;
+import com.upt.weatherBeacon.data.remote.userRepository.dtos.UserUpdateDto;
 import com.upt.weatherBeacon.model.AirQaulityCallback;
 import com.upt.weatherBeacon.model.GeocodingDataCallback;
 import com.upt.weatherBeacon.model.GetUserCallback;
@@ -158,8 +159,18 @@ public class HomeViewModel extends BaseViewModel {
 
     public void updateUser(String username, String firstName, String lastName, String email, String address, String password){
 
-        User user = new User(username,firstName, lastName, password, email, new Date(), "0727217100", address);
-        userRepository.updateUser(user);
+//        User user = new User(username,firstName, lastName, password, email, new Date(), "0727217100", address);
+        UserUpdateDto user = new UserUpdateDto();
+        user.address = address;
+        user.email = email;
+        user.phoneNumber = "0727217100";
+        user.firstName = firstName;
+        user.lastName = lastName;
+        userRepository.updateUser(username, user);
+    }
+
+    public void deleteAccount(String username, String jwt){
+        userRepository.deleteAccount(username, jwt);
     }
 
 }

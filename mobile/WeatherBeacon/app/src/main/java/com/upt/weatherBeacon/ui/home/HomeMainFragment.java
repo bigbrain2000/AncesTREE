@@ -23,6 +23,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 
 import com.jjoe64.graphview.GraphView;
@@ -30,6 +31,8 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.upt.weatherBeacon.AppState.GlobalState;
 import com.upt.weatherBeacon.R;
+import com.upt.weatherBeacon.data.local.UserSession;
+import com.upt.weatherBeacon.data.local.UserSessionManager;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.GeocodingData;
 import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
@@ -41,6 +44,9 @@ import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.YearClimate;
 import com.upt.weatherBeacon.model.YearGraphSeries;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
+import com.upt.weatherBeacon.ui.base.Navigation;
+import com.upt.weatherBeacon.ui.base.navigation.NavAttribs;
+import com.upt.weatherBeacon.ui.base.navigation.Screen;
 
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -72,10 +78,33 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         ViewGroup parentDisplayLayout = view.findViewById(R.id.display_layout);
         Context context = requireContext().getApplicationContext();
 
+        Button exit = binding.exitApp;
+        Button logout = binding.logout;
+
+        UserSessionManager sessionManager = new UserSessionManager(getContext());
+
         appState.getJwtToken().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                     System.out.println("USER jwt observer::: "+s);
+            }
+        });
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sessionManager.saveUserSession(new UserSession());
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Navigation navigation = new Navigation(new NavAttribs(Screen.LoginScreen, null, true));
+                viewModel.uiEventStream.setValue(navigation);
             }
         });
 
@@ -744,8 +773,8 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                     seriesPrecipitation.setColor(colors[i]);
                     graphMaxTemp.addSeries(seriesTMAX);
                     graphMinTemp.addSeries(seriesTMIN);
-                     graphWind.addSeries(seriesWind);
-                     graphPrecipitation.addSeries(seriesPrecipitation);
+                    graphWind.addSeries(seriesWind);
+                    graphPrecipitation.addSeries(seriesPrecipitation);
                      
                  }
 
@@ -767,23 +796,23 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 System.out.println("USER::: username change manage account ::: "+ appState.username);
                 viewModel.getUserLoggedInData(appState.username);
 
-                EditText username = view.findViewById(R.id.username);
+                TextView username = view.findViewById(R.id.username);
                 EditText firstName = view.findViewById(R.id.firstName);
                 EditText lastName = view.findViewById(R.id.lastName);
                 EditText email = view.findViewById(R.id.email);
                 EditText address = view.findViewById(R.id.address);
-                EditText oldPassword = view.findViewById(R.id.oldPassword);
-                EditText password = view.findViewById(R.id.password);
-                EditText confirmPassword = view.findViewById(R.id.password2);
+//                EditText oldPassword = view.findViewById(R.id.oldPassword);
+//                EditText password = view.findViewById(R.id.password);
+//                EditText confirmPassword = view.findViewById(R.id.password2);
 
                 TextView errorUsername = view.findViewById(R.id.errorUsername);
                 TextView errorFirstName = view.findViewById(R.id.errorFirstName);
                 TextView errorLastName = view.findViewById(R.id.errorLastName);
                 TextView errorEmail = view.findViewById(R.id.errorEmail);
                 TextView errorAddress = view.findViewById(R.id.errorAddress);
-                TextView errorOldPassword = view.findViewById(R.id.errorOldPassword);
-                TextView errorNewPassword = view.findViewById(R.id.errorPassword);
-                TextView errorConfirmPassword = view.findViewById(R.id.errorPassword2);
+//                TextView errorOldPassword = view.findViewById(R.id.errorOldPassword);
+//                TextView errorNewPassword = view.findViewById(R.id.errorPassword);
+//                TextView errorConfirmPassword = view.findViewById(R.id.errorPassword2);
 //
 //                errorUsername.setVisibility(View.VISIBLE);
 //                errorFirstName.setVisibility(View.VISIBLE);
@@ -816,6 +845,17 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 });
 
                 Button changeButton = view.findViewById(R.id.changeButton);
+
+                Button deleteAccount = view.findViewById(R.id.delButton);
+
+                deleteAccount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewModel.deleteAccount(username.getText().toString(), appState.getJwtToken().getValue());
+                        Navigation navigation = new Navigation(new NavAttribs(Screen.LoginScreen, null, true));
+                        viewModel.uiEventStream.setValue(navigation);
+                    }
+                });
                 changeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -847,52 +887,52 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                             errorAddress.setVisibility(View.VISIBLE);
                             errorAddress.setText("Required");
                         }
-                        if(password.getText().length() == 0){
-                            ok = 1;
-                            errorOldPassword.setText("Required");
-                            errorOldPassword.setVisibility(View.VISIBLE);
-                        }
-                        if(oldPassword.getText().length() == 0){
-                            ok = 1;
-                            errorOldPassword.setText("Required");
-                            errorOldPassword.setVisibility(View.VISIBLE);
-                        }
-                        if(password.getText().length() == 0){
-                            ok = 1;
-                            errorNewPassword.setText("Required");
-                            errorNewPassword.setVisibility(View.VISIBLE);
-                        }
-                        if(confirmPassword.getText().length() == 0){
-                            ok = 1;
-                            errorConfirmPassword.setText("Required");
-                            errorConfirmPassword.setVisibility(View.VISIBLE);
-                        }
-                        if(oldPassword.getText().toString().equals(appState.password)){
-                            ok = 1;
-                            errorOldPassword.setVisibility(View.VISIBLE);
-                            errorOldPassword.setText("Wrong old password");
-
-                        }
-                        if(password.getText().length() < 8){
-                            ok = 1;
-                            errorNewPassword.setVisibility(View.VISIBLE);
-                            errorNewPassword.setText("Minimum 8 characters");
-                        }
-                        if(password.getText().toString().equals(confirmPassword.getText().toString())){
-                            ok = 1;
-                            errorConfirmPassword.setVisibility(View.VISIBLE);
-                            errorConfirmPassword.setText("Passwords doesn't match");
-                        }
-
-                        if(password.getText().length() == 0 && confirmPassword.getText().length() == 0 && confirmPassword.getText().length() == 0){
-                            ok = 2;
-                            errorNewPassword.setVisibility(View.GONE);
-                            errorOldPassword.setVisibility(View.GONE);
-                            errorConfirmPassword.setVisibility(View.GONE);
-                        }
+//                        if(password.getText().length() == 0){
+//                            ok = 1;
+//                            errorOldPassword.setText("Required");
+//                            errorOldPassword.setVisibility(View.VISIBLE);
+//                        }
+//                        if(oldPassword.getText().length() == 0){
+//                            ok = 1;
+//                            errorOldPassword.setText("Required");
+//                            errorOldPassword.setVisibility(View.VISIBLE);
+//                        }
+//                        if(password.getText().length() == 0){
+//                            ok = 1;
+//                            errorNewPassword.setText("Required");
+//                            errorNewPassword.setVisibility(View.VISIBLE);
+//                        }
+//                        if(confirmPassword.getText().length() == 0){
+//                            ok = 1;
+//                            errorConfirmPassword.setText("Required");
+//                            errorConfirmPassword.setVisibility(View.VISIBLE);
+//                        }
+//                        if(oldPassword.getText().toString().equals(appState.password)){
+//                            ok = 1;
+//                            errorOldPassword.setVisibility(View.VISIBLE);
+//                            errorOldPassword.setText("Wrong old password");
+//
+//                        }
+//                        if(password.getText().length() < 8){
+//                            ok = 1;
+//                            errorNewPassword.setVisibility(View.VISIBLE);
+//                            errorNewPassword.setText("Minimum 8 characters");
+//                        }
+//                        if(password.getText().toString().equals(confirmPassword.getText().toString())){
+//                            ok = 1;
+//                            errorConfirmPassword.setVisibility(View.VISIBLE);
+//                            errorConfirmPassword.setText("Passwords doesn't match");
+//                        }
+//
+//                        if(password.getText().length() == 0 && confirmPassword.getText().length() == 0 && confirmPassword.getText().length() == 0){
+//                            ok = 2;
+//                            errorNewPassword.setVisibility(View.GONE);
+//                            errorOldPassword.setVisibility(View.GONE);
+//                            errorConfirmPassword.setVisibility(View.GONE);
+//                        }
 
                         if(ok == 0){
-                            viewModel.updateUser(username.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), address.getText().toString(), password.getText().toString());
+                            viewModel.updateUser(username.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), address.getText().toString(), "");
                         }
                         if(ok == 2){
                             viewModel.updateUser(username.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), address.getText().toString(), appState.password);

@@ -27,7 +27,7 @@ public interface UserAPI {
     Call<Object> updateUser(@Path("username") String username, @Body RequestBody requestBody, @Header("Authorization") String jwtToken);
 
     @DELETE("user/{username}")
-    Call<Object> deleteUser(@Path("username") String username);
+    Call<Object> deleteUser(@Path("username") String username,@Header("Authorization") String jwtToken);
 
     @GET("user/{username}")
     Call<UserDto> getUser(@Path("username") String username);

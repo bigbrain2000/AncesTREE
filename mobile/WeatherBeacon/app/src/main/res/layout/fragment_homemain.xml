@@ -29,7 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="#CCCCCC"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,14 +85,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"/>
 
-            <Button
-                android:id="@+id/btnManageAccount"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:text="Manage Account"
-                android:layout_marginBottom="12dp"
-                />
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+
+
+                <Button
+                    android:id="@+id/logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    />
+
+                <Button
+                    android:id="@+id/btnManageAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Account"
+                    android:layout_marginBottom="18dp"
+                    />
+
+                <Button
+                    android:id="@+id/exitApp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="EXIT"
+                    android:layout_marginBottom="12dp"
+                    />
+
+            </LinearLayout>
+
+
         </RelativeLayout>
 
     </LinearLayout>
