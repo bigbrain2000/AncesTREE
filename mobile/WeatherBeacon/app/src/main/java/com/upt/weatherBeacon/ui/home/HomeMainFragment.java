@@ -36,6 +36,7 @@ import com.upt.weatherBeacon.databinding.FragmentHomemainBinding;
 import com.upt.weatherBeacon.model.DailyWeatherData;
 import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.HourlyWeatherData;
+import com.upt.weatherBeacon.model.User;
 import com.upt.weatherBeacon.model.WeatherData;
 import com.upt.weatherBeacon.model.YearClimate;
 import com.upt.weatherBeacon.model.YearGraphSeries;
@@ -319,11 +320,11 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                         int currentHour = currentTime.getHour();
                         airList.setSelection(currentHour);
 
-//                        ImageView currentCode = view.findViewById(R.id.curentAirCode);
-//                        TextView currentAirDesc = view.findViewById(R.id.curentAirDescription);
+                        ImageView currentCode = view.findViewById(R.id.curentAirCode);
+                        TextView currentAirDesc = view.findViewById(R.id.curentAirDescription);
 
-//                        currentCode.setImageResource(hourlyAir.get(currentHour).airCode);
-//                        currentAirDesc.setText(hourlyAir.get(currentHour).airDescription);
+                        currentCode.setImageResource(hourlyAir.get(currentHour).airCode);
+                        currentAirDesc.setText(hourlyAir.get(currentHour).airDescription);
 
                         airList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -762,12 +763,142 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                 //TODO managefunctionality
                 parentDisplayLayout.addView(manageContent);
                 menuLayout.setVisibility(View.GONE);
+                System.out.println("USER::: jwt token change manage account ::: "+ appState.getJwtToken().getValue());
+                System.out.println("USER::: username change manage account ::: "+ appState.username);
+                viewModel.getUserLoggedInData(appState.username);
+
+                EditText username = view.findViewById(R.id.username);
+                EditText firstName = view.findViewById(R.id.firstName);
+                EditText lastName = view.findViewById(R.id.lastName);
+                EditText email = view.findViewById(R.id.email);
+                EditText address = view.findViewById(R.id.address);
+                EditText oldPassword = view.findViewById(R.id.oldPassword);
+                EditText password = view.findViewById(R.id.password);
+                EditText confirmPassword = view.findViewById(R.id.password2);
+
+                TextView errorUsername = view.findViewById(R.id.errorUsername);
+                TextView errorFirstName = view.findViewById(R.id.errorFirstName);
+                TextView errorLastName = view.findViewById(R.id.errorLastName);
+                TextView errorEmail = view.findViewById(R.id.errorEmail);
+                TextView errorAddress = view.findViewById(R.id.errorAddress);
+                TextView errorOldPassword = view.findViewById(R.id.errorOldPassword);
+                TextView errorNewPassword = view.findViewById(R.id.errorPassword);
+                TextView errorConfirmPassword = view.findViewById(R.id.errorPassword2);
+//
+//                errorUsername.setVisibility(View.VISIBLE);
+//                errorFirstName.setVisibility(View.VISIBLE);
+//                errorLastName.setVisibility(View.VISIBLE);
+//                errorEmail.setVisibility(View.VISIBLE);
+//                errorAddress.setVisibility(View.VISIBLE);
+//                errorOldPassword.setVisibility(View.VISIBLE);
+//                errorNewPassword.setVisibility(View.VISIBLE);
+//                errorConfirmPassword.setVisibility(View.VISIBLE);
+//
+//                errorUsername.setText("error");
+//                errorFirstName.setText("error");
+//                errorLastName.setText("error");
+//                errorEmail.setText("error");
+//                errorAddress.setText("error");
+//                errorOldPassword.setText("error");
+//                errorNewPassword.setText("error");
+//                errorConfirmPassword.setText("error");
+
+                appState.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+                    @Override
+                    public void onChanged(User user) {
+                        username.setText(user.username);
+                        firstName.setText(user.firstName);
+                        lastName.setText(user.lastName);
+                        email.setText(user.email);
+                        address.setText(user.address);
+
+                    }
+                });
 
                 Button changeButton = view.findViewById(R.id.changeButton);
                 changeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        System.out.println("USER::: jwt token change ::: "+ appState.getJwtToken().getValue());
+
+                        int ok =0;
+
+                        if(username.getText().length() == 0){
+                            ok = 1;
+                            errorUsername.setVisibility(View.VISIBLE);
+                            errorUsername.setText("Required");
+                        }
+                        if(firstName.getText().length() == 0){
+                            ok=1;
+                            errorFirstName.setVisibility(View.VISIBLE);
+                            errorFirstName.setText("Required");
+                        }
+                        if(lastName.getText().length() == 0){
+                            ok = 1;
+                            errorLastName.setVisibility(View.VISIBLE);
+                            errorLastName.setText("Required");
+                        }
+                        if(email.getText().length() == 0){
+                            ok = 1;
+                            errorEmail.setVisibility(View.VISIBLE);
+                            errorEmail.setText("Required");
+                        }
+                        if(address.getText().length() == 0){
+                            ok = 1;
+                            errorAddress.setVisibility(View.VISIBLE);
+                            errorAddress.setText("Required");
+                        }
+                        if(password.getText().length() == 0){
+                            ok = 1;
+                            errorOldPassword.setText("Required");
+                            errorOldPassword.setVisibility(View.VISIBLE);
+                        }
+                        if(oldPassword.getText().length() == 0){
+                            ok = 1;
+                            errorOldPassword.setText("Required");
+                            errorOldPassword.setVisibility(View.VISIBLE);
+                        }
+                        if(password.getText().length() == 0){
+                            ok = 1;
+                            errorNewPassword.setText("Required");
+                            errorNewPassword.setVisibility(View.VISIBLE);
+                        }
+                        if(confirmPassword.getText().length() == 0){
+                            ok = 1;
+                            errorConfirmPassword.setText("Required");
+                            errorConfirmPassword.setVisibility(View.VISIBLE);
+                        }
+                        if(oldPassword.getText().toString().equals(appState.password)){
+                            ok = 1;
+                            errorOldPassword.setVisibility(View.VISIBLE);
+                            errorOldPassword.setText("Wrong old password");
+
+                        }
+                        if(password.getText().length() < 8){
+                            ok = 1;
+                            errorNewPassword.setVisibility(View.VISIBLE);
+                            errorNewPassword.setText("Minimum 8 characters");
+                        }
+                        if(password.getText().toString().equals(confirmPassword.getText().toString())){
+                            ok = 1;
+                            errorConfirmPassword.setVisibility(View.VISIBLE);
+                            errorConfirmPassword.setText("Passwords doesn't match");
+                        }
+
+                        if(password.getText().length() == 0 && confirmPassword.getText().length() == 0 && confirmPassword.getText().length() == 0){
+                            ok = 2;
+                            errorNewPassword.setVisibility(View.GONE);
+                            errorOldPassword.setVisibility(View.GONE);
+                            errorConfirmPassword.setVisibility(View.GONE);
+                        }
+
+                        if(ok == 0){
+                            viewModel.updateUser(username.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), address.getText().toString(), password.getText().toString());
+                        }
+                        if(ok == 2){
+                            viewModel.updateUser(username.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), address.getText().toString(), appState.password);
+
+                        }
+
                     }
                 });
             }
@@ -810,7 +941,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         TextView windSpeed = hourlyDialog.findViewById(R.id.windSpeed);
         TextView windDirection = hourlyDialog.findViewById(R.id.windDirection);
 
-        imageDescription.setText("ORICE");
+        imageDescription.setText(data.weatherDescription);
         temperature.setText(String.valueOf(data.temperature) + " °C");
         humidity.setText(String.valueOf(data.humidity) + " %");
         windSpeed.setText(String.valueOf(data.windSpeed) + " km/h");
@@ -878,7 +1009,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         TextView sunSet = dailyDialog.findViewById(R.id.sunset);
 
 
-        imageDescription.setText("ORICE");
+        imageDescription.setText(data.weatherDescription);
         temperature.setText(String.valueOf(data.max_temperature) + " °C");
         temperature_min.setText(String.valueOf(data.min_temperature + " °C"));
 
@@ -946,7 +1077,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
                         // Perform your action when the "OK" button is clicked
                         // For example, you can close the dialog or perform any other action
                         viewModel.getForecastsForNewCity(data.latitude, data.longitude, data.name);
-//                        viewModel.getAirQualityForNewCity(data.latitude, data.longitude, data.name);
+                        viewModel.getAirQualityForNewCity(data.latitude, data.longitude, data.name);
                         dialog.dismiss(); // Close the dialog
                     }
                 }) // null listener to simply dismiss the dialog when "OK" is clicked
@@ -1039,5 +1170,7 @@ public class HomeMainFragment extends BaseFragment<HomeViewModel> {
         // Show the dialog
         builder.show();
     }
+
+
 
 }

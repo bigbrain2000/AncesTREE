@@ -82,6 +82,36 @@ public class UserRepository {
         });
         return 1;
     }
+    public int updateUser(User u){
+        String requestBodyJson = new Gson().toJson(u);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestBodyJson);
+
+
+        System.out.println("USER ::: jwt update ::: " + appState);
+        Call<Object> callAsync = userApi.updateUser(u.username, requestBody, "Bearer "+appState.getJwtToken().getValue());
+        System.out.println("USER ::: password "+u.password);
+        System.out.println("USER ::: body "+requestBodyJson);
+
+        callAsync.enqueue(new Callback<Object>() {
+
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                System.out.println("USER::: REGISTER USER  SUCCESS " + response.toString());
+                System.out.println("USER::: REGISTER USER  SUCCESS " + response.body());
+//                System.out.println("USER::: REGISTER USER  SUCCESS " + );
+
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                System.out.println(t);
+            }
+
+        });
+
+        return 1;
+
+    }
 
     public int login(String username, String password, LoginCallback callback) {
 
@@ -98,8 +128,12 @@ public class UserRepository {
             @Override
             public void onResponse(Call<LoginDto> call, Response<LoginDto> response) {
                 System.out.println("USER::: LOGIN USER  SUCCESS " + response.toString());
+                if(response.isSuccessful()){
                 appState.setJwtToken(response.body().token);
-                callback.onLoginDataReceived(response.body().token);
+                callback.onLoginDataReceived(response.body().token);}
+                else{
+                    callback.onFailure(new Throwable("Wrong username/password"));
+                }
 
             }
 
@@ -112,7 +146,7 @@ public class UserRepository {
     }
 
     private User mapToUser(UserDto usr) {
-        User user = new User(usr.username, usr.firstName, usr.lastName, usr.address, usr.email, new Date(), usr.phoneNumber);
+        User user = new User(usr.username, usr.firstName, usr.lastName, usr.address, usr.email, new Date(), usr.phoneNumber, usr.address);
         return user;
     }
 }

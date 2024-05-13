@@ -37,12 +37,20 @@ public class GlobalState {
 
     public MutableLiveData<String> jwtToken = new MutableLiveData<>();
 
+    public MutableLiveData<User> user = new MutableLiveData<>();
+
+    public String username="";
+    public String password="";
+
 
     private GlobalState() {
     }
 
     public void setJwtToken(String token){ this.jwtToken.postValue(token); }
     public LiveData<String> getJwtToken(){ return this.jwtToken; }
+
+    public void setUser(User user){ this.user.postValue(user);}
+    public LiveData<User> getUserLiveData(){ return this.user; }
 
     public static synchronized GlobalState getState() {
         if (state == null) {

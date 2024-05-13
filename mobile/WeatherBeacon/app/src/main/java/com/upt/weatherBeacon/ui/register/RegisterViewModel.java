@@ -34,7 +34,7 @@ public class RegisterViewModel extends BaseViewModel {
     }
     public boolean registerUser(String username, String firstName, String lastName, String email, String password, Date birthDate, String phoneNumber){
 
-        User newUser = new User(username, firstName, lastName, password, email, birthDate, phoneNumber);
+        User newUser = new User(username, firstName, lastName, password, email, birthDate, phoneNumber, "aaa");
         System.out.println("USER::: AM AJUNS AICI password " + password);
         int ok = repository.createUser(newUser);
 

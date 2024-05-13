@@ -11,11 +11,15 @@ import android.view.ViewGroup;
 import androidx.annotation.RequiresApi;
 
 import com.upt.weatherBeacon.AppState.GlobalState;
+import com.upt.weatherBeacon.data.local.UserSession;
+import com.upt.weatherBeacon.data.local.UserSessionManager;
 import com.upt.weatherBeacon.databinding.FragmentSplashScreenBinding;
 import com.upt.weatherBeacon.ui.base.BaseFragment;
 import com.upt.weatherBeacon.ui.base.Navigation;
 import com.upt.weatherBeacon.ui.base.navigation.NavAttribs;
 import com.upt.weatherBeacon.ui.base.navigation.Screen;
+
+import java.util.Date;
 
 public class SplashFragment  extends BaseFragment<SplashViewModel> {
     private FragmentSplashScreenBinding binding;
@@ -68,8 +72,21 @@ public class SplashFragment  extends BaseFragment<SplashViewModel> {
                             if (appState.getLatitude() != 0.0) {
                                 viewModel.getWeatherDataForCurrentLocation();
                                 viewModel.getUserData();
-                                viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
 
+                                UserSessionManager sessionManager = new UserSessionManager(getContext());
+                                UserSession session = sessionManager.getUserSession();
+                                if (session != null && session.username.length() != 0) {
+                                    Date currentDate = new Date();
+                                    Date lastLogin = new Date(session.lastLoginTime);
+                                    if (isDifferenceGreaterThan24Hours(currentDate, lastLogin) == false) {
+                                        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.HomeMainScreen, null, false)));
+                                    }
+                                    else{
+                                        viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
+                                    }
+                                } else {
+                                    viewModel.uiEventStream.setValue(new Navigation(new NavAttribs(Screen.LoginScreen, null, false)));
+                                }
                             } else {
                                 // Continue waiting
                                 handler.postDelayed(this, 1000); // Check every 100 milliseconds
@@ -82,5 +99,20 @@ public class SplashFragment  extends BaseFragment<SplashViewModel> {
             }, 1500);
         }
 
+    }
+
+    private boolean isDifferenceGreaterThan24Hours(Date date1, Date date2) {
+        // Convert Date objects to milliseconds
+        long time1 = date1.getTime();
+        long time2 = date2.getTime();
+
+        // Calculate the difference in milliseconds
+        long diffMillis = Math.abs(time1 - time2);
+
+        // Convert difference to hours
+        long diffHours = diffMillis / (1000 * 60 * 60);
+
+        // Check if difference is greater than 23 hours
+        return diffHours > 23;
     }
 }

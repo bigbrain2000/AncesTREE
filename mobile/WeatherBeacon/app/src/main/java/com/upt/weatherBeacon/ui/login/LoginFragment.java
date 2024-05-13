@@ -33,13 +33,13 @@ public class LoginFragment extends BaseFragment<LoginViewModel> {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.uiEventStream.setValue(new ShowToast("Login Clicked"));
+//                viewModel.uiEventStream.setValue(new ShowToast("Login Clicked"));
 
-                viewModel.doLogin(username.getText().toString(), password.getText().toString());
+                viewModel.doLogin(username.getText().toString(), password.getText().toString(), getContext());
 
 //                while(GlobalState.getState().jwtToken == ""){}
-                Navigation navigation = new Navigation(new NavAttribs(Screen.HomeMainScreen, null, true));
-                viewModel.uiEventStream.setValue(navigation);
+//                Navigation navigation = new Navigation(new NavAttribs(Screen.HomeMainScreen, null, true));
+//                viewModel.uiEventStream.setValue(navigation);
             }
         });
 

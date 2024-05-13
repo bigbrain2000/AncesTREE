@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -23,7 +24,7 @@ public interface UserAPI {
     Call<LoginDto> loginUser(@Body RequestBody requestBody);
 
     @PATCH("user/{username}")
-    Call<Object> registerUser(@Path("username") String username, @Body RequestBody requestBody);
+    Call<Object> updateUser(@Path("username") String username, @Body RequestBody requestBody, @Header("Authorization") String jwtToken);
 
     @DELETE("user/{username}")
     Call<Object> deleteUser(@Path("username") String username);

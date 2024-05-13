@@ -17,7 +17,7 @@ public class User {
     public Date birthDate;
     public String address;
 
-    public User(String username, String firstName, String lastName, String password, String email, Date birthDate, String phoneNumber){
+    public User(String username, String firstName, String lastName, String password, String email, Date birthDate, String phoneNumber, String address){
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,6 +25,6 @@ public class User {
         this.birthDate = birthDate;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.address="aaa";
+        this.address=address;
     }
 }
