@@ -17,17 +17,11 @@ spring:
 
 weatherbeaconboard:
   notification:
-    #LOCALHOST
-    #base-url: http://localhost:8082
     base-url: ${NOTIFICATIONS_URL}
     sendEmail: /v1/sendEmail
 
-#LOCALHOST
-#server:
-#  port: 8081
-
 server:
-  port: 5000
+  port: 8081
 
 resilience4j:
   circuitbreaker:

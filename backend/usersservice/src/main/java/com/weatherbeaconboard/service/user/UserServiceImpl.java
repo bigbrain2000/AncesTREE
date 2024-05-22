@@ -187,7 +187,8 @@ public class UserServiceImpl implements UserService {
 
         String token = confirmationTokenService.saveAndReturnAConfirmationToken(savedUser);
 
-        String link = "http://localhost:8080/v1/auth/confirm?token=" + token; //url for validating user acc
+        //String link = "http://localhost:8080/v1/auth/confirm?token=" + token; //url for validating user acc
+        String link = "https://weather-beacon-board-87e9c0bd2971.herokuapp.com/v1/auth/confirm?token=" + token; //url for validating user acc
 
         sendRegistrationEmail(savedUser, link);
 

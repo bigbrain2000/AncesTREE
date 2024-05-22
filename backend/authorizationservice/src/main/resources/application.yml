@@ -6,11 +6,8 @@ weatherbeaconboard:
     userDetails: /v1/userDetails
 
 #LOCALHOST
-#server:
-#  port: 8080
-
 server:
-  port: 5000
+  port: 8080
 
 resilience4j:
   circuitbreaker:
