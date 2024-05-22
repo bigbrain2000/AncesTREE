@@ -22,7 +22,7 @@ public interface OpenMeteoApi {
     Call<WeatherForecasts> getResponse(
             @Query("latitude") double latitude,
             @Query("longitude") double longitude,
-            @Query("current") String currentParams,
+//            @Query("current") String currentParams,
             @Query("hourly") String hourlyParams,
             @Query("daily") String dailyParams
     );

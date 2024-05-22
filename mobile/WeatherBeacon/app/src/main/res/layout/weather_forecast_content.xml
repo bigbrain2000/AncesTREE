@@ -14,23 +14,33 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginTop="24dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center" />
 
     <ImageView
-            android:id="@+id/imageWeather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/sunny_weather"
-            android:scaleType="centerCrop"
-            android:contentDescription="Current Weather"/>
+        android:id="@+id/imageWeather"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:contentDescription="Current Weather"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sunny_weather" />
 
     <TextView
-            android:id="@+id/textWeatherDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sunny weather expected"
-            android:textAlignment="center"
-        />
+        android:id="@+id/curentTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunny weather expected"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/currentWeatherDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunny weather expected"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
     <Switch
         android:id="@+id/switchButtonText"
         android:layout_width="wrap_content"

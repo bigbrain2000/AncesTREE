@@ -69,7 +69,7 @@ public class ForecastsHourlyAdapter extends ArrayAdapter<HourlyWeatherData> {
 
         date.setText(currentItem.date);
         time.setText(currentItem.time);
-        temperature.setText(String.valueOf(currentItem.temperature));
+        temperature.setText(String.valueOf(currentItem.temperature)+" °C");
         icon.setImageResource(currentItem.weatherCode);
 
 

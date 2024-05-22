@@ -3,12 +3,15 @@ package com.upt.weatherBeacon.AppState;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.AirQuality;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.Geocoding;
 import com.upt.weatherBeacon.data.remote.WeatherRepository.Dto.HourlyAirQuality;
 import com.upt.weatherBeacon.model.HourlyAirData;
 import com.upt.weatherBeacon.model.User;
 import com.upt.weatherBeacon.model.WeatherData;
+import com.upt.weatherBeacon.model.YearGraphSeries;
 
 import java.util.List;
 
@@ -28,8 +31,26 @@ public class GlobalState {
 
     public MutableLiveData<String> errorGeocoding = new MutableLiveData<>();
 
+    public MutableLiveData<List<YearGraphSeries>> graphSeries = new MutableLiveData<>();
+
+    public MutableLiveData<List<YearGraphSeries>> graphSeriesAll = new MutableLiveData<>();
+
+    public MutableLiveData<String> jwtToken = new MutableLiveData<>();
+
+    public MutableLiveData<User> user = new MutableLiveData<>();
+
+    public String username="";
+    public String password="";
+
+
     private GlobalState() {
     }
+
+    public void setJwtToken(String token){ this.jwtToken.postValue(token); }
+    public LiveData<String> getJwtToken(){ return this.jwtToken; }
+
+    public void setUser(User user){ this.user.postValue(user);}
+    public LiveData<User> getUserLiveData(){ return this.user; }
 
     public static synchronized GlobalState getState() {
         if (state == null) {
@@ -103,6 +124,16 @@ public class GlobalState {
 
     public void updateAirQualityLiveData(List<HourlyAirData> newData) {
         airQualityLiveData.postValue(newData);
+    }
+
+    public LiveData<List<YearGraphSeries>> getGraphSeries(){return this.graphSeries;}
+    public void updateGraphSeriesLiveData(List<YearGraphSeries> series){
+        graphSeries.postValue(series);
+    }
+
+    public LiveData<List<YearGraphSeries>> getGraphSeriesAll(){return this.graphSeriesAll;}
+    public void updateGraphSeriesLiveDataAll(List<YearGraphSeries> series){
+        graphSeriesAll.postValue(series);
     }
 
 }

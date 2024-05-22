@@ -12,7 +12,7 @@
         android:layout_height="60dp"/>
 
     <ImageView
-        android:id="@+id/imageAir"
+        android:id="@+id/curentAirCode"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/air_bad"
@@ -20,7 +20,7 @@
         android:contentDescription="Current Air Quality"/>
 
     <TextView
-        android:id="@+id/textAirDescription"
+        android:id="@+id/curentAirDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bad air quality"
